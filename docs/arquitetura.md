@@ -28,7 +28,7 @@ independente do departamento.
 | Princípio | ADR |
 |---|---|
 | Organizar por **tipo/propósito**, não por departamento (departamento é faceta) | [0001](adr/0001-taxonomia-orientada-a-proposito.md) |
-| **Dois andares**: TI no repo (fonte da verdade) + central federando por PULL | [0002](adr/0002-topologia-hibrida-pull.md) |
+| **Dois andares**: produto nasce no central (verdade do PRD) + TI no repo (verdade do código); spec/ADR derivadas do PRD | [0002](adr/0002-topologia-hibrida-pull.md) |
 | Produto: **PRD** versionado no central (grão de feature) + **Spec** datada no repo | [0003](adr/0003-doc-produto-regra-central-spec-repo.md) · [0007](adr/0007-prd-unidade-central-de-produto.md) |
 | **Documentação é upstream** do rastreador (Monday é projeção); id do PRD = chave | [0004](adr/0004-doc-upstream-do-rastreador.md) |
 | Não-técnico autora por **IA (guideline)**; portal **determinístico** | [0005](adr/0005-autoria-nao-tecnico-guideline-paste.md) |
@@ -38,7 +38,7 @@ independente do departamento.
 ## 3. Topologia — os dois andares
 
 ```
-  ANDAR TI  (por repo · dev-first · FONTE DA VERDADE)
+  ANDAR TI  (por repo · dev-first · FONTE DA VERDADE DO CÓDIGO)
   ┌──────────────────────┐      ┌──────────────────────┐
   │ Repo: pagamentos     │      │ Repo: faturamento    │
   │ docs co-localizadas   │      │ docs co-localizadas   │
@@ -49,6 +49,7 @@ independente do departamento.
                             ▼                             ▼
             ┌───────────────────────────────────────────────┐
             │   ANDAR EMPRESA  (portal central)             │
+            │   • nasce o PRD — fonte da verdade do produto │
             │   • federa/indexa docs de TI via PULL         │
             │   • hospeda docs não-técnicas (Produto…)      │
             │   • mantém o grafo de links produto↔código    │
@@ -57,7 +58,9 @@ independente do departamento.
 ```
 
 **Federar** = unificar o acesso a docs que continuam morando nos repos, sem copiá-las.
-O código nunca é empurrado pra fora.
+O código nunca é empurrado pra fora. O **requisito de produto** nasce no central
+(o **PRD**, fonte da verdade do produto); a **spec/ADR** no repo é **derivada do
+PRD** — a direção é sempre PRD → spec, nunca o contrário.
 
 ---
 
@@ -81,7 +84,7 @@ Por andar:
   (versionado, grão de feature) + a **Visão de produto** (macro, 1 por Projeto).
 
 > Divergência consciente do he4rt: **sem `prd` no repo** — o requisito vive só
-> como Regra no central (ADR-0003).
+> como **PRD** no central (ADR-0003 · 0007).
 
 ---
 
@@ -120,7 +123,7 @@ PROJETO RPQ {
 ```
 
 A **sigla** alinha negócio ↔ TI ↔ rastreador ↔ catálogo e é a **"origem"** dos
-ids qualificados: `RPQ:adr/0001`, `RPQ:PROD-12`, e o já-usado `RPQ-STORY-123` no
+ids qualificados: `RPQ:adr/0001`, `RPQ:PRD-12`, e o já-usado `RPQ-STORY-123` no
 Monday. Cada origem é dona do seu id nativo; o catálogo só qualifica com a sigla.
 
 ---
@@ -228,8 +231,9 @@ COLEÇÃO "Onboarding Dev"  (publico_alvo: TI · nivel: basico)
   [federacao.md](federacao.md) — 3 opções (A: GitHub API+webhook _recomendada_ ·
   B: CI push · C: API do projeto). **Firme:** central espelha, disparado por push;
   **aberto:** webhook+API vs CI push.
-- **Governança da Regra:** quem aprova/publica antes de virar fonte da verdade
-  (rascunho → revisão → publicado), já que dispara spec + código?
+- **Governança do PRD (ADR-0008):** hoje é **sinal social** por `status` (sem gate
+  rígido). Revisitar quem pode publicar quando o time crescer, já que publicar o PRD
+  dispara spec + código.
 - **Marketing e Negócio:** que tipos/extensões de metadado precisam.
 - **v2 chat:** quando e como embutir.
 - **Onde o portal central roda** e em que tecnologia (laradocs? evoluir o módulo

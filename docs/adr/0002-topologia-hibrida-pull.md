@@ -5,10 +5,15 @@
 > um `/docs` no ar — é **sincronizar o markdown do git para um espelho de leitura**
 > no central (disparado por push). O modelo de dois andares e "código não vira
 > conteúdo empurrado" continua; muda só o encanamento (mecanismo em aberto: A/B/C).
+>
+> **Fronteira (ver [ADR-0003](0003-doc-produto-regra-central-spec-repo.md) ·
+> [0007](0007-prd-unidade-central-de-produto.md)):** "fonte da verdade" aqui é do
+> **código / doc técnica**. O **requisito de produto** nasce no portal central (o
+> **PRD**); a spec/ADR do repo é **derivada do PRD** — a direção é sempre PRD → spec.
 
 A documentação tem **dois andares**. As docs de TI ficam **co-localizadas no
 repositório** de cada projeto (markdown + front-matter), que é a **fonte da
-verdade**. Um **portal central** dá a visão única da empresa **federando** as
+verdade do código**. Um **portal central** dá a visão única da empresa **federando** as
 docs de TI por **PULL** (consulta a API de cada portal de repo, ex.: o
 `/api/tree` do laradocs) e **hospeda nativamente** as docs dos departamentos
 não-técnicos (Produto, Marketing…). O código **nunca** é empurrado pra fora do

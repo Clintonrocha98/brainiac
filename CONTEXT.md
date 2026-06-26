@@ -79,9 +79,12 @@ por IA.
 _Avoid_: enum, lista, taxonomia fechada
 
 **id** (campo):
-O identificador canônico e estável da Entrada, no formato `DOC-NNNN`. Nunca muda,
-mesmo que título ou facetas mudem; é o que relacionamentos e links referenciam.
-_Avoid_: código, número, slug (slug é outra coisa)
+O identificador canônico e estável da Entrada. Não há id global cunhado pelo
+catálogo: cada origem é dona do seu id nativo e o catálogo apenas **qualifica com
+a sigla** do Projeto (ex.: `RPQ:adr/0001`, `RPQ:PRD-12`). Nunca muda, mesmo que
+título ou facetas mudem; é o que relacionamentos e links referenciam.
+Ver [[0006-projeto-primeira-classe-sigla-canonica]].
+_Avoid_: código, número, DOC-NNNN, slug (slug é outra coisa)
 
 **slug** (campo):
 A parte legível e cosmética da URL de uma Entrada (ex.: `setup-ambiente`). Pode
@@ -103,7 +106,8 @@ _Avoid_: tags, keywords, rótulos
 O estado de ciclo de vida da Entrada: `rascunho`, `revisão`, `publicado` ou
 `obsoleto`. É um **sinal social**, não uma trava — a plataforma não impõe
 aprovação (ver [[0008-governanca-do-prd-social-por-status]]). Em `revisão` o
-documento já é legível; em `publicado` vira fonte da verdade.
+documento já é legível; em `publicado` passa a valer como a versão corrente/oficial
+daquela Entrada (o PRD, do produto; a spec, da implementação).
 _Avoid_: estado, situação
 
 **revisao_ate** (campo):

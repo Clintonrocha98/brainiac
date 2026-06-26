@@ -1,5 +1,9 @@
 # Documentação é upstream do rastreador; o id da Regra é a chave de junção
 
+> **Refinado pelo [ADR-0007](0007-prd-unidade-central-de-produto.md):** "Regra"
+> foi renomeada para **PRD**; "id da Regra" / `PROD-NN` → **id do PRD**
+> (`RPQ:PRD-NN`). Leia este ADR trocando "Regra" por "PRD".
+
 A documentação é a **fonte da verdade**; o rastreador de tarefas (hoje Monday) é
 uma **projeção/sub-produto** dela — não o centro. A ordem é sempre **doc → task**:
 o PO cria as tasks a partir da doc do portal (hoje manualmente via Claude + Monday

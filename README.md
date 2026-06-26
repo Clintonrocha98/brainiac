@@ -6,10 +6,8 @@
 
 ## 🎨 Apresentação visual
 
-> 🚧 **Artefato em breve.** O link da apresentação visual (para tech lead /
-> liderança) entra aqui assim que for gerado.
->
-> <!-- ARTEFATO: cole o link aqui -->
+**[🔗 Abrir a apresentação visual](https://waifuvault.moe/f/59d704b6-a471-4487-b3c7-1ec982d631b0/2026-06-26-brainiac-arquitetura.html)**
+— overview interativo (abas + diagramas) do desenho até aqui, para tech lead / liderança.
 
 ## 👉 Por onde começar
 
@@ -29,17 +27,19 @@ classificado, achável por humano **e por IA**, independente do departamento.
 
 A ideia central é de **dois andares**:
 
-- **TI (no repo):** a doc vive co-localizada no código (markdown + front-matter) —
-  é a fonte da verdade.
-- **Empresa (portal central):** federa/espelha a doc de TI e **hospeda** a doc dos
-  times não-técnicos, sendo a porta única para liderança e Produto.
+- **Empresa (portal central):** é onde **nasce o PRD** — a fonte da verdade do
+  *produto*. Federa/espelha a doc de TI e **hospeda** a doc dos times
+  não-técnicos, sendo a porta única para liderança e Produto.
+- **TI (no repo):** a doc **técnica** vive co-localizada no código (markdown +
+  front-matter) — fonte da verdade do *código*. A **spec/ADR** de cada entrega é
+  **derivada do PRD**, não o contrário.
 
 ## Pilares (resumo)
 
 | Pilar | Em uma linha |
 |---|---|
 | **Taxonomia** | Organiza por **tipo/propósito**, não por departamento (departamento é faceta) |
-| **Topologia** | Dois andares: TI no repo (verdade) + central federa/espelha |
+| **Topologia** | Dois andares: produto nasce no central (verdade do PRD) + TI no repo (verdade do código) |
 | **Produto** | **PRD** versionado no central (grão de feature; regras dentro) + Spec datada no repo |
 | **Identidade** | Doc é upstream do rastreador (Monday é projeção); `Projeto`/sigla (`RPQ`) cola tudo |
 | **Autoria** | Não-técnico escreve por **IA** (guideline → colar); portal determinístico |
