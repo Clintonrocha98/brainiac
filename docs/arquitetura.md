@@ -28,10 +28,10 @@ independente do departamento.
 | Princípio | ADR |
 |---|---|
 | Organizar por **tipo/propósito**, não por departamento (departamento é faceta) | [0001](adr/0001-taxonomia-orientada-a-proposito.md) |
-| **Dois andares**: produto nasce no central (verdade do PRD) + TI no repo (verdade do código); spec/ADR derivadas do PRD | [0002](adr/0002-topologia-hibrida-pull.md) |
-| Produto: **PRD** versionado no central (grão de feature) + **Spec** datada no repo | [0003](adr/0003-doc-produto-regra-central-spec-repo.md) · [0007](adr/0007-prd-unidade-central-de-produto.md) |
+| **Dois andares**: produto nasce no Brainiac (verdade do PRD) + TI no repo (verdade do código); spec/ADR derivadas do PRD | [0002](adr/0002-topologia-hibrida-pull.md) |
+| Produto: **PRD** versionado no Brainiac (grão de feature) + **Spec** datada no repo | [0003](adr/0003-doc-produto-regra-central-spec-repo.md) · [0007](adr/0007-prd-unidade-central-de-produto.md) |
 | **Documentação é upstream** do rastreador (Monday é projeção); id do PRD = chave | [0004](adr/0004-doc-upstream-do-rastreador.md) |
-| Não-técnico autora por **IA (guideline)**; portal **determinístico** | [0005](adr/0005-autoria-nao-tecnico-guideline-paste.md) |
+| Não-técnico autora por **IA (guideline)**; Brainiac **determinístico** | [0005](adr/0005-autoria-nao-tecnico-guideline-paste.md) |
 
 ---
 
@@ -48,7 +48,7 @@ independente do departamento.
                             │ PULL (federa)               │ PULL
                             ▼                             ▼
             ┌───────────────────────────────────────────────┐
-            │   ANDAR EMPRESA  (portal central)             │
+            │   ANDAR EMPRESA  (Brainiac)                   │
             │   • nasce o PRD — fonte da verdade do produto │
             │   • federa/indexa docs de TI via PULL         │
             │   • hospeda docs não-técnicas (Produto…)      │
@@ -58,7 +58,7 @@ independente do departamento.
 ```
 
 **Federar** = unificar o acesso a docs que continuam morando nos repos, sem copiá-las.
-O código nunca é empurrado pra fora. O **requisito de produto** nasce no central
+O código nunca é empurrado pra fora. O **requisito de produto** nasce no Brainiac
 (o **PRD**, fonte da verdade do produto); a **spec/ADR** no repo é **derivada do
 PRD** — a direção é sempre PRD → spec, nunca o contrário.
 
@@ -80,11 +80,11 @@ DATADO / append-only  (CONGELADO num momento · nunca edita · novo a cada vez)
 
 Por andar:
 - **TI (repo):** os 8 acima (+ README/CONTEXT/spec são exclusivos do repo).
-- **Central (Produto…):** reusa reference/how-to/explanation/decision + o **PRD**
+- **Brainiac (Produto…):** reusa reference/how-to/explanation/decision + o **PRD**
   (versionado, grão de feature) + a **Visão de produto** (macro, 1 por Projeto).
 
 > Divergência consciente do he4rt: **sem `prd` no repo** — o requisito vive só
-> como **PRD** no central (ADR-0003 · 0007).
+> como **PRD** no Brainiac (ADR-0003 · 0007).
 
 ---
 
@@ -98,7 +98,7 @@ ENTRADA
 │    id · titulo · resumo · tipo · departamento · publico_alvo
 │    nivel_tecnico · projeto · status · revisao_ate · owner
 │    datas · palavras_chave · related
-├─ por TIPO   (ADR→status/deciders · plan→progresso · Regra→versao)
+├─ por TIPO   (ADR→status/deciders · plan→progresso · PRD→versao)
 └─ por DEPARTAMENTO  (opcional: Marketing→canal · Produto→segmento)
 ```
 
@@ -130,7 +130,7 @@ Monday. Cada origem é dona do seu id nativo; o catálogo só qualifica com a si
 
 ## 6. Fluxo de produto — PRD ↔ Spec ↔ execução
 
-O **PRD** (produto, Produto, central) tem grão de feature/grupo, é versionado e
+O **PRD** (produto, Produto, Brainiac) tem grão de feature/grupo, é versionado e
 contém as regras de negócio como seção. Cada major casa com uma **Spec**
 (implementação, TI, repo):
 
@@ -146,16 +146,16 @@ PRD "Gestão de Vouchers" RPQ:PRD-12   (versionado · última = verdade)
 O ciclo (cada doc tem 1 dono; o outro lado lê):
 
 ```
- ✏️ Produto edita ─► PRD RPQ:PRD-12 (central) ◄─ 👁️ liderança lê
+ ✏️ Produto edita ─► PRD RPQ:PRD-12 (Brainiac) ◄─ 👁️ liderança lê
         │
    TI lê o PRD 👁️  ─►  ⚙️ grill-me-with-docs  ─►  SPEC no repo ✏️
                                                    related:{ prd: RPQ:PRD-12@v2.0 }
         │                                                │
-        └──────────  central FEDERA a spec (PULL)  ◄──────┘
+        └──────────  Brainiac FEDERA a spec (PULL)  ◄─────┘
 ```
 
 **Identidade (ADR-0004 + 0006):** o id do PRD (`RPQ:PRD-12`, qualificado pela
-sigla do Projeto, cunhado pelo portal) é a chave de junção. A spec aponta pra ele;
+sigla do Projeto, cunhado pelo Brainiac) é a chave de junção. A spec aponta pra ele;
 a task no Monday carrega ele. Monday é projeção descartável — trocável sem quebrar
 nada.
 
@@ -180,11 +180,11 @@ Permissões podem ser adicionadas depois sem mudar o modelo de estados.
 ```
 v1 (agora):
   PESSOA ─copia─► GUIDELINE ─cola no► CLAUDE WEB ─gera─► doc + ---front-matter---
-  PESSOA ─cola no► PORTAL ─parse determinístico + valida vocab─► confirma ─► salva
-  (zero IA no portal · nunca vê git/markdown/form · dropdowns vêm pré-preenchidos)
+  PESSOA ─cola no► BRAINIAC ─parse determinístico + valida vocab─► confirma ─► salva
+  (zero IA no Brainiac · nunca vê git/markdown/form · dropdowns vêm pré-preenchidos)
 
 v2 (futuro):
-  chat conversacional embutido no portal (mesmo backend de parse/validar/salvar)
+  chat conversacional embutido no Brainiac (mesmo backend de parse/validar/salvar)
 ```
 
 ---
@@ -197,7 +197,7 @@ nivel_tecnico). A pertinência mora na Coleção, não na Entrada.
 
 ```
 COLEÇÃO "Onboarding Dev"  (publico_alvo: TI · nivel: basico)
-  1. explanation: visão de negócio   (central)
+  1. explanation: visão de negócio   (Brainiac)
   2. explanation: arquitetura         (repo)
   3. reference: módulo pagamentos     (repo)
   4. how-to: subir o ambiente         (repo)
@@ -211,12 +211,12 @@ COLEÇÃO "Onboarding Dev"  (publico_alvo: TI · nivel: basico)
 |---|---|
 | Propósito (referencia/how-to/explicacao/decisao/processo) | **Tipo** (dicionário compartilhado, + spec/plan/README/CONTEXT, classe evergreen/datado) |
 | Facetas (departamento, publico_alvo, nivel_tecnico, projeto) | **Metadado core** |
-| Catálogo | A **visão federada** (central indexando + repos) |
-| Entrada | unidade do catálogo (central-native ou federada do repo) |
-| Coleção (trilha ordenada) | **mantida** (view no central, cross-andar) |
+| Catálogo | A **visão federada** (Brainiac indexando + repos) |
+| Entrada | unidade do catálogo (Brainiac-native ou federada do repo) |
+| Coleção (trilha ordenada) | **mantida** (view no Brainiac, cross-andar) |
 | status / revisao_ate / resumo / palavras_chave | **mantidos** (core) |
 | relacionamentos (substitui/relacionadas/depende_de/parte_de) | casam com o `related` do front-matter he4rt |
-| `id` universal `DOC-NNNN` | **RESOLVIDO** (ADR-0006) — id por origem qualificado pela sigla do Projeto: `RPQ:adr/0001`, `central` usa `PROD-NN` |
+| `id` universal `DOC-NNNN` | **RESOLVIDO** (ADR-0006) — id por origem qualificado pela sigla do Projeto: `RPQ:adr/0001`, `Brainiac` usa `PRD-NN` |
 | (novo) Projeto como faceta | **Projeto é entidade de 1ª classe** (sigla canônica), não só faceta |
 | Catálogo de refs de design | fora de escopo (projeto do Design) |
 
@@ -227,14 +227,14 @@ COLEÇÃO "Onboarding Dev"  (publico_alvo: TI · nivel: basico)
 - **PRD vs Regra: RESOLVIDO** (ADR-0007) — o tipo central de produto é o **PRD**
   (feature/grupo, versionado); regras de negócio são seção interna; a visão macro
   é uma **Visão de produto** (explanation) por Projeto.
-- **Federação na prática:** mecanismo de sync git→central espelho. Detalhado em
+- **Federação na prática:** mecanismo de sync git→Brainiac espelho. Detalhado em
   [federacao.md](federacao.md) — 3 opções (A: GitHub API+webhook _recomendada_ ·
-  B: CI push · C: API do projeto). **Firme:** central espelha, disparado por push;
+  B: CI push · C: API do projeto). **Firme:** Brainiac espelha, disparado por push;
   **aberto:** webhook+API vs CI push.
 - **Governança do PRD (ADR-0008):** hoje é **sinal social** por `status` (sem gate
   rígido). Revisitar quem pode publicar quando o time crescer, já que publicar o PRD
   dispara spec + código.
 - **Marketing e Negócio:** que tipos/extensões de metadado precisam.
 - **v2 chat:** quando e como embutir.
-- **Onde o portal central roda** e em que tecnologia (laradocs? evoluir o módulo
+- **Onde o Brainiac roda** e em que tecnologia (laradocs? evoluir o módulo
   he4rt? algo novo?).

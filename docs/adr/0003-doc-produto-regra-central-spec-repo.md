@@ -7,7 +7,7 @@
 
 Adotamos a **Opção A**: separar a documentação de produto por natureza.
 
-A **Regra de negócio** vive no portal central como documento **versionado**
+A **Regra de negócio** vive no Brainiac como documento **versionado**
 (`v1.0`, `v2.0`…), de dono **Produto**, sendo a **última versão a fonte da
 verdade**. Mudança de **comportamento** = versão **major** (gera Spec + código);
 ajuste de **texto/esclarecimento** = versão **minor** (não gera Spec). O histórico
@@ -15,7 +15,7 @@ de versões é o registro de como a regra evoluiu.
 
 A **Spec/PRD de cada implementação** vive **co-localizada no repo** (datada,
 imutável, escrita por TI com a skill grill-me-with-docs) e **referencia a versão
-da Regra** pelo id. O portal **federa** essas Specs (PULL) e mostra a Regra e suas
+da Regra** pelo id. O **Brainiac** federa essas Specs (PULL) e mostra a Regra e suas
 Specs amarradas num lugar só.
 
 Consideramos: (B) tudo central — Produto dono de regra E spec; e (C) tudo no
@@ -26,5 +26,5 @@ editar/rever (a dor atual).
 A Regra (linguagem de negócio, audiência Produto/liderança) e a Spec (como
 construir, audiência TI) **não são redundantes** — são o mesmo fato em dois
 idiomas e audiências. Encaixa na realidade atual: TI já escreve spec/PRD via
-grill-me-with-docs; Produto documenta hoje em Google Docs solto (que o central
+grill-me-with-docs; Produto documenta hoje em Google Docs solto (que o Brainiac
 substitui, cumprindo o objetivo de padronizar e centralizar).

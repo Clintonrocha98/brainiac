@@ -6,7 +6,7 @@ por enquanto). O campo `status` é um **sinal social**, não uma trava.
 Fluxo:
 
 1. Produto escreve o PRD → `rascunho` (WIP).
-2. Pronto para revisão → `revisão`: já **legível** no portal, para TI e PO
+2. Pronto para revisão → `revisão`: já **legível** no Brainiac, para TI e PO
    revisarem via reuniões/mensagens.
 3. Alinhado → o **próprio Produto** troca para `publicado`, tornando o PRD a fonte
    da verdade e **liberando o TI** a criar a Spec/ADR (e o PO a criar as tasks no

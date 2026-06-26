@@ -18,8 +18,8 @@ Documento; é o formato que as pessoas compartilham entre si.
 _Avoid_: página, anexo, build
 
 **Catálogo**:
-O índice federado dentro do Portal central: a lista de todas as Entradas (as do
-próprio central + as federadas dos repos) com seus metadados e ponteiros. Guarda
+O índice federado dentro do Brainiac: a lista de todas as Entradas (as do
+próprio Brainiac + as federadas dos repos) com seus metadados e ponteiros. Guarda
 metadado e ponteiro — o conteúdo continua nas origens. Não é onde o conteúdo mora.
 _Avoid_: listagem, biblioteca, repositório, acervo
 
@@ -53,7 +53,7 @@ compartilhado pelas facetas `departamento` e `publico_alvo`. Valores atuais:
 _Avoid_: setor, time, squad
 
 **Projeto**:
-Entidade de 1ª classe registrada no portal, com `nome_negocio`, `nome_tecnico`,
+Entidade de 1ª classe registrada no Brainiac, com `nome_negocio`, `nome_tecnico`,
 `slug` e `sigla`. É o contêiner dos documentos e a "origem" da federação. Resolve
 o desalinhamento de nomes (negócio × TI) sendo a camada de tradução.
 Ver [[0006-projeto-primeira-classe-sigla-canonica]].
@@ -160,20 +160,23 @@ _Avoid_: handoff, fluxo, SOP, rito
 
 ## Andares e fluxo de produto
 
-**Portal central**:
-O andar empresa da documentação: hospeda nativamente as docs não-técnicas e
-federa (por PULL) as docs de TI. É a fonte da verdade do PRD e a porta única
-para liderança e Produto. Ver [[0002-topologia-hibrida-pull]].
-_Avoid_: wiki, central, hub
+**Brainiac**:
+A plataforma central de documentação da empresa — o "portal central" que antes não
+tinha nome. É o andar empresa: é onde **nasce o PRD** (fonte da verdade do produto),
+**federa** (por PULL) e espelha as docs de TI, **hospeda** nativamente as docs
+não-técnicas e é a **porta única** para liderança e Produto. Cada repo de TI continua
+dono da sua doc técnica; o Brainiac unifica o acesso.
+Ver [[0002-topologia-hibrida-pull]].
+_Avoid_: portal central, portal, central, wiki, hub
 
 **Federação**:
 Unificar o acesso a docs que continuam morando em suas fontes (cada repo), sem
-copiá-las para o central. O central pergunta/indexa e aponta de volta — não há
+copiá-las para o Brainiac. O Brainiac pergunta/indexa e aponta de volta — não há
 cópia nem sincronização.
 _Avoid_: sincronização, agregação, importação
 
 **PRD**:
-Documento de requisitos de produto que vive no Portal central; dono é Produto;
+Documento de requisitos de produto que vive no Brainiac; dono é Produto;
 versionado (última versão = fonte da verdade). Grão de uma feature ou grupo coeso
 de features — nunca o projeto inteiro. Contém as regras de negócio como seção
 interna. Major = muda comportamento (gera Spec); minor = ajuste de texto.

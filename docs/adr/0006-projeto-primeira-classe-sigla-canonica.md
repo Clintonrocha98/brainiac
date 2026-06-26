@@ -1,6 +1,6 @@
 # Projeto é entidade de 1ª classe; a sigla é o handle canônico e a origem dos ids
 
-A **Projeto** é registrada manualmente no portal com **nome de negócio**, **nome
+A **Projeto** é registrada manualmente no Brainiac com **nome de negócio**, **nome
 técnico**, **slug** e **sigla**. A **sigla** (ex.: `RPQ`) é o handle canônico que
 **alinha as nomenclaturas divergentes** — negócio chama de "Plataforma de
 Recrutamento", TI chama de "recruit-party-quest" — sem forçar ninguém a renomear:

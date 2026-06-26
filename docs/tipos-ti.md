@@ -25,13 +25,13 @@ he4rt sozinho deixa sem lar.
 | `plan` | datado | `{módulo}/docs/plans/` | nunca | o plano de uma entrega |
 
 > **Divergência consciente do he4rt:** não há `prd` no repo. O requisito de produto
-> vive **só** como Regra no portal central (ver [ADR-0003](adr/0003-doc-produto-regra-central-spec-repo.md));
+> vive **só** como PRD no Brainiac (ver [ADR-0003](adr/0003-doc-produto-regra-central-spec-repo.md));
 > a `spec` referencia a Regra. Isso evita duplicar o requisito em dois lugares.
 
 Docs **cross-module / system-wide** repetem a mesma estrutura em `/docs` na raiz do
 repo (convenção he4rt).
 
-## Front-matter (he4rt) e o link com o central
+## Front-matter (he4rt) e o link com o Brainiac
 
 `type · title · module · status · date · author · related`
 
@@ -39,6 +39,6 @@ O campo `related` amarra a doc ao restante do grafo:
 
 ```yaml
 related:
-  regra: PROD-12@v2.0      # Regra no portal central (chave de junção)
+  prd: RPQ:PRD-12@v2.0     # PRD no Brainiac (chave de junção)
   story: RPQ-STORY-123     # task no Monday (projeção)
 ```
