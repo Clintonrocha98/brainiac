@@ -261,8 +261,9 @@ COLEÇÃO "Onboarding Dev"  (publico_alvo: TI)
   dispara spec + código.
 - **Marketing e Negócio:** que tipos/extensões de metadado precisam.
 - **v2 chat:** quando e como embutir.
-- **Artefato:** como encaixar no modelo (sessão dedicada — ele é asset HTML, não
-  markdown; provável revisão do verbete no glossário).
+- **Artefato: RESOLVIDO** (ADR-0012) — asset HTML por **link**, embutido em **iframe
+  de origem isolada**; em doc com corpo o link mora no corpo (derivado), o campo
+  explícito só pra Entrada só-artefato; hospedagem externa (waifuvault) por enquanto.
 - **Stack do Brainiac:** Laravel + Filament (autoria do PRD + edição do subconjunto
   editável de metadado) + Livewire (vitrine de leitura) + `commonmark`/`highlight`
   (render). **Recuperação por IA = API com filtros** sobre o vocabulário controlado

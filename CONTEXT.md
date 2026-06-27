@@ -8,14 +8,21 @@ implementação.
 ## Language
 
 **Documento**:
-O conteúdo-fonte em markdown produzido pelas skills (brainstorm/grill-me) que
-origina um Artefato.
+O conteúdo-fonte em **markdown** de uma Entrada — escrito por IA via guideline
+(brainstorm/grill-me) ou colado no Brainiac — renderizado pelo próprio Brainiac
+(markdown é o formato canônico). Não "origina um Artefato": o Artefato é um asset
+HTML à parte.
 _Avoid_: doc, texto, markdown
 
 **Artefato**:
-A página renderizável (HTML/CSS/JS, normalmente Tailwind) gerada a partir de um
-Documento; é o formato que as pessoas compartilham entre si.
-_Avoid_: página, anexo, build
+Uma página visual **auto-contida** (HTML/CSS/JS, normalmente Tailwind) feita para
+explicar algo visualmente (diagrama rico, fluxo interativo, levantamento para
+discussão). **Não** deriva de um Documento nem passa pelo renderizador de markdown:
+é front-end arbitrário, referenciado por **link** e exibido num **iframe de origem
+isolada** (sandbox). Em doc com corpo, entra como link no próprio corpo (o Brainiac
+deriva e embute); uma Entrada pode ser **só-artefato**.
+Ver [[0012-artefato-asset-html-por-link-iframe-isolado]].
+_Avoid_: página, anexo, build, render do markdown
 
 **Catálogo**:
 O índice federado dentro do Brainiac: a lista de todas as Entradas (as do

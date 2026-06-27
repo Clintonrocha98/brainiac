@@ -69,6 +69,7 @@ A ideia central é de **dois andares**:
 | [0009](docs/adr/0009-federacao-por-push-modulo.md) | Federação por PUSH: o módulo publica no Brainiac (`docs:publish`) |
 | [0010](docs/adr/0010-markdown-canonico-render-centralizado.md) | Markdown é o formato canônico; o render é centralizado no Brainiac |
 | [0011](docs/adr/0011-ciclo-de-vida-do-prd-congela-ao-publicar.md) | Ciclo de vida do PRD: o texto versiona e congela ao publicar |
+| [0012](docs/adr/0012-artefato-asset-html-por-link-iframe-isolado.md) | Artefato: asset HTML por link, embutido em iframe isolado |
 
 ## Status
 
@@ -79,6 +80,5 @@ editável de metadado) + Livewire (vitrine de leitura) + `commonmark`/`highlight
 (render). Conteúdo canônico em **markdown**, renderizado pelo Brainiac (ADR-0010).
 Recuperação por IA = **API com filtros** sobre o vocabulário controlado.
 
-**Pontos abertos:** tipos de Marketing e Negócio · o **Artefato** no modelo · v2 do
-chat de autoria · **busca humana** (adiada; default Postgres FTS + filtros). *(Auth e
-infra/hosting adiados.)*
+**Pontos abertos:** tipos de Marketing e Negócio · v2 do chat de autoria · **busca
+humana** (adiada; default Postgres FTS + filtros). *(Auth e infra/hosting adiados.)*

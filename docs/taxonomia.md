@@ -39,8 +39,8 @@ schema. Itens marcados **(EM ABERTO)** ainda não foram decididos.
 | `owner` | pessoa | sim | Responsável pela Entrada |
 | `criado_em` | data | sim | |
 | `atualizado_em` | data | sim | |
-| `documento` | link | condicional | Documento-fonte (markdown). Ver invariante abaixo |
-| `artefatos` | lista de link | condicional | 0..N Artefatos renderizados (HTML) |
+| `documento` | link | condicional | Documento-fonte (markdown), renderizado pelo Brainiac. Ver invariante abaixo |
+| `artefatos` | lista de link | condicional | Link(s) a Artefato (HTML). Em doc com corpo o link mora no corpo (derivado — ADR-0012); este campo é o ponteiro só pra Entrada só-artefato |
 | `substitui` / `substituida_por` | id (par inverso) | não | Supersessão; casa com `status: obsoleto` |
 | `relacionadas` | lista de id | não | "Veja também" (simétrico) |
 | `depende_de` | lista de id | não | Pré-requisito: leia/faça isto antes (direcionado) |
@@ -61,7 +61,10 @@ schema. Itens marcados **(EM ABERTO)** ainda não foram decididos.
 
 - Toda Entrada tem **pelo menos um** entre `documento` e `artefatos` (não pode
   existir Entrada sem nenhum conteúdo). Os dois individualmente são opcionais:
-  acomoda md+html (TI), só-html (Design/Marketing) e só-md (um plano).
+  acomoda md+html (TI), só-html (Design/Marketing) e só-md (um plano). No doc com
+  corpo, o artefato entra como **link no markdown** (o Brainiac deriva e embute em
+  iframe isolado — [ADR-0012](adr/0012-artefato-asset-html-por-link-iframe-isolado.md));
+  `artefatos` como campo fica reservado à Entrada **só-artefato**.
 
 ## Facetas e seus valores
 
