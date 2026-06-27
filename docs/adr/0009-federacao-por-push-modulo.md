@@ -1,10 +1,16 @@
 # Federação por PUSH: o módulo de doc publica no Brainiac via comando
 
+> **Render revisado (ver [ADR-0010](0010-markdown-canonico-render-centralizado.md)):**
+> o publicador **não renderiza** para o Brainiac — manda **markdown + metadado**, e
+> quem renderiza é o Brainiac (markdown é o formato canônico). O mecanismo de
+> transporte (push pelo módulo, snapshot completo, token + HMAC) permanece; muda só
+> o que viaja no payload (HTML → markdown).
+
 O Brainiac recebe a doc de TI por **PUSH**, não por PULL: o **módulo de
 documentação** (instalado em todo projeto) expõe um comando `docs:publish` que lê
-`docs/**.md`, renderiza e faz `POST` de um **snapshot completo** para um **único
-webhook de entrada** no Brainiac, autenticado por **token por projeto + assinatura
-HMAC**. O gatilho é **manual/explícito**, rodado a partir de um `main` limpo (o
+`docs/**.md`, valida o front-matter e faz `POST` de um **snapshot completo**
+(markdown + metadado) para um **único webhook de entrada** no Brainiac, autenticado
+por **token por projeto + assinatura HMAC**. O gatilho é **manual/explícito**, rodado a partir de um `main` limpo (o
 comando se recusa fora do main). Isso revisa o **transporte** do
 [ADR-0002](0002-topologia-hibrida-pull.md) (PULL → PUSH); a topologia de dois
 andares e o princípio "só a doc sai, o código nunca sai" permanecem.

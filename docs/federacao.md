@@ -3,6 +3,10 @@
 > **Status: DECIDIDO** — federação por **PUSH pelo módulo** (opção D).
 > Ver [ADR-0009](adr/0009-federacao-por-push-modulo.md). Refina o transporte do
 > [ADR-0002](adr/0002-topologia-hibrida-pull.md) (era PULL).
+>
+> **Render ([ADR-0010](adr/0010-markdown-canonico-render-centralizado.md)):** o
+> publicador **não renderiza** — manda **markdown + metadado**; quem renderiza é o
+> Brainiac (markdown é o formato canônico).
 
 ## Contexto (o que descartou o PULL)
 
@@ -27,27 +31,27 @@ do código; o Brainiac é a **superfície de leitura em produção** (espelho).
   │ docs/**.md  (sobe junto com o código)│
   │      │                               │
   │      ▼  comando `docs:publish`       │
-  │   lê + valida + renderiza            │
-  │   monta SNAPSHOT completo            │
+  │   lê + valida o front-matter         │
+  │   monta SNAPSHOT (markdown + meta)   │
   └──────────────┬──────────────────────┘
                  │ POST (token + HMAC)   ◄── OUTBOUND (app → Brainiac)
                  ▼
        ┌────────────────────────────┐
        │ BRAINIAC  /webhook/ingest   │  ◄── 1 URL pública, só ela
        │  autentica · valida schema  │
-       │  espelha (metadado + render)│
+       │  renderiza · espelha md+meta│
        │  guarda ponteiro p/ o git   │
        └────────────────────────────┘
 ```
 
 1. Alguém roda `docs:publish` a partir de um `main` limpo (o comando **se recusa**
    fora do main).
-2. O módulo lê `docs/**.md`, valida o front-matter, renderiza e monta um
-   **snapshot completo**.
+2. O módulo lê `docs/**.md`, valida o front-matter e monta um **snapshot completo**
+   (markdown + metadado — **sem renderizar**; ver [ADR-0010](adr/0010-markdown-canonico-render-centralizado.md)).
 3. `POST` para o **único webhook de entrada** do Brainiac, com **token do projeto +
    assinatura HMAC**.
-4. O Brainiac autentica, valida o schema e **espelha** (metadado + conteúdo
-   renderizado), guardando o ponteiro de volta ao git.
+4. O Brainiac autentica, valida o schema, **renderiza** e **espelha** (metadado +
+   markdown-fonte), guardando o ponteiro de volta ao git.
 
 ## O que isso elimina
 

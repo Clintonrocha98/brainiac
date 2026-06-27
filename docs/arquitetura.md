@@ -58,7 +58,7 @@ independente do departamento.
 ```
 
 **Federar** = o módulo de cada repo **empurra** (push) a doc para o Brainiac, que a
-**espelha** (metadado + conteúdo renderizado); o git segue a fonte da verdade. O
+**espelha** (metadado + **markdown-fonte**; quem renderiza é o Brainiac — [ADR-0010](adr/0010-markdown-canonico-render-centralizado.md)); o git segue a fonte da verdade. O
 código nunca sai do repo — **só a doc**. O **requisito de produto** nasce no
 Brainiac (o **PRD**, fonte da verdade do produto); a **spec/ADR** no repo é
 **derivada do PRD** — a direção é sempre PRD → spec, nunca o contrário.
@@ -108,6 +108,11 @@ filtrar e recuperar bem (e gerar o "Motivo" da recomendação no momento da quer
 
 **Obsolescência:** sinalizada só por `status` (rascunho/revisão/publicado/
 obsoleto) + supersede via `related` — sem data de revisão (sem anti-rot).
+
+**Conteúdo:** guardado como **markdown** (canônico — nativo e espelho), renderizado
+pelo Brainiac sob demanda; o HTML é cache ([ADR-0010](adr/0010-markdown-canonico-render-centralizado.md)).
+O **PRD** não é uma linha que se sobrescreve: é uma Entrada que aponta para uma
+**pilha de versões congeladas** ([ADR-0011](adr/0011-ciclo-de-vida-do-prd-congela-ao-publicar.md)).
 
 ### 5.1 Projeto — contêiner e origem (ADR-0006)
 
@@ -173,6 +178,14 @@ nada.
 Qualquer um do Produto pode publicar; a corretude vem da disciplina do time.
 Permissões podem ser adicionadas depois sem mudar o modelo de estados.
 
+**Ciclo de vida e versão do PRD ([ADR-0011](adr/0011-ciclo-de-vida-do-prd-congela-ao-publicar.md)):**
+*salvar ≠ publicar* — salvar deixa um **rascunho legível** (já visível, ainda sem
+valer); **publicar** é deliberado e **congela** a versão, virando a verdade. Só o
+**texto** versiona; metadado (fora `status`) edita no lugar. Quem declara **menor**
+(só texto, não gera spec) × **maior** (muda comportamento, gera spec) é o
+**Produto**, no publish. Enquanto uma nova versão está em rascunho, a **última
+publicada continua valendo** pro TI (e o rascunho fica disponível para leitura).
+
 ---
 
 ## 7. Autoria — a IA preenche o front-matter (todo autor)
@@ -237,10 +250,23 @@ COLEÇÃO "Onboarding Dev"  (publico_alvo: TI)
   `docs:publish` empurra um snapshot completo pro webhook do Brainiac (manual, do
   `main`, com guarda; token + HMAC). Sem token do GitHub, sem CI, sem registro de
   rotas, sem poll. Detalhe em [federacao.md](federacao.md).
+- **Formato e render: RESOLVIDO** (ADR-0010) — **markdown** é o formato canônico
+  (nativo + espelho) e o Brainiac é o **único renderizador** (on-read, com cache);
+  o publicador manda markdown, não HTML. Metadado não descreve o corpo (fatos do
+  corpo são derivados no ingest).
+- **Ciclo de vida do PRD: RESOLVIDO** (ADR-0011) — *salvar ≠ publicar*; a versão
+  **congela ao publicar**; só o texto versiona; menor/maior é declarado pelo Produto.
 - **Governança do PRD (ADR-0008):** hoje é **sinal social** por `status` (sem gate
   rígido). Revisitar quem pode publicar quando o time crescer, já que publicar o PRD
   dispara spec + código.
 - **Marketing e Negócio:** que tipos/extensões de metadado precisam.
 - **v2 chat:** quando e como embutir.
-- **Onde o Brainiac roda** e em que tecnologia (laradocs? evoluir o módulo
-  he4rt? algo novo?).
+- **Artefato:** como encaixar no modelo (sessão dedicada — ele é asset HTML, não
+  markdown; provável revisão do verbete no glossário).
+- **Stack do Brainiac:** Laravel + Filament (autoria do PRD + edição do subconjunto
+  editável de metadado) + Livewire (vitrine de leitura) + `commonmark`/`highlight`
+  (render). **Recuperação por IA = API com filtros** sobre o vocabulário controlado
+  (sem embeddings/semântica por agora — reversível, dá pra plugar `pgvector` depois).
+  **Busca humana adiada**: quando precisar, o barato é Postgres FTS + filtros por
+  faceta (motor dedicado só se a escala pedir). *Auth (um usuário por enquanto) e
+  infra/hosting adiados.*

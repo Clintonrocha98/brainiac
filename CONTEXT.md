@@ -20,8 +20,10 @@ _Avoid_: página, anexo, build
 **Catálogo**:
 O índice federado dentro do Brainiac: a lista de todas as Entradas (as do
 próprio Brainiac + as espelhadas dos repos) com seus metadados. Para as Entradas
-de TI guarda metadado + conteúdo renderizado (espelho) + ponteiro de volta à
-origem no git; para as nativas (Produto, Marketing…), o conteúdo mora ali mesmo.
+de TI guarda metadado + o markdown-fonte (espelho) + ponteiro de volta à origem
+no git; para as nativas (Produto, Marketing…), o conteúdo (também markdown) mora
+ali mesmo. Em ambos, **markdown é o formato canônico e quem renderiza é o
+Brainiac** — o HTML é cache derivado, não a fonte.
 _Avoid_: listagem, biblioteca, repositório, acervo
 
 **Entrada**:
@@ -162,7 +164,7 @@ _Avoid_: portal central, portal, central, wiki, hub
 **Federação**:
 O módulo de doc de cada repo **empurra** (PUSH, via o comando `docs:publish`) um
 snapshot da doc de TI para um **espelho de leitura** no Brainiac (metadado indexado
-+ conteúdo renderizado). O git continua a fonte da verdade do código; o Brainiac é a
++ markdown-fonte; quem renderiza é o Brainiac). O git continua a fonte da verdade do código; o Brainiac é a
 superfície de leitura em produção — os repos são privados e o `/docs` roda só em DEV,
 então não há de onde puxar ao vivo.
 Ver [[0002-topologia-hibrida-pull]], [[0009-federacao-por-push-modulo]].
@@ -175,6 +177,16 @@ de features — nunca o projeto inteiro. Contém as regras de negócio como seç
 interna. Major = muda comportamento (gera Spec); minor = ajuste de texto.
 Ver [[0003-doc-produto-regra-central-spec-repo]], [[0007-prd-unidade-central-de-produto]].
 _Avoid_: Regra (nome antigo do tipo), requisito
+
+**Versão** (do PRD):
+Um estado **congelado** do texto do PRD, fixado no momento em que é **publicado**;
+a última versão publicada é a verdade corrente, as anteriores são histórico. Salvar
+deixa um rascunho legível (ainda sem valer); publicar congela. Só o **texto**
+versiona — metadado (fora `status`) edita no lugar. A Spec do TI referencia a versão
+exata (`RPQ:PRD-12@v2.0`). Major (muda comportamento, gera Spec) × minor (só texto)
+é declarado pelo Produto no publish.
+Ver [[0011-ciclo-de-vida-do-prd-congela-ao-publicar]].
+_Avoid_: revisão (revisão é um `status`), edição
 
 **regra de negócio**:
 Uma afirmação normativa que o sistema deve obedecer (ex.: "voucher é de uso
