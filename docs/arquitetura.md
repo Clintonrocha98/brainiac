@@ -31,7 +31,7 @@ independente do departamento.
 | **Dois andares**: produto nasce no Brainiac (verdade do PRD) + TI no repo (verdade do código); spec/ADR derivadas do PRD | [0002](adr/0002-topologia-hibrida-pull.md) |
 | Produto: **PRD** versionado no Brainiac (grão de feature) + **Spec** datada no repo | [0003](adr/0003-doc-produto-regra-central-spec-repo.md) · [0007](adr/0007-prd-unidade-central-de-produto.md) |
 | **Documentação é upstream** do rastreador (Monday é projeção); id do PRD = chave | [0004](adr/0004-doc-upstream-do-rastreador.md) |
-| Não-técnico autora por **IA (guideline)**; Brainiac **determinístico** | [0005](adr/0005-autoria-nao-tecnico-guideline-paste.md) |
+| **Todo autor** escreve por **IA (guideline)** — a IA preenche o front-matter; ingest **determinístico** | [0005](adr/0005-autoria-nao-tecnico-guideline-paste.md) |
 
 ---
 
@@ -41,26 +41,27 @@ independente do departamento.
   ANDAR TI  (por repo · dev-first · FONTE DA VERDADE DO CÓDIGO)
   ┌──────────────────────┐      ┌──────────────────────┐
   │ Repo: pagamentos     │      │ Repo: faturamento    │
-  │ docs co-localizadas   │      │ docs co-localizadas   │
+  │ docs co-localizadas  │      │ docs co-localizadas  │
   │ (md + front-matter)  │      │ (md + front-matter)  │
-  │   expõe /api/tree ───┼──┐   │   expõe /api/tree ───┼──┐
+  │  `docs:publish` ─────┼──┐   │  `docs:publish` ─────┼──┐
   └──────────────────────┘  │   └──────────────────────┘  │
-                            │ PULL (federa)               │ PULL
+                            │ PUSH (módulo empurra)       │ PUSH
                             ▼                             ▼
             ┌───────────────────────────────────────────────┐
             │   ANDAR EMPRESA  (Brainiac)                   │
             │   • nasce o PRD — fonte da verdade do produto │
-            │   • federa/indexa docs de TI via PULL         │
+            │   • recebe e espelha docs de TI (push)        │
             │   • hospeda docs não-técnicas (Produto…)      │
             │   • mantém o grafo de links produto↔código    │
             │   • porta única p/ liderança e Produto        │
             └───────────────────────────────────────────────┘
 ```
 
-**Federar** = unificar o acesso a docs que continuam morando nos repos, sem copiá-las.
-O código nunca é empurrado pra fora. O **requisito de produto** nasce no Brainiac
-(o **PRD**, fonte da verdade do produto); a **spec/ADR** no repo é **derivada do
-PRD** — a direção é sempre PRD → spec, nunca o contrário.
+**Federar** = o módulo de cada repo **empurra** (push) a doc para o Brainiac, que a
+**espelha** (metadado + conteúdo renderizado); o git segue a fonte da verdade. O
+código nunca sai do repo — **só a doc**. O **requisito de produto** nasce no
+Brainiac (o **PRD**, fonte da verdade do produto); a **spec/ADR** no repo é
+**derivada do PRD** — a direção é sempre PRD → spec, nunca o contrário.
 
 ---
 
@@ -96,18 +97,17 @@ Metadado em **três camadas**:
 ENTRADA
 ├─ CORE  (toda Entrada, todo depto, todo tipo)
 │    id · titulo · resumo · tipo · departamento · publico_alvo
-│    nivel_tecnico · projeto · status · revisao_ate · owner
-│    datas · palavras_chave · related
-├─ por TIPO   (ADR→status/deciders · plan→progresso · PRD→versao)
-└─ por DEPARTAMENTO  (opcional: Marketing→canal · Produto→segmento)
+│    projeto · status · owner · datas · palavras_chave · related
+├─ por TIPO   (ADR→deciders · PRD→versao)
+└─ por DEPARTAMENTO  (TI→module · Marketing→canal · Produto→segmento)
 ```
 
 Facetas de vocabulário controlado: `tipo`, `departamento`, `publico_alvo`,
-`nivel_tecnico`, `projeto`. Só `palavras_chave` é livre. Isso é o que faz a IA
+`projeto`. Só `palavras_chave` é livre. Isso é o que faz a IA
 filtrar e recuperar bem (e gerar o "Motivo" da recomendação no momento da query).
 
-**Anti-rot:** `status` (rascunho/revisão/publicado/obsoleto) + `revisao_ate` —
-vencida, a Entrada aparece "pode estar desatualizada" até o owner reconfirmar.
+**Obsolescência:** sinalizada só por `status` (rascunho/revisão/publicado/
+obsoleto) + supersede via `related` — sem data de revisão (sem anti-rot).
 
 ### 5.1 Projeto — contêiner e origem (ADR-0006)
 
@@ -151,7 +151,7 @@ O ciclo (cada doc tem 1 dono; o outro lado lê):
    TI lê o PRD 👁️  ─►  ⚙️ grill-me-with-docs  ─►  SPEC no repo ✏️
                                                    related:{ prd: RPQ:PRD-12@v2.0 }
         │                                                │
-        └──────────  Brainiac FEDERA a spec (PULL)  ◄─────┘
+        └────  o módulo empurra a spec → Brainiac (PUSH)  ─┘
 ```
 
 **Identidade (ADR-0004 + 0006):** o id do PRD (`RPQ:PRD-12`, qualificado pela
@@ -175,16 +175,22 @@ Permissões podem ser adicionadas depois sem mudar o modelo de estados.
 
 ---
 
-## 7. Autoria do não-técnico
+## 7. Autoria — a IA preenche o front-matter (todo autor)
+
+**Princípio único:** ninguém preenche metadado à mão. A IA gera o Documento +
+front-matter já no vocabulário controlado, seguindo uma **guideline**; o ingest é
+**determinístico** (ver [ADR-0005](adr/0005-autoria-nao-tecnico-guideline-paste.md)).
+Dois fluxos, mesmo princípio:
 
 ```
-v1 (agora):
+TI (no repo):
+  DEV ─► grill-me-with-docs ─► doc + front-matter ─► commit ─► módulo empurra
+
+Não-técnico (no Brainiac):
   PESSOA ─copia─► GUIDELINE ─cola no► CLAUDE WEB ─gera─► doc + ---front-matter---
   PESSOA ─cola no► BRAINIAC ─parse determinístico + valida vocab─► confirma ─► salva
-  (zero IA no Brainiac · nunca vê git/markdown/form · dropdowns vêm pré-preenchidos)
-
-v2 (futuro):
-  chat conversacional embutido no Brainiac (mesmo backend de parse/validar/salvar)
+  (zero IA no Brainiac · nunca vê git/markdown/form · dropdowns pré-preenchidos)
+  v2: chat conversacional embutido no Brainiac (mesmo backend determinístico)
 ```
 
 ---
@@ -192,11 +198,11 @@ v2 (futuro):
 ## 8. Coleção — onboarding / handbook
 
 Onboarding **não é um tipo** — é uma **Coleção**: trilha **ordenada** que aponta
-pra Entradas existentes (cross-andar) + facetas próprias (publico_alvo,
-nivel_tecnico). A pertinência mora na Coleção, não na Entrada.
+pra Entradas existentes (cross-andar) + faceta própria (publico_alvo). A
+pertinência mora na Coleção, não na Entrada.
 
 ```
-COLEÇÃO "Onboarding Dev"  (publico_alvo: TI · nivel: basico)
+COLEÇÃO "Onboarding Dev"  (publico_alvo: TI)
   1. explanation: visão de negócio   (Brainiac)
   2. explanation: arquitetura         (repo)
   3. reference: módulo pagamentos     (repo)
@@ -210,11 +216,11 @@ COLEÇÃO "Onboarding Dev"  (publico_alvo: TI · nivel: basico)
 | Sessão 1 | Agora |
 |---|---|
 | Propósito (referencia/how-to/explicacao/decisao/processo) | **Tipo** (dicionário compartilhado, + spec/plan/README/CONTEXT, classe evergreen/datado) |
-| Facetas (departamento, publico_alvo, nivel_tecnico, projeto) | **Metadado core** |
+| Facetas (departamento, publico_alvo, projeto) | **Metadado core** |
 | Catálogo | A **visão federada** (Brainiac indexando + repos) |
 | Entrada | unidade do catálogo (Brainiac-native ou federada do repo) |
 | Coleção (trilha ordenada) | **mantida** (view no Brainiac, cross-andar) |
-| status / revisao_ate / resumo / palavras_chave | **mantidos** (core) |
+| status / resumo / palavras_chave | **mantidos** (core); `nivel_tecnico` e `revisao_ate` **removidos** |
 | relacionamentos (substitui/relacionadas/depende_de/parte_de) | casam com o `related` do front-matter he4rt |
 | `id` universal `DOC-NNNN` | **RESOLVIDO** (ADR-0006) — id por origem qualificado pela sigla do Projeto: `RPQ:adr/0001`, `Brainiac` usa `PRD-NN` |
 | (novo) Projeto como faceta | **Projeto é entidade de 1ª classe** (sigla canônica), não só faceta |
@@ -227,10 +233,10 @@ COLEÇÃO "Onboarding Dev"  (publico_alvo: TI · nivel: basico)
 - **PRD vs Regra: RESOLVIDO** (ADR-0007) — o tipo central de produto é o **PRD**
   (feature/grupo, versionado); regras de negócio são seção interna; a visão macro
   é uma **Visão de produto** (explanation) por Projeto.
-- **Federação na prática:** mecanismo de sync git→Brainiac espelho. Detalhado em
-  [federacao.md](federacao.md) — 3 opções (A: GitHub API+webhook _recomendada_ ·
-  B: CI push · C: API do projeto). **Firme:** Brainiac espelha, disparado por push;
-  **aberto:** webhook+API vs CI push.
+- **Federação na prática: RESOLVIDO** (ADR-0009) — **push pelo módulo**: o comando
+  `docs:publish` empurra um snapshot completo pro webhook do Brainiac (manual, do
+  `main`, com guarda; token + HMAC). Sem token do GitHub, sem CI, sem registro de
+  rotas, sem poll. Detalhe em [federacao.md](federacao.md).
 - **Governança do PRD (ADR-0008):** hoje é **sinal social** por `status` (sem gate
   rígido). Revisitar quem pode publicar quando o time crescer, já que publicar o PRD
   dispara spec + código.

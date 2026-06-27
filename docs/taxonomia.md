@@ -5,7 +5,8 @@
 > especial: "Propósito" virou **Tipo** (dicionário compartilhado, classe
 > evergreen/datado), as facetas viraram **Metadado core**, e o `id` universal
 > `DOC-NNNN` está **em aberto** (provável id por origem). O restante (facetas,
-> Coleção, status/revisao_ate, relacionamentos) segue válido.
+> Coleção, status, relacionamentos) segue válido. **`nivel_tecnico` e `revisao_ate`
+> saíram do schema** — obsolescência só por `status` (+ supersede).
 
 Documento vivo. Define como cada Entrada do Catálogo é classificada. Vocabulário
 e definições canônicas estão no [CONTEXT.md](../CONTEXT.md); aqui fica a forma do
@@ -32,12 +33,10 @@ schema. Itens marcados **(EM ABERTO)** ainda não foram decididos.
 | `proposito` | enum (1 de 5) | sim | `referencia` `how-to` `explicacao` `decisao` `processo` |
 | `departamento` | enum Área (1) | sim | Área dona/autora |
 | `publico_alvo` | enum Área (N) | sim | Áreas + `todos` + `externo` |
-| `nivel_tecnico` | enum (1 de 3) | sim | `nenhum` `basico` `avancado` |
 | `projeto` | enum Projeto (N) | não | Vocab controlado; cruza docs por sistema/projeto |
 | `palavras_chave` | lista (texto livre) | não | Único campo livre; agrupa e recupera |
 | `status` | enum | sim | `rascunho` `revisão` `publicado` `obsoleto` (sinal social, sem gate — ADR-0008) |
-| `revisao_ate` | data | condicional | Obrigatório quando `status: publicado`. Vencida → badge "pode estar desatualizada" até o owner reconfirmar |
-| `owner` | pessoa | sim | Responsável pela Entrada; reconfirma a validade |
+| `owner` | pessoa | sim | Responsável pela Entrada |
 | `criado_em` | data | sim | |
 | `atualizado_em` | data | sim | |
 | `documento` | link | condicional | Documento-fonte (markdown). Ver invariante abaixo |
@@ -69,7 +68,6 @@ schema. Itens marcados **(EM ABERTO)** ainda não foram decididos.
 - **`proposito`**: `referencia` · `how-to` · `explicacao` · `decisao` · `processo`
 - **`departamento`** (Área dona): `TI` · `Negócio` · `Produto` · `Marketing` · `Design`
 - **`publico_alvo`** (leitor): as Áreas acima + `todos` + `externo`
-- **`nivel_tecnico`**: `nenhum` · `basico` · `avancado`
 - **`projeto`** (vocab controlado, multi-valor): a lista de projetos/sistemas da
   empresa. Genérico por área: TI = repo/módulo; Marketing = campanha/produto;
   Produto = área de produto. **(A POVOAR)** com a lista real de projetos.
@@ -87,7 +85,6 @@ aninha outras Coleções por enquanto).
 | `titulo` | texto | sim | Ex.: "Onboarding Dev" |
 | `resumo` | texto | sim | O que a trilha cobre e pra quem (mesmo campo da Entrada) |
 | `publico_alvo` | enum Área (N) | sim | Torna a Coleção descobrível |
-| `nivel_tecnico` | enum (1 de 3) | sim | |
 | `owner` | pessoa | sim | Responsável pela curadoria |
 | `status` | enum | sim | `rascunho` `revisão` `publicado` `obsoleto` (sinal social, sem gate — ADR-0008) |
 | `entradas` | lista ORDENADA de id | sim | A ordem é a sequência da trilha |

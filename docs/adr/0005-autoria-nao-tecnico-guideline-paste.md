@@ -1,5 +1,12 @@
 # Autoria do não-técnico: guideline + colar (v1), chat embutido (v2)
 
+> **Generalização:** o princípio — **a IA gera o front-matter via guideline; o
+> ingest é determinístico** — vale para **todo autor**, não só o não-técnico.
+> Ninguém preenche metadado à mão. No TI, a "guideline" é a skill
+> **grill-me-with-docs** (gera doc + front-matter no repo, que o módulo empurra —
+> [ADR-0009](0009-federacao-por-push-modulo.md)); fora do TI, é a guideline colada
+> no Claude web descrita abaixo.
+
 O não-técnico autora documentos sem git, markdown ou formulário campo-a-campo.
 
 **v1 (agora):** uma **Guideline de autoria** (prompt versionado) que a pessoa

@@ -15,11 +15,9 @@ resumo: "Contratos, eventos e configuração do módulo de Pagamentos."
 proposito: referencia
 departamento: TI
 publico_alvo: [TI]
-nivel_tecnico: avancado
 projeto: [pagamentos]
 palavras_chave: [pagamentos, gateway, webhook, idempotencia]
 status: publicado
-revisao_ate: 2026-12-01
 owner: ana@empresa.com
 documento: repo://modules/payments/README.md
 artefatos: []
@@ -42,11 +40,9 @@ resumo: "Rito de passagem de uma tela do Figma aprovado para a fila de dev."
 proposito: processo
 departamento: Design          # dono do rito
 publico_alvo: [Design, TI]    # bilateral — os dois lados seguem
-nivel_tecnico: basico
 projeto: []                   # ⚠ ATRITO 2 — processo não é "de um projeto"
 palavras_chave: [handoff, figma, design-system, definicao-de-pronto]
 status: publicado
-revisao_ate: 2026-09-01
 owner: bruno@empresa.com
 documento: null               # ainda não escrito em md
 artefatos: ["https://waifuvault.moe/f/handoff-fluxo.html"]
@@ -65,11 +61,9 @@ resumo: "Passo a passo visual para aprovar uma campanha antes de publicar."
 proposito: how-to
 departamento: Marketing
 publico_alvo: [Marketing, Negócio]
-nivel_tecnico: nenhum
 projeto: [campanha-natal-2026]   # ⚠ ATRITO 3 — "projeto" aqui é campanha
 palavras_chave: [campanha, aprovacao, publicacao]
 status: rascunho
-revisao_ate: null                # ⚠ ATRITO 4 — rascunho não tem validade ainda
 owner: carla@empresa.com
 documento: null
 artefatos: ["https://waifuvault.moe/f/aprovacao-campanha.html"]  # só HTML
@@ -88,7 +82,6 @@ slug: onboarding-dev
 titulo: "Onboarding Dev"
 descricao: "Trilha para um dev novo entender negócio e stack."  # ⚠ ATRITO 5
 publico_alvo: [TI]
-nivel_tecnico: basico
 status: publicado
 owner: ana@empresa.com
 entradas:                     # ORDENADA

@@ -19,8 +19,9 @@ _Avoid_: página, anexo, build
 
 **Catálogo**:
 O índice federado dentro do Brainiac: a lista de todas as Entradas (as do
-próprio Brainiac + as federadas dos repos) com seus metadados e ponteiros. Guarda
-metadado e ponteiro — o conteúdo continua nas origens. Não é onde o conteúdo mora.
+próprio Brainiac + as espelhadas dos repos) com seus metadados. Para as Entradas
+de TI guarda metadado + conteúdo renderizado (espelho) + ponteiro de volta à
+origem no git; para as nativas (Produto, Marketing…), o conteúdo mora ali mesmo.
 _Avoid_: listagem, biblioteca, repositório, acervo
 
 **Entrada**:
@@ -71,9 +72,8 @@ A faceta que diz a qual Projeto a Entrada pertence — referencia uma Projeto pe
 _Avoid_: sistema, módulo, repo, produto
 
 **Vocabulário controlado**:
-A regra de que as facetas (`proposito`, `departamento`, `publico_alvo`,
-`nivel_tecnico`, `projeto`) só aceitam valores de uma lista fechada — nunca
-texto livre.
+A regra de que as facetas (`tipo`, `departamento`, `publico_alvo`, `projeto`)
+só aceitam valores de uma lista fechada — nunca texto livre.
 Apenas `palavras_chave` é livre. Existe para não quebrar filtro e recuperação
 por IA.
 _Avoid_: enum, lista, taxonomia fechada
@@ -81,7 +81,8 @@ _Avoid_: enum, lista, taxonomia fechada
 **id** (campo):
 O identificador canônico e estável da Entrada. Não há id global cunhado pelo
 catálogo: cada origem é dona do seu id nativo e o catálogo apenas **qualifica com
-a sigla** do Projeto (ex.: `RPQ:adr/0001`, `RPQ:PRD-12`). Nunca muda, mesmo que
+a sigla** do Projeto (ex.: `RPQ:adr/0001` (global), `RPQ:pagamentos/adr/0001` (de
+módulo), `RPQ:PRD-12`). Nunca muda, mesmo que
 título ou facetas mudem; é o que relacionamentos e links referenciam.
 Ver [[0006-projeto-primeira-classe-sigla-canonica]].
 _Avoid_: código, número, DOC-NNNN, slug (slug é outra coisa)
@@ -110,12 +111,6 @@ documento já é legível; em `publicado` passa a valer como a versão corrente/
 daquela Entrada (o PRD, do produto; a spec, da implementação).
 _Avoid_: estado, situação
 
-**revisao_ate** (campo):
-A data até quando a Entrada é considerada confiável. Vencida, a Entrada exibe
-"pode estar desatualizada" até o `owner` reconfirmar (o que renova a data). É o
-mecanismo anti-rot do Catálogo.
-_Avoid_: validade, vencimento, expiração
-
 **departamento** (faceta):
 A Área que produz e mantém a Entrada — o dono. Uma só por Entrada.
 _Avoid_: time, dono, autor
@@ -123,11 +118,6 @@ _Avoid_: time, dono, autor
 **publico_alvo** (faceta):
 As Áreas/perfis para quem a Entrada se destina — o leitor. Pode ser multi-valor.
 _Avoid_: audiência, destinatário, leitor
-
-**nivel_tecnico** (faceta):
-O grau de bagagem técnica que a Entrada exige do leitor (nenhum / básico /
-avançado). É independente do `publico_alvo`.
-_Avoid_: dificuldade, complexidade, senioridade
 
 ## Propósitos
 
@@ -163,17 +153,20 @@ _Avoid_: handoff, fluxo, SOP, rito
 **Brainiac**:
 A plataforma central de documentação da empresa — o "portal central" que antes não
 tinha nome. É o andar empresa: é onde **nasce o PRD** (fonte da verdade do produto),
-**federa** (por PULL) e espelha as docs de TI, **hospeda** nativamente as docs
-não-técnicas e é a **porta única** para liderança e Produto. Cada repo de TI continua
-dono da sua doc técnica; o Brainiac unifica o acesso.
-Ver [[0002-topologia-hibrida-pull]].
+**federa** (recebe por PUSH do módulo de doc) e espelha as docs de TI, **hospeda**
+nativamente as docs não-técnicas e é a **porta única** para liderança e Produto.
+Cada repo de TI continua dono da sua doc técnica; o Brainiac unifica o acesso.
+Ver [[0002-topologia-hibrida-pull]], [[0009-federacao-por-push-modulo]].
 _Avoid_: portal central, portal, central, wiki, hub
 
 **Federação**:
-Unificar o acesso a docs que continuam morando em suas fontes (cada repo), sem
-copiá-las para o Brainiac. O Brainiac pergunta/indexa e aponta de volta — não há
-cópia nem sincronização.
-_Avoid_: sincronização, agregação, importação
+O módulo de doc de cada repo **empurra** (PUSH, via o comando `docs:publish`) um
+snapshot da doc de TI para um **espelho de leitura** no Brainiac (metadado indexado
++ conteúdo renderizado). O git continua a fonte da verdade do código; o Brainiac é a
+superfície de leitura em produção — os repos são privados e o `/docs` roda só em DEV,
+então não há de onde puxar ao vivo.
+Ver [[0002-topologia-hibrida-pull]], [[0009-federacao-por-push-modulo]].
+_Avoid_: agregação, importação, índice remoto
 
 **PRD**:
 Documento de requisitos de produto que vive no Brainiac; dono é Produto;
@@ -226,19 +219,28 @@ _Avoid_: append-only, imutável, histórico
 
 **Metadado core**:
 Os Metadados que toda Entrada carrega, em qualquer departamento ou tipo (id,
-titulo, resumo, tipo, departamento, publico_alvo, nivel_tecnico, status, owner,
-datas, palavras_chave, related). A base compartilhada.
+titulo, resumo, tipo, departamento, publico_alvo, status, owner, datas,
+palavras_chave, related). A base compartilhada.
 _Avoid_: campos base, padrão
 
 **Extensão de departamento**:
-Bloco opcional de Metadados que só faz sentido para um departamento (ex.: `canal`
-no Marketing, `segmento` no Produto), sem poluir as Entradas das outras áreas.
-Há também metadados **por tipo** (ex.: status do ADR, progresso do plan).
+Bloco de Metadados que só faz sentido para um departamento (ex.: `module` no TI,
+`canal` no Marketing, `segmento` no Produto), sem poluir as Entradas das outras
+áreas. Há também metadados **por tipo** (ex.: `deciders` no ADR, `versao` no PRD).
 _Avoid_: campo custom, metadado extra
 
+**module** (extensão de TI):
+A parte do sistema de que uma Entrada de TI fala — o seu **escopo**. Recebe o nome
+do módulo (ex.: `pagamentos`) ou o valor reservado `global` quando a doc é do
+projeto inteiro. Obrigatório no TI; distingue o README/ADR/spec **de um módulo** do
+**global** e permite filtrar por módulo.
+_Avoid_: escopo, pacote, sistema
+
 **Guideline de autoria**:
-O prompt versionado que o não-técnico cola no Claude web para gerar um Documento
-+ front-matter já no vocabulário controlado, sem preencher campos à mão. Não
-confundir com as guidelines técnicas do repo (convenções de código).
+O prompt versionado que **qualquer autor** (TI ou não-técnico) usa via IA para
+gerar um Documento + front-matter já no vocabulário controlado, sem preencher
+campos à mão — a IA preenche o front-matter; o ingest é determinístico. No TI é a
+skill grill-me-with-docs; fora dele, a guideline colada no Claude web. Não confundir
+com as guidelines técnicas do repo (convenções de código).
 Ver [[0005-autoria-nao-tecnico-guideline-paste]].
 _Avoid_: prompt, template, stub

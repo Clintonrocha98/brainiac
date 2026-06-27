@@ -1,10 +1,12 @@
 # Topologia de documentação: híbrido com federação por PULL
 
-> **Refinamento (ver [federacao.md](../federacao.md)):** como o `/docs` de cada
-> repo roda só em DEV e os repos são privados, o mecanismo concreto não é puxar de
-> um `/docs` no ar — é **sincronizar o markdown do git para um espelho de leitura**
-> no Brainiac (disparado por push). O modelo de dois andares e "código não vira
-> conteúdo empurrado" continua; muda só o encanamento (mecanismo em aberto: A/B/C).
+> **Transporte revisado (ver [ADR-0009](0009-federacao-por-push-modulo.md) ·
+> [federacao.md](../federacao.md)):** o mecanismo concreto **não é PULL** — é
+> **PUSH pelo módulo de doc**: um comando `docs:publish` empurra um snapshot do
+> markdown para um webhook do Brainiac, que **espelha** (os repos são privados e o
+> `/docs` roda só em DEV, então não há de onde puxar ao vivo). O modelo de dois
+> andares e "só a doc sai, o código nunca sai" continua; muda só o transporte
+> (PULL → PUSH).
 >
 > **Fronteira (ver [ADR-0003](0003-doc-produto-regra-central-spec-repo.md) ·
 > [0007](0007-prd-unidade-central-de-produto.md)):** "fonte da verdade" aqui é do

@@ -29,11 +29,15 @@ he4rt sozinho deixa sem lar.
 > a `spec` referencia a Regra. Isso evita duplicar o requisito em dois lugares.
 
 Docs **cross-module / system-wide** repetem a mesma estrutura em `/docs` na raiz do
-repo (convenção he4rt).
+repo (convenção he4rt) e levam `module: global`.
 
 ## Front-matter (he4rt) e o link com o Brainiac
 
 `type · title · module · status · date · author · related`
+
+O `module` marca o **escopo** da Entrada: o nome do módulo (ex.: `pagamentos`) ou
+`global` quando a doc é do projeto inteiro (a de `/docs` na raiz). Obrigatório no TI
+— é o que distingue o README/ADR/spec **de um módulo** do **global**.
 
 O campo `related` amarra a doc ao restante do grafo:
 

@@ -1,73 +1,79 @@
 # Federação na prática — como a doc de TI chega ao Brainiac
 
-> **Status: EM ABERTO** (mecanismo a decidir). Recomendação: **Opção A**.
-> Refina o [ADR-0002](adr/0002-topologia-hibrida-pull.md).
+> **Status: DECIDIDO** — federação por **PUSH pelo módulo** (opção D).
+> Ver [ADR-0009](adr/0009-federacao-por-push-modulo.md). Refina o transporte do
+> [ADR-0002](adr/0002-topologia-hibrida-pull.md) (era PULL).
 
-## Contexto (o que mudou)
+## Contexto (o que descartou o PULL)
 
-Descobrimos dois fatos que mudam o mecanismo da federação:
+Três fatos mataram o PULL original:
 
 - O `/docs` de cada repo (módulo estilo he4rt) roda **só em DEV** — é preview do
   dev; **não vai pra produção**.
 - Os repos são **privados**.
+- PULL exigiria um **token do GitHub org-wide** (que lê todo o código) **ou** o
+  **Brainiac alcançar cada app de prod** (rede privada/VPN) + um **registro das
+  rotas** de todos os projetos.
 
-Consequência: o Brainiac **não puxa de um `/docs` publicado** (não há um no ar). A
-fonte é o **markdown no git** (sempre disponível, via PR). E como os repos são
-privados e não há `/docs` em prod, o Brainiac precisa **espelhar** (guardar
-metadado + conteúdo renderizado) para a liderança ler — ele vira a **superfície de
-leitura de produção**; o git continua a **fonte da verdade**.
+A saída foi **inverter a seta**: o **módulo de documentação** (que vive em todo
+projeto) **empurra** a doc para o Brainiac. O git continua a **fonte da verdade**
+do código; o Brainiac é a **superfície de leitura em produção** (espelho).
 
-```
-FONTE DA VERDADE                         BRAINIAC (superfície de leitura em PROD)
-repo GitHub (privado)
-  docs/**.md + front-matter  ──sync──►   ESPELHO:
-  (sempre no git, via PR)                  • metadado indexado (busca/filtro)
-  /docs (rota) = só DEV                    • conteúdo renderizado (liderança lê)
-  (preview do dev; não vai p/ prod)        • grafo de links (PRD ↔ spec)
-```
-
-> "Federar" aqui é **sincronizar do git para um espelho de leitura**, não puxar de
-> um `/docs` no ar. O Brainiac renderiza o markdown ele mesmo (o renderizador do
-> módulo he4rt é reaproveitável).
-
-## As 3 opções de mecanismo de sync
-
-### A) Brainiac puxa via GitHub API + webhook — **recomendada**
+## Como funciona (opção D — push pelo módulo)
 
 ```
-repo: push na main ──webhook──► BRAINIAC
-                                  └─ lê docs/**.md via GitHub API (App/token)
-                                     indexa · renderiza · espelha
+  PROJETO (módulo de doc — vive em todos os projetos)
+  ┌─────────────────────────────────────┐
+  │ docs/**.md  (sobe junto com o código)│
+  │      │                               │
+  │      ▼  comando `docs:publish`       │
+  │   lê + valida + renderiza            │
+  │   monta SNAPSHOT completo            │
+  └──────────────┬──────────────────────┘
+                 │ POST (token + HMAC)   ◄── OUTBOUND (app → Brainiac)
+                 ▼
+       ┌────────────────────────────┐
+       │ BRAINIAC  /webhook/ingest   │  ◄── 1 URL pública, só ela
+       │  autentica · valida schema  │
+       │  espelha (metadado + render)│
+       │  guarda ponteiro p/ o git   │
+       └────────────────────────────┘
 ```
 
-- **Webhook**: GitHub liga numa URL do Brainiac a cada push ("repo X mudou").
-- **GitHub App/token**: credencial que deixa o Brainiac ler arquivos dos repos
-  privados pela API.
-- **+** zero step por repo · sync automático · TI só commita · sem mexer em CI ·
-  dispensa "guideline pra avisar o Brainiac" (o push já dispara).
-- **−** o Brainiac precisa de um token de leitura dos repos (instala uma vez na org).
+1. Alguém roda `docs:publish` a partir de um `main` limpo (o comando **se recusa**
+   fora do main).
+2. O módulo lê `docs/**.md`, valida o front-matter, renderiza e monta um
+   **snapshot completo**.
+3. `POST` para o **único webhook de entrada** do Brainiac, com **token do projeto +
+   assinatura HMAC**.
+4. O Brainiac autentica, valida o schema e **espelha** (metadado + conteúdo
+   renderizado), guardando o ponteiro de volta ao git.
 
-### B) CI do repo faz PUSH no merge
+## O que isso elimina
 
-```
-repo: merge ─► CI step "publicar docs" ─► POST /ingest ─► BRAINIAC
-```
+- **Sem token do GitHub** — o módulo lê o próprio disco.
+- **Sem CI** — não há step de pipeline; quem publica é o comando.
+- **Sem registro de rotas** — o app se anuncia no payload (traz a `sigla`); o
+  Brainiac só precisa de **uma** URL pública.
+- **Sem Brainiac → app** — a chamada é **outbound** (app → Brainiac), que atravessa
+  rede privada/firewall com facilidade.
+- **Sem poll.**
 
-- **+** o repo controla o publish · o Brainiac não precisa de chave dos repos.
-- **−** exige configurar um step de CI em cada repo.
+## Decisões de mecanismo (fechadas)
 
-### C) Projeto expõe uma API de docs e o Brainiac consome
+- **Gatilho:** manual/explícito — casa com o `status` social ([ADR-0008](adr/0008-governanca-do-prd-social-por-status.md)):
+  publicar é ato deliberado.
+- **Origem:** roda do `main` atualizado, com **guarda** → publica o **estado
+  merjado** (sem esperar deploy; não precisa de acesso a prod).
+- **Snapshot completo** a cada publish → idempotente; **deleção propaga**.
+- **Auth:** token por projeto + HMAC.
+- **Anti-stale:** como nada dispara sozinho, o Brainiac mostra **"última
+  sincronização: há X dias"** por projeto, deixando a defasagem visível.
+- **Status não filtra sync:** envia tudo; o badge de cada doc viaja junto e o
+  Brainiac exibe.
 
-```
-app do projeto (publicado) ─ GET /api/docs ─► BRAINIAC
-```
+## Por que não A/B/C
 
-- **−** exige o app do projeto **publicado e acessível** — **conflita** com
-  "`/docs` só em dev". Só vível se publicar o `/docs` em prod.
-
-## O que já está firme vs. o que fica aberto
-
-- **Firme (design):** o Brainiac **espelha** a doc, **disparado por um push no
-  git** (em vez de exigir o app do projeto no ar).
-- **Aberto (implementação):** o encanamento exato — webhook+API (A) vs CI push
-  (B). A fechar na hora de construir.
+Resumo em [ADR-0009](adr/0009-federacao-por-push-modulo.md): **A** (token org-wide +
+lógica de doc duplicada no Brainiac), **B** (refém da saúde do CI + workflow por
+repo), **C** (Brainiac precisa alcançar cada app de prod + registro de rotas).

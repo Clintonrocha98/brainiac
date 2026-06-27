@@ -15,8 +15,9 @@ de versões é o registro de como a regra evoluiu.
 
 A **Spec/PRD de cada implementação** vive **co-localizada no repo** (datada,
 imutável, escrita por TI com a skill grill-me-with-docs) e **referencia a versão
-da Regra** pelo id. O **Brainiac** federa essas Specs (PULL) e mostra a Regra e suas
-Specs amarradas num lugar só.
+da Regra** pelo id. O **Brainiac** federa essas Specs (recebe por push do módulo —
+[ADR-0009](0009-federacao-por-push-modulo.md)) e mostra a Regra e suas Specs
+amarradas num lugar só.
 
 Consideramos: (B) tudo central — Produto dono de regra E spec; e (C) tudo no
 código — TI traduz produto para markdown. Rejeitados: B perde o registro

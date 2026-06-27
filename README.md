@@ -42,7 +42,7 @@ A ideia central é de **dois andares**:
 | **Topologia** | Dois andares: produto nasce no Brainiac (verdade do PRD) + TI no repo (verdade do código) |
 | **Produto** | **PRD** versionado no Brainiac (grão de feature; regras dentro) + Spec datada no repo |
 | **Identidade** | Doc é upstream do rastreador (Monday é projeção); `Projeto`/sigla (`RPQ`) cola tudo |
-| **Autoria** | Não-técnico escreve por **IA** (guideline → colar); Brainiac determinístico |
+| **Autoria** | **Todo autor** escreve por **IA** (a guideline preenche o front-matter); Brainiac determinístico |
 | **Governança** | `status` é sinal social (rascunho → revisão → publicado), sem gate rígido |
 
 ## Mapa dos documentos
@@ -50,7 +50,7 @@ A ideia central é de **dois andares**:
 - **[`CONTEXT.md`](CONTEXT.md)** — glossário: a linguagem canônica do projeto.
 - **[`docs/arquitetura.md`](docs/arquitetura.md)** — overview consolidado (comece aqui).
 - **[`docs/tipos-ti.md`](docs/tipos-ti.md)** — os 8 tipos de TI (evergreen × datado).
-- **[`docs/federacao.md`](docs/federacao.md)** — como a doc de TI chega ao Brainiac (3 opções).
+- **[`docs/federacao.md`](docs/federacao.md)** — como a doc de TI chega ao Brainiac (push pelo módulo).
 - **[`docs/taxonomia.md`](docs/taxonomia.md)** — schema e facetas de metadados (sessão 1).
 - **[`docs/exemplos-entradas.md`](docs/exemplos-entradas.md)** — casos reais que estressaram o schema.
 
@@ -66,11 +66,11 @@ A ideia central é de **dois andares**:
 | [0006](docs/adr/0006-projeto-primeira-classe-sigla-canonica.md) | Projeto é 1ª classe; a sigla é o handle canônico |
 | [0007](docs/adr/0007-prd-unidade-central-de-produto.md) | PRD é a unidade central de produto (grão de feature) |
 | [0008](docs/adr/0008-governanca-do-prd-social-por-status.md) | Governança do PRD: status social, sem gate |
+| [0009](docs/adr/0009-federacao-por-push-modulo.md) | Federação por PUSH: o módulo publica no Brainiac (`docs:publish`) |
 
 ## Status
 
 Fase de **desenho** (design via grilling) — ainda **não há código**.
 
-**Pontos abertos:** mecanismo de federação (recomendado: GitHub API + webhook) ·
-tipos de Marketing e Negócio · tecnologia do Brainiac (laradocs × evoluir o módulo
-he4rt × algo novo).
+**Pontos abertos:** tipos de Marketing e Negócio · tecnologia do Brainiac (laradocs
+× evoluir o módulo he4rt × algo novo) · v2 do chat de autoria.
