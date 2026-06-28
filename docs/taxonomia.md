@@ -1,13 +1,5 @@
 # Taxonomia & Schema de Metadados do Catálogo
 
-> **Nota (sessão 2):** este documento é da sessão 1 e foi parcialmente revisado.
-> A visão canônica e atualizada está em [arquitetura.md](arquitetura.md) — em
-> especial: "Propósito" virou **Tipo** (dicionário compartilhado, classe
-> evergreen/datado), as facetas viraram **Metadado core**, e o `id` universal
-> `DOC-NNNN` está **em aberto** (provável id por origem). O restante (facetas,
-> Coleção, status, relacionamentos) segue válido. **`nivel_tecnico` e `revisao_ate`
-> saíram do schema** — obsolescência só por `status` (+ supersede).
-
 Documento vivo. Define como cada Entrada do Catálogo é classificada. Vocabulário
 e definições canônicas estão no [CONTEXT.md](../CONTEXT.md); aqui fica a forma do
 schema. Itens marcados **(EM ABERTO)** ainda não foram decididos.
@@ -26,7 +18,7 @@ schema. Itens marcados **(EM ABERTO)** ainda não foram decididos.
 
 | Campo | Tipo | Obrigatório | Notas |
 |---|---|---|---|
-| `id` | código `DOC-NNNN` | sim | Canônico e estável; usado em links e relacionamentos |
+| `id` | id qualificado pela sigla | sim | Canônico e estável (ex.: `RPQ:adr/0001`, `RPQ:PRD-12`); cada origem é dona do seu id nativo |
 | `slug` | texto | não | Cosmético (URL); pode mudar sem quebrar o `id` |
 | `titulo` | texto | sim | Título humano da Entrada |
 | `resumo` | texto (1-3 frases) | sim | Preview humano + sinal para IA |
@@ -83,7 +75,7 @@ aninha outras Coleções por enquanto).
 
 | Campo | Tipo | Obrigatório | Notas |
 |---|---|---|---|
-| `id` | código `COL-NNNN` | sim | Canônico e estável |
+| `id` | id canônico | sim | Canônico e estável |
 | `slug` | texto | não | Cosmético (URL) |
 | `titulo` | texto | sim | Ex.: "Onboarding Dev" |
 | `resumo` | texto | sim | O que a trilha cobre e pra quem (mesmo campo da Entrada) |

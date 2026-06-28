@@ -1,27 +1,28 @@
 # Exemplos de Entradas (validação do schema)
 
-Casos escolhidos para estressar o schema. `⚠ ATRITO` marca onde o preenchimento
-doeu. Dados são placeholders realistas — o que importa aqui é a *forma*.
+Casos escolhidos para estressar o schema. `⚠ ATRITO` marca uma tensão real do
+schema ainda em aberto. Dados são placeholders realistas — o que importa aqui é a
+*forma*.
 
 ---
 
-## DOC-0001 — Referência: módulo de Pagamentos
+## Referência: módulo de Pagamentos
 
 ```yaml
-id: DOC-0001
+id: RPQ:pagamentos/reference/modulo-pagamentos
 slug: modulo-pagamentos
 titulo: "Módulo de Pagamentos — referência técnica"
 resumo: "Contratos, eventos e configuração do módulo de Pagamentos."
 proposito: referencia
 departamento: TI
 publico_alvo: [TI]
-projeto: [pagamentos]
+projeto: [RPQ]
+module: pagamentos
 palavras_chave: [pagamentos, gateway, webhook, idempotencia]
 status: publicado
 owner: ana@empresa.com
 documento: repo://modules/payments/README.md
-artefatos: []
-relacionadas: [DOC-0002]
+relacionadas: [DESIGN:processo/handoff-design-dev]
 ```
 
 > ⚠ ATRITO 1 — O README real do módulo mistura **referência** (contratos),
@@ -30,42 +31,45 @@ relacionadas: [DOC-0002]
 
 ---
 
-## DOC-0002 — Processo: handoff Design → Dev
+## Processo: handoff Design → Dev
 
 ```yaml
-id: DOC-0002
+id: DESIGN:processo/handoff-design-dev
 slug: handoff-design-dev
 titulo: "Handoff de Design para Desenvolvimento"
-resumo: "Rito de passagem de uma tela do Figma aprovado para a fila de dev."
+resumo: "Rito de passagem de uma tela do Figma aprovada para a fila de dev."
 proposito: processo
 departamento: Design          # dono do rito
 publico_alvo: [Design, TI]    # bilateral — os dois lados seguem
-projeto: []                   # ⚠ ATRITO 2 — processo não é "de um projeto"
+projeto: []                   # processo cross-área não é "de um projeto"
 palavras_chave: [handoff, figma, design-system, definicao-de-pronto]
 status: publicado
 owner: bruno@empresa.com
 documento: null               # ainda não escrito em md
 artefatos: ["https://waifuvault.moe/f/handoff-fluxo.html"]
-relacionadas: [DOC-0001]
+relacionadas: [RPQ:pagamentos/reference/modulo-pagamentos]
 ```
+
+> ⚠ ATRITO 2 — Sem projeto, o `id` não tem sigla para qualificar; aqui ele se
+> ancora na **área** dona (`DESIGN:`). O modelo de id para docs sem projeto segue
+> em aberto.
 
 ---
 
-## DOC-0003 — só-Artefato, autor não-técnico (Marketing)
+## Só-Artefato, autor não-técnico (Marketing)
 
 ```yaml
-id: DOC-0003
+id: NATAL26:how-to/aprovacao-campanha
 slug: processo-aprovacao-campanha
 titulo: "Como aprovar uma campanha"
 resumo: "Passo a passo visual para aprovar uma campanha antes de publicar."
 proposito: how-to
 departamento: Marketing
 publico_alvo: [Marketing, Negócio]
-projeto: [campanha-natal-2026]   # ⚠ ATRITO 3 — "projeto" aqui é campanha
+projeto: [NATAL26]               # em Marketing, o "projeto" é a campanha
 palavras_chave: [campanha, aprovacao, publicacao]
 status: rascunho
 owner: carla@empresa.com
-documento: null
 artefatos: ["https://waifuvault.moe/f/aprovacao-campanha.html"]  # só HTML
 ```
 
@@ -74,23 +78,23 @@ artefatos: ["https://waifuvault.moe/f/aprovacao-campanha.html"]  # só HTML
 
 ---
 
-## COL-0001 — Coleção: Onboarding Dev
+## Coleção: Onboarding Dev
 
 ```yaml
-id: COL-0001
+id: onboarding-dev
 slug: onboarding-dev
 titulo: "Onboarding Dev"
-descricao: "Trilha para um dev novo entender negócio e stack."  # ⚠ ATRITO 5
+resumo: "Trilha para um dev novo entender negócio e stack."
 publico_alvo: [TI]
 status: publicado
 owner: ana@empresa.com
-entradas:                     # ORDENADA
-  - DOC-0010   # Explicação: visão de negócio (não existe ainda)
-  - DOC-0011   # Explicação: arquitetura de módulos (não existe ainda)
-  - DOC-0001   # Referência: módulo de Pagamentos
-  - DOC-0002   # Processo: handoff
+entradas:                                       # ORDENADA
+  - RPQ:explanation/visao-de-negocio            # pendente (Entrada ainda não existe)
+  - RPQ:explanation/arquitetura-de-modulos      # pendente (Entrada ainda não existe)
+  - RPQ:pagamentos/reference/modulo-pagamentos
+  - DESIGN:processo/handoff-design-dev
 ```
 
-> ⚠ ATRITO 6 — a trilha de onboarding aponta pra Entradas que **ainda não
-> existem** (visão de negócio, arquitetura). Coleção como "lista de desejos"
-> também é um uso legítimo? Ou só aponta pra Entradas publicadas?
+> A trilha pode apontar para Entradas que **ainda não existem** (visão de negócio,
+> arquitetura): a Coleção é uma "lista de desejos" legítima, e o Brainiac mostra o
+> item como **pendente** até a Entrada existir.

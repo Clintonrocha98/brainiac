@@ -7,9 +7,9 @@ Recrutamento", TI chama de "recruit-party-quest" — sem forçar ninguém a reno
 o Projeto é a camada de tradução.
 
 A sigla é a **"origem" dos ids qualificados** do catálogo (`RPQ:adr/0001`,
-`RPQ:PROD-12`) e já é o prefixo usado no rastreador (`RPQ-STORY-123`). Cada origem
+`RPQ:PRD-12`) e já é o prefixo usado no rastreador (`RPQ-STORY-123`). Cada origem
 é dona do seu **id nativo**; o catálogo apenas **qualifica** com a sigla — não
-cunha id universal (supera o `DOC-NNNN` da sessão 1).
+cunha id universal (supera a ideia de um `DOC-NNNN` único).
 
 Documentos são criados **sob um Projeto**. A faceta `projeto` de uma Entrada passa
 a referenciar uma Projeto pela sigla (não é mais texto/área genérica).

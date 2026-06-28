@@ -41,7 +41,7 @@ _Avoid_: registro, card, item, verbete
 **Metadado**:
 Os campos estruturados que classificam uma Entrada para navegação humana e
 recuperação por IA.
-_Avoid_: tag (tag é um tipo específico de metadado), atributo
+_Avoid_: tag (tag é uma espécie específica de metadado), atributo
 
 **Faceta**:
 Um Metadado usado para filtrar e recuperar Entradas dentro de um Propósito
@@ -81,7 +81,7 @@ A faceta que diz a qual Projeto a Entrada pertence — referencia uma Projeto pe
 _Avoid_: sistema, módulo, repo, produto
 
 **Vocabulário controlado**:
-A regra de que as facetas (`tipo`, `departamento`, `publico_alvo`, `projeto`)
+A regra de que as facetas (`proposito`, `departamento`, `publico_alvo`, `projeto`)
 só aceitam valores de uma lista fechada — nunca texto livre.
 Apenas `palavras_chave` é livre. Existe para não quebrar filtro e recuperação
 por IA.
@@ -130,8 +130,8 @@ _Avoid_: audiência, destinatário, leitor
 
 ## Propósitos
 
-O Propósito é o tipo de conhecimento que um Documento entrega — o eixo de topo da
-taxonomia. São cinco e são mutuamente exclusivos.
+O Propósito é a espécie de conhecimento que um Documento entrega — o eixo de topo
+da taxonomia. São cinco e são mutuamente exclusivos.
 _Avoid_ (para "Propósito"): tipo, categoria, formato
 
 **Referência**:
@@ -165,7 +165,7 @@ tinha nome. É o andar empresa: é onde **nasce o PRD** (fonte da verdade do pro
 **federa** (recebe por PUSH do módulo de doc) e espelha as docs de TI, **hospeda**
 nativamente as docs não-técnicas e é a **porta única** para liderança e Produto.
 Cada repo de TI continua dono da sua doc técnica; o Brainiac unifica o acesso.
-Ver [[0002-topologia-hibrida-pull]], [[0009-federacao-por-push-modulo]].
+Ver [[0002-topologia-hibrida]], [[0009-federacao-por-push-modulo]].
 _Avoid_: portal central, portal, central, wiki, hub
 
 **Federação**:
@@ -174,7 +174,7 @@ snapshot da doc de TI para um **espelho de leitura** no Brainiac (metadado index
 + markdown-fonte; quem renderiza é o Brainiac). O git continua a fonte da verdade do código; o Brainiac é a
 superfície de leitura em produção — os repos são privados e o `/docs` roda só em DEV,
 então não há de onde puxar ao vivo.
-Ver [[0002-topologia-hibrida-pull]], [[0009-federacao-por-push-modulo]].
+Ver [[0002-topologia-hibrida]], [[0009-federacao-por-push-modulo]].
 _Avoid_: agregação, importação, índice remoto
 
 **PRD**:
@@ -182,8 +182,8 @@ Documento de requisitos de produto que vive no Brainiac; dono é Produto;
 versionado (última versão = fonte da verdade). Grão de uma feature ou grupo coeso
 de features — nunca o projeto inteiro. Contém as regras de negócio como seção
 interna. Major = muda comportamento (gera Spec); minor = ajuste de texto.
-Ver [[0003-doc-produto-regra-central-spec-repo]], [[0007-prd-unidade-central-de-produto]].
-_Avoid_: Regra (nome antigo do tipo), requisito
+Ver [[0003-doc-produto-prd-spec-repo]], [[0007-prd-unidade-central-de-produto]].
+_Avoid_: Regra, requisito
 
 **Versão** (do PRD):
 Um estado **congelado** do texto do PRD, fixado no momento em que é **publicado**;
@@ -197,8 +197,8 @@ _Avoid_: revisão (revisão é um `status`), edição
 
 **regra de negócio**:
 Uma afirmação normativa que o sistema deve obedecer (ex.: "voucher é de uso
-único"). **Não** é um tipo de documento — é uma seção dentro de um PRD.
-_Avoid_: Regra (maiúsculo, como se fosse tipo), política
+único"). **Não** é um documento à parte — é uma seção dentro de um PRD.
+_Avoid_: Regra (maiúsculo, como se fosse um documento à parte), política
 
 **Visão de produto**:
 Documento macro (explanation, evergreen) que descreve o produto como um todo —
@@ -217,35 +217,36 @@ fonte da verdade; suas tasks carregam o id do PRD. Intercambiável.
 Ver [[0004-doc-upstream-do-rastreador]].
 _Avoid_: Monday, board, gestor de tarefas
 
-## Tipos e metadados
+## Formato e metadados
 
-**Tipo** (de documento):
-O dicionário compartilhado que classifica toda Entrada, igual em todos os
-departamentos (how-to é how-to em qualquer área). Cada Tipo é evergreen ou
-datado. Substitui e refina o antigo "Propósito".
-_Avoid_: propósito, categoria, formato
+**Formato** (de documento):
+A espécie concreta de documento, igual em todos os departamentos: README, CONTEXT,
+reference, how-to, explanation, ADR, spec, plan, PRD. Cada Formato é **evergreen**
+(edita-se o mesmo) ou **datado** (congela e cria-se um novo). É eixo distinto do
+Propósito (que diz o conhecimento que o documento entrega).
+_Avoid_: tipo, categoria
 
-**Evergreen** (classe de Tipo):
-Tipo cujo documento é **editado** para refletir o estado atual; existe um por
-assunto (README, CONTEXT, reference, how-to, explanation; a Regra é evergreen
-versionada).
+**Evergreen** (classe de Formato):
+Formato cujo documento é **editado** para refletir o estado atual; existe um por
+assunto (README, CONTEXT, reference, how-to, explanation; o PRD é evergreen
+versionado).
 _Avoid_: vivo, atual
 
-**Datado** (classe de Tipo):
-Tipo cujo documento é **congelado** num momento e nunca editado; cria-se um novo
+**Datado** (classe de Formato):
+Formato cujo documento é **congelado** num momento e nunca editado; cria-se um novo
 a cada vez (ADR, spec, plan). Leem-se em conjunto.
 _Avoid_: append-only, imutável, histórico
 
 **Metadado core**:
-Os Metadados que toda Entrada carrega, em qualquer departamento ou tipo (id,
-titulo, resumo, tipo, departamento, publico_alvo, status, owner, datas,
+Os Metadados que toda Entrada carrega, em qualquer departamento ou formato (id,
+titulo, resumo, proposito, departamento, publico_alvo, status, owner, datas,
 palavras_chave, related). A base compartilhada.
 _Avoid_: campos base, padrão
 
 **Extensão de departamento**:
 Bloco de Metadados que só faz sentido para um departamento (ex.: `module` no TI,
 `canal` no Marketing, `segmento` no Produto), sem poluir as Entradas das outras
-áreas. Há também metadados **por tipo** (ex.: `deciders` no ADR, `versao` no PRD).
+áreas. Há também metadados **por formato** (ex.: `deciders` no ADR, `versao` no PRD).
 _Avoid_: campo custom, metadado extra
 
 **module** (extensão de TI):

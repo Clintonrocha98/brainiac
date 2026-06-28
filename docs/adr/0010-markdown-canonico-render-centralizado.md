@@ -3,10 +3,9 @@
 O Brainiac guarda o **conteúdo do Documento como markdown** — formato canônico
 único para o **PRD nativo** e para a **doc de TI espelhada** — e é o **único
 renderizador** (markdown → HTML, sob demanda na leitura, com cache). O HTML é
-**cache derivado, descartável**, nunca a fonte. Isso **revisa a consequência de
-render do [ADR-0009](0009-federacao-por-push-modulo.md)**: o publicador envia
-**markdown + metadado** (não HTML renderizado); o núcleo da 0009 (push pelo
-módulo) permanece.
+**cache derivado, descartável**, nunca a fonte. O publicador envia **markdown +
+metadado** (não HTML renderizado), e quem renderiza é o Brainiac; o push pelo
+módulo ([ADR-0009](0009-federacao-por-push-modulo.md)) entrega a fonte.
 
 ## Por que
 
@@ -20,8 +19,7 @@ barata** para outros formatos (markdown/JSON para a IA do TI, HTML para humanos)
 
 ## Consequências
 
-- **Payload do webhook = markdown + metadado + ponteiro git** (não HTML). Revisa a
-  0009.
+- **Payload do webhook = markdown + metadado + ponteiro git** (não HTML).
 - **Render-on-read memoizado** (cache por hash do conteúdo): trocar tema/engine =
   limpar cache, sem migração; um PRD em `rascunho`, editado à vontade, só renderiza
   quando alguém abre.

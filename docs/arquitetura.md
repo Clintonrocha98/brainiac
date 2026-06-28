@@ -1,11 +1,11 @@
 # Arquitetura de Documentação da Empresa
 
-Visão consolidada (sessões 1 e 2): como a documentação da empresa é organizada,
-onde vive, quais os tipos e como é criada — por humanos e por IA.
+Visão consolidada: como a documentação da empresa é organizada, onde vive, quais
+os formatos e como é criada — por humanos e por IA.
 
 - Glossário canônico: [CONTEXT.md](../CONTEXT.md)
 - Decisões: [docs/adr/](adr/)
-- Detalhes: [taxonomia.md](taxonomia.md) (schema central) · [tipos-ti.md](tipos-ti.md) (tipos de TI)
+- Detalhes: [taxonomia.md](taxonomia.md) (schema central) · [formatos-ti.md](formatos-ti.md) (formatos de TI)
 
 ---
 
@@ -27,9 +27,9 @@ independente do departamento.
 
 | Princípio | ADR |
 |---|---|
-| Organizar por **tipo/propósito**, não por departamento (departamento é faceta) | [0001](adr/0001-taxonomia-orientada-a-proposito.md) |
-| **Dois andares**: produto nasce no Brainiac (verdade do PRD) + TI no repo (verdade do código); spec/ADR derivadas do PRD | [0002](adr/0002-topologia-hibrida-pull.md) |
-| Produto: **PRD** versionado no Brainiac (grão de feature) + **Spec** datada no repo | [0003](adr/0003-doc-produto-regra-central-spec-repo.md) · [0007](adr/0007-prd-unidade-central-de-produto.md) |
+| Organizar por **propósito**, não por departamento (departamento é faceta) | [0001](adr/0001-taxonomia-orientada-a-proposito.md) |
+| **Dois andares**: produto nasce no Brainiac (verdade do PRD) + TI no repo (verdade do código); spec/ADR derivadas do PRD | [0002](adr/0002-topologia-hibrida.md) |
+| Produto: **PRD** versionado no Brainiac (grão de feature) + **Spec** datada no repo | [0003](adr/0003-doc-produto-prd-spec-repo.md) · [0007](adr/0007-prd-unidade-central-de-produto.md) |
 | **Documentação é upstream** do rastreador (Monday é projeção); id do PRD = chave | [0004](adr/0004-doc-upstream-do-rastreador.md) |
 | **Todo autor** escreve por **IA (guideline)** — a IA preenche o front-matter; ingest **determinístico** | [0005](adr/0005-autoria-nao-tecnico-guideline-paste.md) |
 
@@ -65,10 +65,10 @@ Brainiac (o **PRD**, fonte da verdade do produto); a **spec/ADR** no repo é
 
 ---
 
-## 4. Tipos de documento
+## 4. Formatos de documento
 
 Dicionário **compartilhado** por todos os departamentos (how-to é how-to em
-qualquer área). Cada tipo é de uma **classe**:
+qualquer área). Cada formato é de uma **classe**:
 
 ```
 EVERGREEN  (você EDITA o mesmo doc · reflete o AGORA · 1 por assunto)
@@ -95,14 +95,14 @@ Metadado em **três camadas**:
 
 ```
 ENTRADA
-├─ CORE  (toda Entrada, todo depto, todo tipo)
-│    id · titulo · resumo · tipo · departamento · publico_alvo
+├─ CORE  (toda Entrada, todo depto, todo formato)
+│    id · titulo · resumo · proposito · departamento · publico_alvo
 │    projeto · status · owner · datas · palavras_chave · related
-├─ por TIPO   (ADR→deciders · PRD→versao)
+├─ por FORMATO   (ADR→deciders · PRD→versao)
 └─ por DEPARTAMENTO  (TI→module · Marketing→canal · Produto→segmento)
 ```
 
-Facetas de vocabulário controlado: `tipo`, `departamento`, `publico_alvo`,
+Facetas de vocabulário controlado: `proposito`, `departamento`, `publico_alvo`,
 `projeto`. Só `palavras_chave` é livre. Isso é o que faz a IA
 filtrar e recuperar bem (e gerar o "Motivo" da recomendação no momento da query).
 
@@ -210,7 +210,7 @@ Não-técnico (no Brainiac):
 
 ## 8. Coleção — onboarding / handbook
 
-Onboarding **não é um tipo** — é uma **Coleção**: trilha **ordenada** que aponta
+Onboarding **não é um propósito nem um formato** — é uma **Coleção**: trilha **ordenada** que aponta
 pra Entradas existentes (cross-andar) + faceta própria (publico_alvo). A
 pertinência mora na Coleção, não na Entrada.
 
@@ -224,33 +224,16 @@ COLEÇÃO "Onboarding Dev"  (publico_alvo: TI)
 
 ---
 
-## 9. Reconciliação com a sessão 1
+## 9. Pontos abertos
 
-| Sessão 1 | Agora |
-|---|---|
-| Propósito (referencia/how-to/explicacao/decisao/processo) | **Tipo** (dicionário compartilhado, + spec/plan/README/CONTEXT, classe evergreen/datado) |
-| Facetas (departamento, publico_alvo, projeto) | **Metadado core** |
-| Catálogo | A **visão federada** (Brainiac indexando + repos) |
-| Entrada | unidade do catálogo (Brainiac-native ou federada do repo) |
-| Coleção (trilha ordenada) | **mantida** (view no Brainiac, cross-andar) |
-| status / resumo / palavras_chave | **mantidos** (core); `nivel_tecnico` e `revisao_ate` **removidos** |
-| relacionamentos (substitui/relacionadas/depende_de/parte_de) | casam com o `related` do front-matter he4rt |
-| `id` universal `DOC-NNNN` | **RESOLVIDO** (ADR-0006) — id por origem qualificado pela sigla do Projeto: `RPQ:adr/0001`, `Brainiac` usa `PRD-NN` |
-| (novo) Projeto como faceta | **Projeto é entidade de 1ª classe** (sigla canônica), não só faceta |
-| Catálogo de refs de design | fora de escopo (projeto do Design) |
-
----
-
-## 10. Pontos abertos
-
-- **PRD vs Regra: RESOLVIDO** (ADR-0007) — o tipo central de produto é o **PRD**
+- **Unidade central de produto: RESOLVIDO** (ADR-0007) — o documento central de produto é o **PRD**
   (feature/grupo, versionado); regras de negócio são seção interna; a visão macro
   é uma **Visão de produto** (explanation) por Projeto.
 - **Federação na prática: RESOLVIDO** (ADR-0009) — **push pelo módulo**: o comando
   `docs:publish` empurra um snapshot completo pro webhook do Brainiac (manual, do
   `main`, com guarda; token + HMAC). Sem token do GitHub, sem CI, sem registro de
   rotas, sem poll. Detalhe em [federacao.md](federacao.md).
-- **Formato e render: RESOLVIDO** (ADR-0010) — **markdown** é o formato canônico
+- **Conteúdo e render: RESOLVIDO** (ADR-0010) — **markdown** é o formato canônico
   (nativo + espelho) e o Brainiac é o **único renderizador** (on-read, com cache);
   o publicador manda markdown, não HTML. Metadado não descreve o corpo (fatos do
   corpo são derivados no ingest).
@@ -259,7 +242,7 @@ COLEÇÃO "Onboarding Dev"  (publico_alvo: TI)
 - **Governança do PRD (ADR-0008):** hoje é **sinal social** por `status` (sem gate
   rígido). Revisitar quem pode publicar quando o time crescer, já que publicar o PRD
   dispara spec + código.
-- **Marketing e Negócio:** que tipos/extensões de metadado precisam.
+- **Marketing e Negócio:** que propósitos/formatos/extensões de metadado precisam.
 - **v2 chat:** quando e como embutir.
 - **Artefato: RESOLVIDO** (ADR-0012) — asset HTML por **link**, embutido em **iframe
   de origem isolada**; em doc com corpo o link mora no corpo (derivado), o campo

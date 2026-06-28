@@ -1,8 +1,8 @@
 # Federação na prática — como a doc de TI chega ao Brainiac
 
 > **Status: DECIDIDO** — federação por **PUSH pelo módulo** (opção D).
-> Ver [ADR-0009](adr/0009-federacao-por-push-modulo.md). Refina o transporte do
-> [ADR-0002](adr/0002-topologia-hibrida-pull.md) (era PULL).
+> Ver [ADR-0009](adr/0009-federacao-por-push-modulo.md). Detalha a federação da
+> topologia híbrida ([ADR-0002](adr/0002-topologia-hibrida.md)).
 >
 > **Render ([ADR-0010](adr/0010-markdown-canonico-render-centralizado.md)):** o
 > publicador **não renderiza** — manda **markdown + metadado**; quem renderiza é o

@@ -38,7 +38,7 @@ A ideia central é de **dois andares**:
 
 | Pilar | Em uma linha |
 |---|---|
-| **Taxonomia** | Organiza por **tipo/propósito**, não por departamento (departamento é faceta) |
+| **Taxonomia** | Organiza por **propósito**, não por departamento (departamento é faceta) |
 | **Topologia** | Dois andares: produto nasce no Brainiac (verdade do PRD) + TI no repo (verdade do código) |
 | **Produto** | **PRD** versionado no Brainiac (grão de feature; regras dentro) + Spec datada no repo |
 | **Identidade** | Doc é upstream do rastreador (Monday é projeção); `Projeto`/sigla (`RPQ`) cola tudo |
@@ -49,18 +49,19 @@ A ideia central é de **dois andares**:
 
 - **[`CONTEXT.md`](CONTEXT.md)** — glossário: a linguagem canônica do projeto.
 - **[`docs/arquitetura.md`](docs/arquitetura.md)** — overview consolidado (comece aqui).
-- **[`docs/tipos-ti.md`](docs/tipos-ti.md)** — os 8 tipos de TI (evergreen × datado).
+- **[`docs/formatos-ti.md`](docs/formatos-ti.md)** — os 8 formatos de TI (evergreen × datado).
 - **[`docs/federacao.md`](docs/federacao.md)** — como a doc de TI chega ao Brainiac (push pelo módulo).
-- **[`docs/taxonomia.md`](docs/taxonomia.md)** — schema e facetas de metadados (sessão 1).
+- **[`docs/taxonomia.md`](docs/taxonomia.md)** — schema e facetas de metadados.
 - **[`docs/exemplos-entradas.md`](docs/exemplos-entradas.md)** — casos reais que estressaram o schema.
+- **[`docs/pesquisa/`](docs/pesquisa/)** — pesquisa de apoio: confronto do desenho com o estado da arte (insumo, não decisão).
 
 ### Decisões (ADRs) — [`docs/adr/`](docs/adr/)
 
 | # | Decisão |
 |---|---|
 | [0001](docs/adr/0001-taxonomia-orientada-a-proposito.md) | Taxonomia orientada a propósito, não a departamento |
-| [0002](docs/adr/0002-topologia-hibrida-pull.md) | Topologia híbrida (TI no repo, Brainiac federa) |
-| [0003](docs/adr/0003-doc-produto-regra-central-spec-repo.md) | Doc de produto: requisito no Brainiac + Spec no repo |
+| [0002](docs/adr/0002-topologia-hibrida.md) | Topologia híbrida (TI no repo, Brainiac federa) |
+| [0003](docs/adr/0003-doc-produto-prd-spec-repo.md) | Doc de produto: requisito no Brainiac + Spec no repo |
 | [0004](docs/adr/0004-doc-upstream-do-rastreador.md) | Documentação é upstream do rastreador (Monday é projeção) |
 | [0005](docs/adr/0005-autoria-nao-tecnico-guideline-paste.md) | Autoria do não-técnico: guideline → colar (v1), chat (v2) |
 | [0006](docs/adr/0006-projeto-primeira-classe-sigla-canonica.md) | Projeto é 1ª classe; a sigla é o handle canônico |
@@ -80,5 +81,5 @@ editável de metadado) + Livewire (vitrine de leitura) + `commonmark`/`highlight
 (render). Conteúdo canônico em **markdown**, renderizado pelo Brainiac (ADR-0010).
 Recuperação por IA = **API com filtros** sobre o vocabulário controlado.
 
-**Pontos abertos:** tipos de Marketing e Negócio · v2 do chat de autoria · **busca
+**Pontos abertos:** propósitos e formatos de Marketing e Negócio · v2 do chat de autoria · **busca
 humana** (adiada; default Postgres FTS + filtros). *(Auth e infra/hosting adiados.)*

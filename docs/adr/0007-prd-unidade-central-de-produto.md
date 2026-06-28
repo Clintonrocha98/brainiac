@@ -1,6 +1,6 @@
 # PRD é a unidade central de produto (grão de feature/grupo)
 
-Refina o [ADR-0003](0003-doc-produto-regra-central-spec-repo.md).
+Refina o [ADR-0003](0003-doc-produto-prd-spec-repo.md).
 
 O documento central de produto chama-se **PRD** (não mais "Regra"). É de dono
 **Produto**, vive no Brainiac, é **versionado** (última versão = fonte da
