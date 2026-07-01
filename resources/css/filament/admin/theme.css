@@ -1,0 +1,10 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@plugin '@tailwindcss/typography';
+
+@source '../../../../app/**/*';
+@source '../../../../app-modules/**/resources/views/**/*';
+@source '../../../../vendor/joaopaulolndev/filament-edit-profile/resources/**/*';
+@source '../../../../resources/views/**/*';
+
+@source '../../../../vendor/guava/filament-knowledge-base/src/**/*';

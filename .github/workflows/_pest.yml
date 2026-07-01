@@ -1,0 +1,104 @@
+name: Pest Tests
+
+on:
+  workflow_call:
+    inputs:
+      PHP_VERSION:
+        required: true
+        type: string
+      PHP_EXTENSIONS:
+        required: true
+        type: string
+      PHP_INI_PROPERTIES:
+        required: true
+        type: string
+      COMPOSER_FLAGS:
+        required: true
+        type: string
+      CACHE_KEY:
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  tests:
+    name: Run
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-tests
+      cancel-in-progress: true
+
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_sycorax
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
+        with:
+          php-version: ${{ inputs.PHP_VERSION }}
+          extensions: ${{ inputs.PHP_EXTENSIONS }}
+          ini-values: ${{ inputs.PHP_INI_PROPERTIES }}
+          coverage: xdebug
+          tools: composer:v2
+
+      - name: Setup Problem Matches
+        shell: bash
+        env:
+          RUNNER_TOOL_CACHE: ${{ runner.tool_cache }}
+        run: |
+          echo "::add-matcher::${RUNNER_TOOL_CACHE}/php.json"
+          echo "::add-matcher::${RUNNER_TOOL_CACHE}/phpunit.json"
+
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # v4.0.0
+        with:
+          composer-options: ${{ inputs.COMPOSER_FLAGS }}
+          custom-cache-key: ${{ inputs.CACHE_KEY }}
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: '.bun-version'
+
+      - name: Cache node_modules
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            node-modules-
+
+      - name: Install dependencies
+        run: bun ci
+
+      - name: Build Assets
+        run: bun run build
+
+      - name: Run Tests
+        env:
+          XDEBUG_MODE: coverage
+          DB_PORT: ${{ job.services.postgres.ports['5432'] }}
+        run: |
+          vendor/bin/pest --ci --parallel
