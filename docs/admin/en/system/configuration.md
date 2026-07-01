@@ -6,7 +6,7 @@ order: 3
 
 # Configuration
 
-Key configuration options available in the Sycorax platform.
+Key configuration options available in the Brainiac platform.
 
 ## Theme
 

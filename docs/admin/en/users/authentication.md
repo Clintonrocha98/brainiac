@@ -6,7 +6,7 @@ order: 4
 
 # Authentication
 
-How user authentication and access control works in Sycorax.
+How user authentication and access control works in Brainiac.
 
 ## Logging In
 

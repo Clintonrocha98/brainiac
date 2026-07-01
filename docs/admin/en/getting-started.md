@@ -7,4 +7,4 @@ type: group
 
 # Getting Started
 
-This section covers the basics of using the Sycorax admin panel. Learn how to navigate the interface, understand the dashboard, and customize your profile settings.
+This section covers the basics of using the Brainiac admin panel. Learn how to navigate the interface, understand the dashboard, and customize your profile settings.

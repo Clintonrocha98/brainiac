@@ -71,7 +71,7 @@ test-feature: ## Run feature tests
 
 .PHONY: setup-test-db
 setup-test-db: ## Create the testing database
-	@PGHOST=localhost PGUSER=postgres PGPASSWORD=postgres createdb test_sycorax 2>/dev/null || echo "Database test_sycorax already exists"
+	@PGHOST=localhost PGUSER=postgres PGPASSWORD=postgres createdb test_brainiac 2>/dev/null || echo "Database test_brainiac already exists"
 
 .PHONY: migrate-fresh
 migrate-fresh: ## Run migrations and seed the database

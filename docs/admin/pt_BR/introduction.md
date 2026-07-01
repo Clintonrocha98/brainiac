@@ -4,9 +4,9 @@ icon: heroicon-o-home
 order: 0
 ---
 
-# Bem-vindo ao Sycorax
+# Bem-vindo ao Brainiac
 
-O Sycorax é sua plataforma central de gerenciamento de usuários, equipes, cargos e administração do sistema. Esta base de conhecimento é seu guia de referência para tudo o que você pode fazer no painel administrativo.
+O Brainiac é sua plataforma central de gerenciamento de usuários, equipes, cargos e administração do sistema. Esta base de conhecimento é seu guia de referência para tudo o que você pode fazer no painel administrativo.
 
 ## Como Este Guia Está Organizado
 

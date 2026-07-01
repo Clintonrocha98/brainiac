@@ -110,27 +110,27 @@ class FilamentServiceProvider extends ServiceProvider
             ->filtersFormWidth(Width::Medium)
             ->paginated([10, 25, 50])
             ->emptyStateIcon(Heroicon::OutlinedExclamationTriangle)
-            ->defaultCurrency(config('sycorax.filament.default.currency'))
-            ->defaultDateDisplayFormat(config('sycorax.filament.default.date_display_format'))
-            ->defaultIsoDateDisplayFormat(config('sycorax.filament.default.iso_date_display_format'))
-            ->defaultDateTimeDisplayFormat(config('sycorax.filament.default.date_time_display_format'))
-            ->defaultIsoDateTimeDisplayFormat(config('sycorax.filament.default.iso_date_time_display_format'))
-            ->defaultNumberLocale(config('sycorax.filament.default.number_locale'))
-            ->defaultTimeDisplayFormat(config('sycorax.filament.default.time_display_format'))
-            ->defaultIsoTimeDisplayFormat(config('sycorax.filament.default.time_display_format')));
+            ->defaultCurrency(config('brainiac.filament.default.currency'))
+            ->defaultDateDisplayFormat(config('brainiac.filament.default.date_display_format'))
+            ->defaultIsoDateDisplayFormat(config('brainiac.filament.default.iso_date_display_format'))
+            ->defaultDateTimeDisplayFormat(config('brainiac.filament.default.date_time_display_format'))
+            ->defaultIsoDateTimeDisplayFormat(config('brainiac.filament.default.iso_date_time_display_format'))
+            ->defaultNumberLocale(config('brainiac.filament.default.number_locale'))
+            ->defaultTimeDisplayFormat(config('brainiac.filament.default.time_display_format'))
+            ->defaultIsoTimeDisplayFormat(config('brainiac.filament.default.time_display_format')));
     }
 
     private function configureSchema(): void
     {
         Schema::configureUsing(fn (Schema $schema): Schema => $schema
-            ->defaultCurrency(config('sycorax.filament.default.currency'))
-            ->defaultDateDisplayFormat(config('sycorax.filament.default.date_display_format'))
-            ->defaultIsoDateDisplayFormat(config('sycorax.filament.default.iso_date_display_format'))
-            ->defaultDateTimeDisplayFormat(config('sycorax.filament.default.date_time_display_format'))
-            ->defaultIsoDateTimeDisplayFormat(config('sycorax.filament.default.iso_date_time_display_format'))
-            ->defaultNumberLocale(config('sycorax.filament.default.number_locale'))
-            ->defaultTimeDisplayFormat(config('sycorax.filament.default.time_display_format'))
-            ->defaultIsoTimeDisplayFormat(config('sycorax.filament.default.time_display_format')));
+            ->defaultCurrency(config('brainiac.filament.default.currency'))
+            ->defaultDateDisplayFormat(config('brainiac.filament.default.date_display_format'))
+            ->defaultIsoDateDisplayFormat(config('brainiac.filament.default.iso_date_display_format'))
+            ->defaultDateTimeDisplayFormat(config('brainiac.filament.default.date_time_display_format'))
+            ->defaultIsoDateTimeDisplayFormat(config('brainiac.filament.default.iso_date_time_display_format'))
+            ->defaultNumberLocale(config('brainiac.filament.default.number_locale'))
+            ->defaultTimeDisplayFormat(config('brainiac.filament.default.time_display_format'))
+            ->defaultIsoTimeDisplayFormat(config('brainiac.filament.default.time_display_format')));
     }
 
     private function configureSelect(): void

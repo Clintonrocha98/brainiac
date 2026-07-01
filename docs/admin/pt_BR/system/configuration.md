@@ -6,7 +6,7 @@ order: 3
 
 # Configuração
 
-Principais opções de configuração disponíveis na plataforma Sycorax.
+Principais opções de configuração disponíveis na plataforma Brainiac.
 
 ## Tema
 

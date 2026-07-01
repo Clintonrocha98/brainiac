@@ -4,9 +4,9 @@ icon: heroicon-o-home
 order: 0
 ---
 
-# Welcome to Sycorax
+# Welcome to Brainiac
 
-Sycorax is your central management platform for users, teams, roles, and system administration. This knowledge base is your go-to reference for everything you can do in the admin panel.
+Brainiac is your central management platform for users, teams, roles, and system administration. This knowledge base is your go-to reference for everything you can do in the admin panel.
 
 ## How This Guide Is Organized
 
