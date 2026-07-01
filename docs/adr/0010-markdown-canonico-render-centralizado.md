@@ -5,7 +5,7 @@ O Brainiac guarda o **conteúdo do Documento como markdown** — formato canôni
 renderizador** (markdown → HTML, sob demanda na leitura, com cache). O HTML é
 **cache derivado, descartável**, nunca a fonte. O publicador envia **markdown +
 metadado** (não HTML renderizado), e quem renderiza é o Brainiac; o push pelo
-módulo ([ADR-0009](0009-federacao-por-push-modulo.md)) entrega a fonte.
+módulo ([Federação por PUSH pelo módulo](0009-federacao-por-push-modulo.md)) entrega a fonte.
 
 ## Por que
 

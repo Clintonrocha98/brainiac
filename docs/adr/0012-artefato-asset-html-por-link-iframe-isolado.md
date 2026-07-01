@@ -4,7 +4,7 @@ Um **Artefato** é uma página visual **auto-contida** (HTML/CSS/JS) — front-e
 arbitrário, o oposto do markdown. O Brainiac **não** o hospeda nem o parseia: guarda
 o **link** e o exibe embutido num **iframe `sandbox` de origem isolada**. Em um
 documento **com corpo**, o artefato entra como **link no próprio markdown** e o
-Brainiac **deriva e embute** (coerente com [ADR-0010](0010-markdown-canonico-render-centralizado.md):
+Brainiac **deriva e embute** (coerente com [Markdown canônico, render centralizado](0010-markdown-canonico-render-centralizado.md):
 metadado não descreve o corpo); o campo explícito `artefatos` fica reservado à
 Entrada **só-artefato** (sem corpo onde pôr o link). Hospedagem **externa**
 (waifuvault) por enquanto.

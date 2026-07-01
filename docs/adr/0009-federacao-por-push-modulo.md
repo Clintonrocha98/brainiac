@@ -6,9 +6,9 @@ documentação** (instalado em todo projeto) expõe um comando `docs:publish` qu
 (markdown + metadado) para um **único webhook de entrada** no Brainiac, autenticado
 por **token por projeto + assinatura HMAC**. O gatilho é **manual/explícito**,
 rodado a partir de um `main` limpo (o comando se recusa fora do main). A topologia
-de dois andares ([ADR-0002](0002-topologia-hibrida.md)) e o princípio "só a
+de dois andares ([Topologia de documentação híbrida](0002-topologia-hibrida.md)) e o princípio "só a
 doc sai, o código nunca sai" permanecem; quem renderiza o markdown é o Brainiac
-([ADR-0010](0010-markdown-canonico-render-centralizado.md)).
+([Markdown canônico, render centralizado](0010-markdown-canonico-render-centralizado.md)).
 
 ## Por que push, e não pull
 

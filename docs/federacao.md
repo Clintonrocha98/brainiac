@@ -1,10 +1,10 @@
 # Federação na prática — como a doc de TI chega ao Brainiac
 
 > **Status: DECIDIDO** — federação por **PUSH pelo módulo** (opção D).
-> Ver [ADR-0009](adr/0009-federacao-por-push-modulo.md). Detalha a federação da
-> topologia híbrida ([ADR-0002](adr/0002-topologia-hibrida.md)).
+> Ver [Federação por PUSH pelo módulo](adr/0009-federacao-por-push-modulo.md). Detalha a federação da
+> topologia híbrida ([Topologia de documentação híbrida](adr/0002-topologia-hibrida.md)).
 >
-> **Render ([ADR-0010](adr/0010-markdown-canonico-render-centralizado.md)):** o
+> **Render ([Markdown canônico, render centralizado](adr/0010-markdown-canonico-render-centralizado.md)):** o
 > publicador **não renderiza** — manda **markdown + metadado**; quem renderiza é o
 > Brainiac (markdown é o formato canônico).
 
@@ -47,7 +47,7 @@ do código; o Brainiac é a **superfície de leitura em produção** (espelho).
 1. Alguém roda `docs:publish` a partir de um `main` limpo (o comando **se recusa**
    fora do main).
 2. O módulo lê `docs/**.md`, valida o front-matter e monta um **snapshot completo**
-   (markdown + metadado — **sem renderizar**; ver [ADR-0010](adr/0010-markdown-canonico-render-centralizado.md)).
+   (markdown + metadado — **sem renderizar**; ver [Markdown canônico, render centralizado](adr/0010-markdown-canonico-render-centralizado.md)).
 3. `POST` para o **único webhook de entrada** do Brainiac, com **token do projeto +
    assinatura HMAC**.
 4. O Brainiac autentica, valida o schema, **renderiza** e **espelha** (metadado +
@@ -65,7 +65,7 @@ do código; o Brainiac é a **superfície de leitura em produção** (espelho).
 
 ## Decisões de mecanismo (fechadas)
 
-- **Gatilho:** manual/explícito — casa com o `status` social ([ADR-0008](adr/0008-governanca-do-prd-social-por-status.md)):
+- **Gatilho:** manual/explícito — casa com o `status` social ([Governança do PRD social por status](adr/0008-governanca-do-prd-social-por-status.md)):
   publicar é ato deliberado.
 - **Origem:** roda do `main` atualizado, com **guarda** → publica o **estado
   merjado** (sem esperar deploy; não precisa de acesso a prod).
@@ -78,6 +78,6 @@ do código; o Brainiac é a **superfície de leitura em produção** (espelho).
 
 ## Por que não A/B/C
 
-Resumo em [ADR-0009](adr/0009-federacao-por-push-modulo.md): **A** (token org-wide +
+Resumo em [Federação por PUSH pelo módulo](adr/0009-federacao-por-push-modulo.md): **A** (token org-wide +
 lógica de doc duplicada no Brainiac), **B** (refém da saúde do CI + workflow por
 repo), **C** (Brainiac precisa alcançar cada app de prod + registro de rotas).

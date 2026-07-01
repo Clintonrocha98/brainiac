@@ -4,7 +4,7 @@
 > ingest é determinístico** — vale para **todo autor**, não só o não-técnico.
 > Ninguém preenche metadado à mão. No TI, a "guideline" é a skill
 > **grill-me-with-docs** (gera doc + front-matter no repo, que o módulo empurra —
-> [ADR-0009](0009-federacao-por-push-modulo.md)); fora do TI, é a guideline colada
+> [Federação por PUSH pelo módulo](0009-federacao-por-push-modulo.md)); fora do TI, é a guideline colada
 > no Claude web descrita abaixo.
 
 O não-técnico autora documentos sem git, markdown ou formulário campo-a-campo.

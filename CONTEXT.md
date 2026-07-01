@@ -21,7 +21,7 @@ discussão). **Não** deriva de um Documento nem passa pelo renderizador de mark
 é front-end arbitrário, referenciado por **link** e exibido num **iframe de origem
 isolada** (sandbox). Em doc com corpo, entra como link no próprio corpo (o Brainiac
 deriva e embute); uma Entrada pode ser **só-artefato**.
-Ver [[0012-artefato-asset-html-por-link-iframe-isolado]].
+Ver [Artefato: asset HTML por link em iframe isolado](docs/adr/0012-artefato-asset-html-por-link-iframe-isolado.md).
 _Avoid_: página, anexo, build, render do markdown
 
 **Catálogo**:
@@ -66,7 +66,7 @@ _Avoid_: setor, time, squad
 Entidade de 1ª classe registrada no Brainiac, com `nome_negocio`, `nome_tecnico`,
 `slug` e `sigla`. É o contêiner dos documentos e a "origem" da federação. Resolve
 o desalinhamento de nomes (negócio × TI) sendo a camada de tradução.
-Ver [[0006-projeto-primeira-classe-sigla-canonica]].
+Ver [Projeto é entidade de 1ª classe](docs/adr/0006-projeto-primeira-classe-sigla-canonica.md).
 _Avoid_: sistema, repo, produto
 
 **Sigla**:
@@ -93,7 +93,7 @@ catálogo: cada origem é dona do seu id nativo e o catálogo apenas **qualifica
 a sigla** do Projeto (ex.: `RPQ:adr/0001` (global), `RPQ:pagamentos/adr/0001` (de
 módulo), `RPQ:PRD-12`). Nunca muda, mesmo que
 título ou facetas mudem; é o que relacionamentos e links referenciam.
-Ver [[0006-projeto-primeira-classe-sigla-canonica]].
+Ver [Projeto é entidade de 1ª classe](docs/adr/0006-projeto-primeira-classe-sigla-canonica.md).
 _Avoid_: código, número, DOC-NNNN, slug (slug é outra coisa)
 
 **slug** (campo):
@@ -115,7 +115,7 @@ _Avoid_: tags, keywords, rótulos
 **status** (campo):
 O estado de ciclo de vida da Entrada: `rascunho`, `revisão`, `publicado` ou
 `obsoleto`. É um **sinal social**, não uma trava — a plataforma não impõe
-aprovação (ver [[0008-governanca-do-prd-social-por-status]]). Em `revisão` o
+aprovação (ver [Governança do PRD social por status](docs/adr/0008-governanca-do-prd-social-por-status.md)). Em `revisão` o
 documento já é legível; em `publicado` passa a valer como a versão corrente/oficial
 daquela Entrada (o PRD, do produto; a spec, da implementação).
 _Avoid_: estado, situação
@@ -125,13 +125,17 @@ A Área que produz e mantém a Entrada — o dono. Uma só por Entrada.
 _Avoid_: time, dono, autor
 
 **publico_alvo** (faceta):
-As Áreas/perfis para quem a Entrada se destina — o leitor. Pode ser multi-valor.
-_Avoid_: audiência, destinatário, leitor
+As Áreas/perfis **para quem a Entrada é relevante** — o público primário, usado para
+navegação e recuperação. **Não** é controle de acesso: o Brainiac é interno e toda
+Entrada é visível para a empresa inteira; este campo só sinaliza relevância (e absorve
+"as áreas que o documento trata"). Multi-valor; admite `todos` (relevante para a
+empresa toda) e `externo` (também voltado a público externo).
+_Avoid_: audiência, destinatário, leitor, permissão, acesso
 
 ## Propósitos
 
 O Propósito é a espécie de conhecimento que um Documento entrega — o eixo de topo
-da taxonomia. São cinco e são mutuamente exclusivos.
+da taxonomia. São três e são mutuamente exclusivos.
 _Avoid_ (para "Propósito"): tipo, categoria, formato
 
 **Referência**:
@@ -139,23 +143,20 @@ Fatos consultáveis pontualmente: API, esquema de um módulo, glossário, spec.
 Você consulta, não lê de ponta a ponta.
 
 **How-to**:
-Passos para realizar uma tarefa específica. Você lê para executar.
-_Avoid_: tutorial, guia, passo-a-passo
+Passos para realizar uma tarefa ou seguir um rito/fluxo recorrente (inclusive um
+handoff entre times, quando o que importa é executá-lo). Você lê para executar — e
+também para **aprender fazendo**: por decisão de escopo, how-to absorve o modo
+"tutorial" e o antigo propósito "processo" executável (não há propósito `tutorial`
+nem `processo` à parte). Agrupar um fluxo de área vira Coleção; a *justificativa* de
+um handoff é explicação.
+_Avoid_: tutorial, processo, guia, passo-a-passo, rito
 
 **Explicação**:
-Entendimento e contexto: regra de negócio, visão de arquitetura, o "porquê".
+Entendimento e contexto: regra de negócio, visão de arquitetura, o "porquê" —
+inclui o registro de uma decisão e seu trade-off (um ADR) e a *justificativa* de um
+handoff. A "decisão" é capturada pelo formato ADR, não por um propósito à parte.
 Você lê para entender.
-_Avoid_: documentação técnica, overview
-
-**Decisão**:
-Registro de uma decisão e seu trade-off (um ADR). Você lê para saber por que
-foi feito assim.
-_Avoid_: ADR (ADR é o formato; Decisão é o propósito)
-
-**Processo**:
-O fluxo de trabalho recorrente de uma área — inclui handoffs entre times/fases.
-Você lê para seguir um rito.
-_Avoid_: handoff, fluxo, SOP, rito
+_Avoid_: documentação técnica, overview, decisão (decisão é o formato ADR)
 
 ## Andares e fluxo de produto
 
@@ -165,7 +166,7 @@ tinha nome. É o andar empresa: é onde **nasce o PRD** (fonte da verdade do pro
 **federa** (recebe por PUSH do módulo de doc) e espelha as docs de TI, **hospeda**
 nativamente as docs não-técnicas e é a **porta única** para liderança e Produto.
 Cada repo de TI continua dono da sua doc técnica; o Brainiac unifica o acesso.
-Ver [[0002-topologia-hibrida]], [[0009-federacao-por-push-modulo]].
+Ver [Topologia de documentação híbrida](docs/adr/0002-topologia-hibrida.md), [Federação por PUSH pelo módulo](docs/adr/0009-federacao-por-push-modulo.md).
 _Avoid_: portal central, portal, central, wiki, hub
 
 **Federação**:
@@ -174,7 +175,7 @@ snapshot da doc de TI para um **espelho de leitura** no Brainiac (metadado index
 + markdown-fonte; quem renderiza é o Brainiac). O git continua a fonte da verdade do código; o Brainiac é a
 superfície de leitura em produção — os repos são privados e o `/docs` roda só em DEV,
 então não há de onde puxar ao vivo.
-Ver [[0002-topologia-hibrida]], [[0009-federacao-por-push-modulo]].
+Ver [Topologia de documentação híbrida](docs/adr/0002-topologia-hibrida.md), [Federação por PUSH pelo módulo](docs/adr/0009-federacao-por-push-modulo.md).
 _Avoid_: agregação, importação, índice remoto
 
 **PRD**:
@@ -182,7 +183,7 @@ Documento de requisitos de produto que vive no Brainiac; dono é Produto;
 versionado (última versão = fonte da verdade). Grão de uma feature ou grupo coeso
 de features — nunca o projeto inteiro. Contém as regras de negócio como seção
 interna. Major = muda comportamento (gera Spec); minor = ajuste de texto.
-Ver [[0003-doc-produto-prd-spec-repo]], [[0007-prd-unidade-central-de-produto]].
+Ver [Documentação de produto: PRD no Brainiac, Spec no repo](docs/adr/0003-doc-produto-prd-spec-repo.md), [PRD é a unidade central de produto](docs/adr/0007-prd-unidade-central-de-produto.md).
 _Avoid_: Regra, requisito
 
 **Versão** (do PRD):
@@ -192,7 +193,7 @@ deixa um rascunho legível (ainda sem valer); publicar congela. Só o **texto**
 versiona — metadado (fora `status`) edita no lugar. A Spec do TI referencia a versão
 exata (`RPQ:PRD-12@v2.0`). Major (muda comportamento, gera Spec) × minor (só texto)
 é declarado pelo Produto no publish.
-Ver [[0011-ciclo-de-vida-do-prd-congela-ao-publicar]].
+Ver [Ciclo de vida do PRD: congela ao publicar](docs/adr/0011-ciclo-de-vida-do-prd-congela-ao-publicar.md).
 _Avoid_: revisão (revisão é um `status`), edição
 
 **regra de negócio**:
@@ -214,7 +215,7 @@ _Avoid_: especificação, implementação
 **Rastreador**:
 A ferramenta onde as tasks vivem (hoje Monday). É projeção da documentação, não
 fonte da verdade; suas tasks carregam o id do PRD. Intercambiável.
-Ver [[0004-doc-upstream-do-rastreador]].
+Ver [Documentação é upstream do rastreador](docs/adr/0004-doc-upstream-do-rastreador.md).
 _Avoid_: Monday, board, gestor de tarefas
 
 ## Formato e metadados
@@ -262,5 +263,5 @@ gerar um Documento + front-matter já no vocabulário controlado, sem preencher
 campos à mão — a IA preenche o front-matter; o ingest é determinístico. No TI é a
 skill grill-me-with-docs; fora dele, a guideline colada no Claude web. Não confundir
 com as guidelines técnicas do repo (convenções de código).
-Ver [[0005-autoria-nao-tecnico-guideline-paste]].
+Ver [Autoria do não-técnico por guideline](docs/adr/0005-autoria-nao-tecnico-guideline-paste.md).
 _Avoid_: prompt, template, stub

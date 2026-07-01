@@ -5,8 +5,8 @@ ser publicada**. **Salvar ≠ publicar:** salvar deixa um **rascunho legível** 
 Brainiac (selo `rascunho`, visível mas ainda sem valer); **publicar** é um passo
 deliberado em que o Produto **declara menor/maior** e a versão congela, virando a
 verdade. **Metadado** (fora `status`) edita-se **no lugar**, sem nova versão.
-Estende o [ADR-0007](0007-prd-unidade-central-de-produto.md) (menor/maior) e o
-[ADR-0008](0008-governanca-do-prd-social-por-status.md) (status social).
+Estende o [PRD é a unidade central de produto](0007-prd-unidade-central-de-produto.md) (menor/maior) e o
+[Governança do PRD social por status](0008-governanca-do-prd-social-por-status.md) (status social).
 
 ## Por que
 
@@ -24,6 +24,10 @@ depende dele ainda, mas ele já é legível.
   social: o sistema **reflete**, não policia. Como toda mudança de texto já vira
   versão, um rótulo errado só significa "o TI talvez não recebeu o sinal de spec" —
   e o TI, que lê o PRD, pode pedir o bump.
+- **A versão menor é silenciosa.** Só a **maior** aciona o caminho de Spec (muda
+  comportamento → nova Spec); a menor é um congelamento que **não exige ação do TI**
+  — a Spec referencia a versão exata (`@v2.0`) e não se mexe sozinha. Assim, corrigir
+  um typo deixa rastro na pilha **sem** disparar um falso sinal de "contrato mudou".
 - **Só o texto congela.** Classificação (título, resumo, palavras-chave, público,
   relacionados) é sobre **achar** a Entrada, não sobre o contrato — edita no lugar,
   mesmo num PRD publicado. `status` é a exceção: é a **chave do ciclo de vida**.
@@ -36,7 +40,9 @@ depende dele ainda, mas ele já é legível.
 O PRD **não é uma linha que se sobrescreve**: é uma **Entrada** que aponta para uma
 **pilha de versões congeladas** (texto + número + status + datas por versão). A
 última publicada é a verdade; as antigas viram histórico; a Spec do TI referencia a
-**versão exata** (`RPQ:PRD-12@v2.0`).
+**versão exata** (`RPQ:PRD-12@v2.0`). Como cada versão guarda o texto integral, o
+Brainiac pode exibir o **diff entre versões** (no publish e na pilha) como recurso de
+leitura — visibilidade do que mudou, não um gate.
 
 ## Opções consideradas
 

@@ -16,7 +16,7 @@ a referenciar uma Projeto pela sigla (não é mais texto/área genérica).
 
 Consideramos: (a) id universal cunhado pelo catálogo — rejeitado porque o catálogo
 viraria autoridade de docs federadas que não possui (mesmo princípio do
-[ADR-0004](0004-doc-upstream-do-rastreador.md)); (b) forçar um nome único por
+[Documentação é upstream do rastreador](0004-doc-upstream-do-rastreador.md)); (b) forçar um nome único por
 projeto — rejeitado porque exigiria renomear repos ou mudar o vocabulário do
 negócio.
 

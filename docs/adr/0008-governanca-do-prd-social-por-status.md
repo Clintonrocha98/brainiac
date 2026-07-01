@@ -10,7 +10,7 @@ Fluxo:
    revisarem via reuniões/mensagens.
 3. Alinhado → o **próprio Produto** troca para `publicado`, tornando o PRD a fonte
    da verdade e **liberando o TI** a criar a Spec/ADR (e o PO a criar as tasks no
-   Monday — [ADR-0004](0004-doc-upstream-do-rastreador.md)).
+   Monday — [Documentação é upstream do rastreador](0004-doc-upstream-do-rastreador.md)).
 4. Substituído → `obsoleto`.
 
 Consideramos gate único (PO aprova como permissão de sistema) e gate duplo

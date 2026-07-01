@@ -7,7 +7,7 @@ como facetas (metadados), não como a hierarquia de topo.
 Consideramos organizar por departamento (a intuição natural — "minha área"), por
 audiência, ou uma matriz propósito × departamento. Escolhemos propósito-no-topo
 porque: (1) os mesmos propósitos recorrem em todas as áreas — todo departamento
-tem "como fazer X", "por que decidimos Y", "processo Z" — então departamento-no-topo
+tem "como fazer X", "por que decidimos Y", "qual é o fato Z" — então departamento-no-topo
 duplicaria vocabulário e criaria silos; (2) facetas planas funcionam muito melhor
 para recuperação por IA do que pastas aninhadas; (3) é coerente com o catálogo de
 referências de design já em uso na empresa, que é plano por propósito ("referência")

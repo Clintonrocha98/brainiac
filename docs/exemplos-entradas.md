@@ -22,7 +22,7 @@ palavras_chave: [pagamentos, gateway, webhook, idempotencia]
 status: publicado
 owner: ana@empresa.com
 documento: repo://modules/payments/README.md
-relacionadas: [DESIGN:processo/handoff-design-dev]
+relacionadas: [DESIGN:how-to/handoff-design-dev]
 ```
 
 > ⚠ ATRITO 1 — O README real do módulo mistura **referência** (contratos),
@@ -31,17 +31,17 @@ relacionadas: [DESIGN:processo/handoff-design-dev]
 
 ---
 
-## Processo: handoff Design → Dev
+## How-to: handoff Design → Dev
 
 ```yaml
-id: DESIGN:processo/handoff-design-dev
+id: DESIGN:how-to/handoff-design-dev
 slug: handoff-design-dev
 titulo: "Handoff de Design para Desenvolvimento"
 resumo: "Rito de passagem de uma tela do Figma aprovada para a fila de dev."
-proposito: processo
+proposito: how-to
 departamento: Design          # dono do rito
 publico_alvo: [Design, TI]    # bilateral — os dois lados seguem
-projeto: []                   # processo cross-área não é "de um projeto"
+projeto: []                   # fluxo cross-área não é "de um projeto"
 palavras_chave: [handoff, figma, design-system, definicao-de-pronto]
 status: publicado
 owner: bruno@empresa.com
@@ -53,6 +53,31 @@ relacionadas: [RPQ:pagamentos/reference/modulo-pagamentos]
 > ⚠ ATRITO 2 — Sem projeto, o `id` não tem sigla para qualificar; aqui ele se
 > ancora na **área** dona (`DESIGN:`). O modelo de id para docs sem projeto segue
 > em aberto.
+
+---
+
+## Explicação: documentação interna de departamento (padrão recorrente)
+
+```yaml
+id: RPQ:explanation/padroes-de-engenharia
+slug: padroes-de-engenharia
+titulo: "Padrões de Engenharia do TI"
+resumo: "Convenções internas de código, branching e revisão do time de TI."
+proposito: explicacao
+departamento: TI             # dono e mantenedor
+publico_alvo: [TI]           # relevância primária = o próprio time
+projeto: [RPQ]
+module: global
+palavras_chave: [convenções, code-review, branching, padrões]
+status: publicado
+owner: ana@empresa.com
+documento: repo://docs/explanation/engineering-standards.md
+```
+
+> O padrão que se repete em **todo** departamento: dono = assunto = público primário
+> = uma **única** Área. É o caso que justifica `departamento` ser de valor único.
+> `publico_alvo: [TI]` sinaliza **relevância**, não acesso — toda Entrada é visível
+> para a empresa inteira (o Brainiac é interno).
 
 ---
 
@@ -92,7 +117,7 @@ entradas:                                       # ORDENADA
   - RPQ:explanation/visao-de-negocio            # pendente (Entrada ainda não existe)
   - RPQ:explanation/arquitetura-de-modulos      # pendente (Entrada ainda não existe)
   - RPQ:pagamentos/reference/modulo-pagamentos
-  - DESIGN:processo/handoff-design-dev
+  - DESIGN:how-to/handoff-design-dev
 ```
 
 > A trilha pode apontar para Entradas que **ainda não existem** (visão de negócio,

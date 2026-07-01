@@ -9,9 +9,9 @@ docs de TI e **hospeda nativamente** as docs dos departamentos não-técnicos
 O **requisito de produto** nasce no Brainiac (o **PRD**, fonte da verdade do
 produto); a **spec/ADR** do repo é **derivada do PRD** — a direção é sempre
 PRD → spec, nunca o contrário (ver
-[ADR-0003](0003-doc-produto-prd-spec-repo.md) ·
-[ADR-0007](0007-prd-unidade-central-de-produto.md)). A federação acontece por
-**push do módulo de doc** (ver [ADR-0009](0009-federacao-por-push-modulo.md)): os
+[Documentação de produto: PRD no Brainiac, Spec no repo](0003-doc-produto-prd-spec-repo.md) ·
+[PRD é a unidade central de produto](0007-prd-unidade-central-de-produto.md)). A federação acontece por
+**push do módulo de doc** (ver [Federação por PUSH pelo módulo](0009-federacao-por-push-modulo.md)): os
 repos são privados e o `/docs` roda só em DEV, então é o próprio módulo que empurra
 um snapshot para o Brainiac, que espelha.
 

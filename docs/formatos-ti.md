@@ -1,6 +1,6 @@
 # Formatos de documentação — contexto TI (por repo)
 
-Co-localizado no repositório (ver [ADR-0002](adr/0002-topologia-hibrida.md)).
+Co-localizado no repositório (ver [Topologia de documentação híbrida](adr/0002-topologia-hibrida.md)).
 Alinhado à guideline he4rt + uma camada evergreen para os docs duráveis que o
 he4rt sozinho deixa sem lar.
 
@@ -25,7 +25,7 @@ he4rt sozinho deixa sem lar.
 | `plan` | datado | `{módulo}/docs/plans/` | nunca | o plano de uma entrega |
 
 > **Divergência consciente do he4rt:** não há `prd` no repo. O requisito de produto
-> vive **só** como PRD no Brainiac (ver [ADR-0003](adr/0003-doc-produto-prd-spec-repo.md));
+> vive **só** como PRD no Brainiac (ver [Documentação de produto: PRD no Brainiac, Spec no repo](adr/0003-doc-produto-prd-spec-repo.md));
 > a `spec` referencia o PRD. Isso evita duplicar o requisito em dois lugares.
 
 Docs **cross-module / system-wide** repetem a mesma estrutura em `/docs` na raiz do

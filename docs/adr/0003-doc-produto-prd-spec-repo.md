@@ -11,7 +11,7 @@ versões é o registro de como o PRD evoluiu.
 A **Spec de cada implementação** vive **co-localizada no repo** (datada, imutável,
 escrita por TI com a skill grill-me-with-docs) e **referencia a versão do PRD**
 pelo id. O **Brainiac** federa essas Specs (recebe por push do módulo —
-[ADR-0009](0009-federacao-por-push-modulo.md)) e mostra o PRD e suas Specs
+[Federação por PUSH pelo módulo](0009-federacao-por-push-modulo.md)) e mostra o PRD e suas Specs
 amarrados num lugar só.
 
 Consideramos: (B) tudo central — Produto dono do PRD **e** da Spec; e (C) tudo no

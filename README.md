@@ -78,7 +78,7 @@ Fase de **desenho** (design via grilling) — ainda **não há código**.
 
 **Stack do Brainiac:** Laravel + Filament (autoria do PRD + edição do subconjunto
 editável de metadado) + Livewire (vitrine de leitura) + `commonmark`/`highlight`
-(render). Conteúdo canônico em **markdown**, renderizado pelo Brainiac (ADR-0010).
+(render). Conteúdo canônico em **markdown**, renderizado pelo Brainiac (ver [Markdown canônico, render centralizado](docs/adr/0010-markdown-canonico-render-centralizado.md)).
 Recuperação por IA = **API com filtros** sobre o vocabulário controlado.
 
 **Pontos abertos:** propósitos e formatos de Marketing e Negócio · v2 do chat de autoria · **busca

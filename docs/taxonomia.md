@@ -6,7 +6,7 @@ schema. Itens marcados **(EM ABERTO)** ainda não foram decididos.
 
 ## Princípios
 
-- **Orientado a propósito** (ver ADR-0001): o eixo de topo é o `proposito`, não o
+- **Orientado a propósito** (ver [Taxonomia de documentação orientada a propósito](adr/0001-taxonomia-orientada-a-proposito.md)): o eixo de topo é o `proposito`, não o
   departamento.
 - **Facetado, não aninhado**: navegação e recuperação por filtro de facetas.
 - **Vocabulário controlado**: facetas só aceitam valores de lista fechada; só
@@ -22,17 +22,17 @@ schema. Itens marcados **(EM ABERTO)** ainda não foram decididos.
 | `slug` | texto | não | Cosmético (URL); pode mudar sem quebrar o `id` |
 | `titulo` | texto | sim | Título humano da Entrada |
 | `resumo` | texto (1-3 frases) | sim | Preview humano + sinal para IA |
-| `proposito` | enum (1 de 5) | sim | `referencia` `how-to` `explicacao` `decisao` `processo` |
+| `proposito` | enum (1 de 3) | sim | `referencia` `how-to` `explicacao` |
 | `departamento` | enum Área (1) | sim | Área dona/autora |
 | `publico_alvo` | enum Área (N) | sim | Áreas + `todos` + `externo` |
 | `projeto` | enum Projeto (N) | não | Vocab controlado; cruza docs por sistema/projeto |
 | `palavras_chave` | lista (texto livre) | não | Único campo livre; agrupa e recupera |
-| `status` | enum | sim | `rascunho` `revisão` `publicado` `obsoleto` (sinal social, sem gate — ADR-0008) |
+| `status` | enum | sim | `rascunho` `revisão` `publicado` `obsoleto` (sinal social, sem gate — [Governança do PRD social por status](adr/0008-governanca-do-prd-social-por-status.md)) |
 | `owner` | pessoa | sim | Responsável pela Entrada |
 | `criado_em` | data | sim | |
 | `atualizado_em` | data | sim | |
 | `documento` | link | condicional | Documento-fonte (markdown), renderizado pelo Brainiac. Ver invariante abaixo |
-| `artefatos` | lista de link | condicional | Link(s) a Artefato (HTML). Em doc com corpo o link mora no corpo (derivado — ADR-0012); este campo é o ponteiro só pra Entrada só-artefato |
+| `artefatos` | lista de link | condicional | Link(s) a Artefato (HTML). Em doc com corpo o link mora no corpo (derivado — [Artefato: asset HTML por link em iframe isolado](adr/0012-artefato-asset-html-por-link-iframe-isolado.md)); este campo é o ponteiro só pra Entrada só-artefato |
 | `substitui` / `substituida_por` | id (par inverso) | não | Supersessão; casa com `status: obsoleto` |
 | `relacionadas` | lista de id | não | "Veja também" (simétrico) |
 | `depende_de` | lista de id | não | Pré-requisito: leia/faça isto antes (direcionado) |
@@ -55,12 +55,12 @@ schema. Itens marcados **(EM ABERTO)** ainda não foram decididos.
   existir Entrada sem nenhum conteúdo). Os dois individualmente são opcionais:
   acomoda md+html (TI), só-html (Design/Marketing) e só-md (um plano). No doc com
   corpo, o artefato entra como **link no markdown** (o Brainiac deriva e embute em
-  iframe isolado — [ADR-0012](adr/0012-artefato-asset-html-por-link-iframe-isolado.md));
+  iframe isolado — [Artefato: asset HTML por link em iframe isolado](adr/0012-artefato-asset-html-por-link-iframe-isolado.md));
   `artefatos` como campo fica reservado à Entrada **só-artefato**.
 
 ## Facetas e seus valores
 
-- **`proposito`**: `referencia` · `how-to` · `explicacao` · `decisao` · `processo`
+- **`proposito`**: `referencia` · `how-to` · `explicacao`
 - **`departamento`** (Área dona): `TI` · `Negócio` · `Produto` · `Marketing` · `Design`
 - **`publico_alvo`** (leitor): as Áreas acima + `todos` + `externo`
 - **`projeto`** (vocab controlado, multi-valor): a lista de projetos/sistemas da
@@ -81,7 +81,7 @@ aninha outras Coleções por enquanto).
 | `resumo` | texto | sim | O que a trilha cobre e pra quem (mesmo campo da Entrada) |
 | `publico_alvo` | enum Área (N) | sim | Torna a Coleção descobrível |
 | `owner` | pessoa | sim | Responsável pela curadoria |
-| `status` | enum | sim | `rascunho` `revisão` `publicado` `obsoleto` (sinal social, sem gate — ADR-0008) |
+| `status` | enum | sim | `rascunho` `revisão` `publicado` `obsoleto` (sinal social, sem gate — [Governança do PRD social por status](adr/0008-governanca-do-prd-social-por-status.md)) |
 | `entradas` | lista ORDENADA de id | sim | A ordem é a sequência da trilha |
 | `criado_em` / `atualizado_em` | data | sim | |
 

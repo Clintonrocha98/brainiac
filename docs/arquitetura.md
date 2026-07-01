@@ -27,11 +27,11 @@ independente do departamento.
 
 | Princípio | ADR |
 |---|---|
-| Organizar por **propósito**, não por departamento (departamento é faceta) | [0001](adr/0001-taxonomia-orientada-a-proposito.md) |
-| **Dois andares**: produto nasce no Brainiac (verdade do PRD) + TI no repo (verdade do código); spec/ADR derivadas do PRD | [0002](adr/0002-topologia-hibrida.md) |
-| Produto: **PRD** versionado no Brainiac (grão de feature) + **Spec** datada no repo | [0003](adr/0003-doc-produto-prd-spec-repo.md) · [0007](adr/0007-prd-unidade-central-de-produto.md) |
-| **Documentação é upstream** do rastreador (Monday é projeção); id do PRD = chave | [0004](adr/0004-doc-upstream-do-rastreador.md) |
-| **Todo autor** escreve por **IA (guideline)** — a IA preenche o front-matter; ingest **determinístico** | [0005](adr/0005-autoria-nao-tecnico-guideline-paste.md) |
+| Organizar por **propósito**, não por departamento (departamento é faceta) | [Taxonomia de documentação orientada a propósito](adr/0001-taxonomia-orientada-a-proposito.md) |
+| **Dois andares**: produto nasce no Brainiac (verdade do PRD) + TI no repo (verdade do código); spec/ADR derivadas do PRD | [Topologia de documentação híbrida](adr/0002-topologia-hibrida.md) |
+| Produto: **PRD** versionado no Brainiac (grão de feature) + **Spec** datada no repo | [Documentação de produto: PRD no Brainiac, Spec no repo](adr/0003-doc-produto-prd-spec-repo.md) · [PRD é a unidade central de produto](adr/0007-prd-unidade-central-de-produto.md) |
+| **Documentação é upstream** do rastreador (Monday é projeção); id do PRD = chave | [Documentação é upstream do rastreador](adr/0004-doc-upstream-do-rastreador.md) |
+| **Todo autor** escreve por **IA (guideline)** — a IA preenche o front-matter; ingest **determinístico** | [Autoria do não-técnico por guideline](adr/0005-autoria-nao-tecnico-guideline-paste.md) |
 
 ---
 
@@ -58,7 +58,7 @@ independente do departamento.
 ```
 
 **Federar** = o módulo de cada repo **empurra** (push) a doc para o Brainiac, que a
-**espelha** (metadado + **markdown-fonte**; quem renderiza é o Brainiac — [ADR-0010](adr/0010-markdown-canonico-render-centralizado.md)); o git segue a fonte da verdade. O
+**espelha** (metadado + **markdown-fonte**; quem renderiza é o Brainiac — [Markdown canônico, render centralizado](adr/0010-markdown-canonico-render-centralizado.md)); o git segue a fonte da verdade. O
 código nunca sai do repo — **só a doc**. O **requisito de produto** nasce no
 Brainiac (o **PRD**, fonte da verdade do produto); a **spec/ADR** no repo é
 **derivada do PRD** — a direção é sempre PRD → spec, nunca o contrário.
@@ -85,7 +85,7 @@ Por andar:
   (versionado, grão de feature) + a **Visão de produto** (macro, 1 por Projeto).
 
 > Divergência consciente do he4rt: **sem `prd` no repo** — o requisito vive só
-> como **PRD** no Brainiac (ADR-0003 · 0007).
+> como **PRD** no Brainiac (ver [Documentação de produto: PRD no Brainiac, Spec no repo](adr/0003-doc-produto-prd-spec-repo.md) · [PRD é a unidade central de produto](adr/0007-prd-unidade-central-de-produto.md)).
 
 ---
 
@@ -110,11 +110,11 @@ filtrar e recuperar bem (e gerar o "Motivo" da recomendação no momento da quer
 obsoleto) + supersede via `related` — sem data de revisão (sem anti-rot).
 
 **Conteúdo:** guardado como **markdown** (canônico — nativo e espelho), renderizado
-pelo Brainiac sob demanda; o HTML é cache ([ADR-0010](adr/0010-markdown-canonico-render-centralizado.md)).
+pelo Brainiac sob demanda; o HTML é cache ([Markdown canônico, render centralizado](adr/0010-markdown-canonico-render-centralizado.md)).
 O **PRD** não é uma linha que se sobrescreve: é uma Entrada que aponta para uma
-**pilha de versões congeladas** ([ADR-0011](adr/0011-ciclo-de-vida-do-prd-congela-ao-publicar.md)).
+**pilha de versões congeladas** ([Ciclo de vida do PRD: congela ao publicar](adr/0011-ciclo-de-vida-do-prd-congela-ao-publicar.md)).
 
-### 5.1 Projeto — contêiner e origem (ADR-0006)
+### 5.1 Projeto — contêiner e origem ([Projeto é entidade de 1ª classe](adr/0006-projeto-primeira-classe-sigla-canonica.md))
 
 Documentos são criados **sob uma Projeto**, entidade de 1ª classe:
 
@@ -159,12 +159,12 @@ O ciclo (cada doc tem 1 dono; o outro lado lê):
         └────  o módulo empurra a spec → Brainiac (PUSH)  ─┘
 ```
 
-**Identidade (ADR-0004 + 0006):** o id do PRD (`RPQ:PRD-12`, qualificado pela
+**Identidade** (ver [Documentação é upstream do rastreador](adr/0004-doc-upstream-do-rastreador.md) + [Projeto é entidade de 1ª classe](adr/0006-projeto-primeira-classe-sigla-canonica.md)): o id do PRD (`RPQ:PRD-12`, qualificado pela
 sigla do Projeto, cunhado pelo Brainiac) é a chave de junção. A spec aponta pra ele;
 a task no Monday carrega ele. Monday é projeção descartável — trocável sem quebrar
 nada.
 
-### 6.1 Governança (ADR-0008)
+### 6.1 Governança ([Governança do PRD social por status](adr/0008-governanca-do-prd-social-por-status.md))
 
 `status` é um **sinal social**, não um gate de sistema — a plataforma não policia.
 
@@ -178,7 +178,7 @@ nada.
 Qualquer um do Produto pode publicar; a corretude vem da disciplina do time.
 Permissões podem ser adicionadas depois sem mudar o modelo de estados.
 
-**Ciclo de vida e versão do PRD ([ADR-0011](adr/0011-ciclo-de-vida-do-prd-congela-ao-publicar.md)):**
+**Ciclo de vida e versão do PRD ([Ciclo de vida do PRD: congela ao publicar](adr/0011-ciclo-de-vida-do-prd-congela-ao-publicar.md)):**
 *salvar ≠ publicar* — salvar deixa um **rascunho legível** (já visível, ainda sem
 valer); **publicar** é deliberado e **congela** a versão, virando a verdade. Só o
 **texto** versiona; metadado (fora `status`) edita no lugar. Quem declara **menor**
@@ -192,7 +192,7 @@ publicada continua valendo** pro TI (e o rascunho fica disponível para leitura)
 
 **Princípio único:** ninguém preenche metadado à mão. A IA gera o Documento +
 front-matter já no vocabulário controlado, seguindo uma **guideline**; o ingest é
-**determinístico** (ver [ADR-0005](adr/0005-autoria-nao-tecnico-guideline-paste.md)).
+**determinístico** (ver [Autoria do não-técnico por guideline](adr/0005-autoria-nao-tecnico-guideline-paste.md)).
 Dois fluxos, mesmo princípio:
 
 ```
@@ -226,25 +226,25 @@ COLEÇÃO "Onboarding Dev"  (publico_alvo: TI)
 
 ## 9. Pontos abertos
 
-- **Unidade central de produto: RESOLVIDO** (ADR-0007) — o documento central de produto é o **PRD**
+- **Unidade central de produto: RESOLVIDO** (ver [PRD é a unidade central de produto](adr/0007-prd-unidade-central-de-produto.md)) — o documento central de produto é o **PRD**
   (feature/grupo, versionado); regras de negócio são seção interna; a visão macro
   é uma **Visão de produto** (explanation) por Projeto.
-- **Federação na prática: RESOLVIDO** (ADR-0009) — **push pelo módulo**: o comando
+- **Federação na prática: RESOLVIDO** (ver [Federação por PUSH pelo módulo](adr/0009-federacao-por-push-modulo.md)) — **push pelo módulo**: o comando
   `docs:publish` empurra um snapshot completo pro webhook do Brainiac (manual, do
   `main`, com guarda; token + HMAC). Sem token do GitHub, sem CI, sem registro de
   rotas, sem poll. Detalhe em [federacao.md](federacao.md).
-- **Conteúdo e render: RESOLVIDO** (ADR-0010) — **markdown** é o formato canônico
+- **Conteúdo e render: RESOLVIDO** (ver [Markdown canônico, render centralizado](adr/0010-markdown-canonico-render-centralizado.md)) — **markdown** é o formato canônico
   (nativo + espelho) e o Brainiac é o **único renderizador** (on-read, com cache);
   o publicador manda markdown, não HTML. Metadado não descreve o corpo (fatos do
   corpo são derivados no ingest).
-- **Ciclo de vida do PRD: RESOLVIDO** (ADR-0011) — *salvar ≠ publicar*; a versão
+- **Ciclo de vida do PRD: RESOLVIDO** (ver [Ciclo de vida do PRD: congela ao publicar](adr/0011-ciclo-de-vida-do-prd-congela-ao-publicar.md)) — *salvar ≠ publicar*; a versão
   **congela ao publicar**; só o texto versiona; menor/maior é declarado pelo Produto.
-- **Governança do PRD (ADR-0008):** hoje é **sinal social** por `status` (sem gate
+- **Governança do PRD** (ver [Governança do PRD social por status](adr/0008-governanca-do-prd-social-por-status.md)): hoje é **sinal social** por `status` (sem gate
   rígido). Revisitar quem pode publicar quando o time crescer, já que publicar o PRD
   dispara spec + código.
 - **Marketing e Negócio:** que propósitos/formatos/extensões de metadado precisam.
 - **v2 chat:** quando e como embutir.
-- **Artefato: RESOLVIDO** (ADR-0012) — asset HTML por **link**, embutido em **iframe
+- **Artefato: RESOLVIDO** (ver [Artefato: asset HTML por link em iframe isolado](adr/0012-artefato-asset-html-por-link-iframe-isolado.md)) — asset HTML por **link**, embutido em **iframe
   de origem isolada**; em doc com corpo o link mora no corpo (derivado), o campo
   explícito só pra Entrada só-artefato; hospedagem externa (waifuvault) por enquanto.
 - **Stack do Brainiac:** Laravel + Filament (autoria do PRD + edição do subconjunto
