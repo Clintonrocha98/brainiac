@@ -14,7 +14,7 @@ test('detects image, mermaid and mentions in the body', function (): void {
     Veja [o módulo](RPQ:pagamentos/reference/modulo) e o arquivo repo://docs/x.md.
     MD;
 
-    $facts = app(DeriveBodyFacts::class)->execute($markdown);
+    $facts = resolve(DeriveBodyFacts::class)->execute($markdown);
 
     expect($facts->hasImage)->toBeTrue()
         ->and($facts->hasMermaid)->toBeTrue()
@@ -22,10 +22,10 @@ test('detects image, mermaid and mentions in the body', function (): void {
 });
 
 test('empty body yields all-false facts', function (): void {
-    $facts = app(DeriveBodyFacts::class)->execute('texto simples');
+    $facts = resolve(DeriveBodyFacts::class)->execute('texto simples');
 
     expect($facts->hasImage)->toBeFalse()
         ->and($facts->hasMermaid)->toBeFalse()
         ->and($facts->hasArtifact)->toBeFalse()
-        ->and($facts->mentions)->toBe([]);
+        ->and($facts->mentions)->toBeEmpty();
 });

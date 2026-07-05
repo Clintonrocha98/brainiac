@@ -15,6 +15,6 @@ enum EntryLinkType: string implements HasLabel
 
     public function getLabel(): string
     {
-        return __("catalog::enums.entry_link_type.{$this->value}");
+        return __('catalog::enums.entry_link_type.'.$this->value);
     }
 }

@@ -7,13 +7,13 @@ use He4rt\Catalog\Enums\Area;
 use He4rt\Catalog\Models\Project;
 
 test('prefixes with the origin project acronym', function (): void {
-    $project = Project::factory()->create(['acronym' => 'RPQ']);
+    $project = Project::factory()->make(['acronym' => 'RPQ']);
 
-    expect(app(MintQualifiedId::class)->execute($project, Area::Ti, 'PRD-12'))
+    expect(resolve(MintQualifiedId::class)->execute($project, Area::Ti, 'PRD-12'))
         ->toBe('RPQ:PRD-12');
 });
 
 test('falls back to the department area when there is no origin', function (): void {
-    expect(app(MintQualifiedId::class)->execute(null, Area::Design, 'how-to/handoff'))
+    expect(resolve(MintQualifiedId::class)->execute(origin: null, department: Area::Design, nativeId: 'how-to/handoff'))
         ->toBe('DESIGN:how-to/handoff');
 });

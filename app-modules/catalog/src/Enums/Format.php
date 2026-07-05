@@ -20,7 +20,7 @@ enum Format: string implements HasLabel
 
     public function getLabel(): string
     {
-        return __("catalog::enums.format.{$this->value}");
+        return __('catalog::enums.format.'.$this->value);
     }
 
     public function isPrd(): bool

@@ -22,7 +22,7 @@ final class DocumentFactory extends Factory
     {
         return [
             'entry_id' => Entry::factory(),
-            'body_markdown' => fake()->paragraphs(3, true),
+            'body_markdown' => fake()->paragraphs(3, asText: true),
             'git_pointer' => null,
         ];
     }

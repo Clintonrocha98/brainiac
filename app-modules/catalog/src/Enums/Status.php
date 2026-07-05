@@ -15,6 +15,6 @@ enum Status: string implements HasLabel
 
     public function getLabel(): string
     {
-        return __("catalog::enums.status.{$this->value}");
+        return __('catalog::enums.status.'.$this->value);
     }
 }

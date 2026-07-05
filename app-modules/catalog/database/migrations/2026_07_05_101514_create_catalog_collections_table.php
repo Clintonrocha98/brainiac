@@ -19,9 +19,9 @@ return new class extends Migration
             $table->jsonb('audience');
             $table->foreignUuid('owner_id')->constrained('identity_users')->restrictOnDelete();
             $table->string('status');
-            $table->boolean('has_image')->default(false);
-            $table->boolean('has_mermaid')->default(false);
-            $table->boolean('has_artifact')->default(false);
+            $table->boolean('has_image')->default(value: false);
+            $table->boolean('has_mermaid')->default(value: false);
+            $table->boolean('has_artifact')->default(value: false);
             $table->jsonb('mentions')->nullable();
             $table->timestampsTz();
         });

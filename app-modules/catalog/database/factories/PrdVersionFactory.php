@@ -25,7 +25,7 @@ final class PrdVersionFactory extends Factory
             'entry_id' => Entry::factory()->prd(),
             'major' => null,
             'minor' => null,
-            'body_markdown' => fake()->paragraphs(3, true),
+            'body_markdown' => fake()->paragraphs(3, asText: true),
             'state' => PrdVersionState::Draft,
             'frozen_at' => null,
         ];

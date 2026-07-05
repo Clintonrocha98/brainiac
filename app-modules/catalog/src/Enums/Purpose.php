@@ -14,6 +14,6 @@ enum Purpose: string implements HasLabel
 
     public function getLabel(): string
     {
-        return __("catalog::enums.purpose.{$this->value}");
+        return __('catalog::enums.purpose.'.$this->value);
     }
 }

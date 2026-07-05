@@ -18,9 +18,9 @@ return new class extends Migration
             $table->text('body_markdown');
             $table->string('state')->default('draft');
             $table->timestampTz('frozen_at')->nullable();
-            $table->boolean('has_image')->default(false);
-            $table->boolean('has_mermaid')->default(false);
-            $table->boolean('has_artifact')->default(false);
+            $table->boolean('has_image')->default(value: false);
+            $table->boolean('has_mermaid')->default(value: false);
+            $table->boolean('has_artifact')->default(value: false);
             $table->jsonb('mentions')->nullable();
             $table->timestampsTz();
         });

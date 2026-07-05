@@ -8,6 +8,7 @@ use App\Models\BaseModel;
 use He4rt\Catalog\Database\Factories\ProjectFactory;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
@@ -23,8 +24,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $last_synced_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Entry> $entries
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Entry> $taggedEntries
+ * @property-read Collection<int, Entry> $entries
+ * @property-read Collection<int, Entry> $taggedEntries
  *
  * @extends BaseModel<ProjectFactory>
  */

@@ -34,7 +34,7 @@ final class EntryFactory extends Factory
             'native_id' => $native,
             'project_id' => null,
             'slug' => Str::slug($native),
-            'title' => Str::title(fake()->words(3, true)),
+            'title' => Str::title(fake()->words(3, asText: true)),
             'summary' => fake()->sentence(),
             'purpose' => fake()->randomElement(Purpose::cases()),
             'format' => Format::Explanation,

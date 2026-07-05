@@ -23,7 +23,7 @@ final class CollectionFactory extends Factory
      */
     public function definition(): array
     {
-        $title = Str::title(fake()->words(2, true));
+        $title = Str::title(fake()->words(2, asText: true));
 
         return [
             'slug' => Str::slug($title).'-'.fake()->unique()->numberBetween(1, 9_999),

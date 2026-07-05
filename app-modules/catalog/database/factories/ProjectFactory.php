@@ -20,7 +20,7 @@ final class ProjectFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->unique()->words(2, true);
+        $name = fake()->unique()->words(2, asText: true);
 
         return [
             'business_name' => Str::title($name),

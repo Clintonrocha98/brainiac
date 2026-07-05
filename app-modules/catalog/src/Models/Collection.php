@@ -70,7 +70,7 @@ final class Collection extends BaseModel
         self::saving(static function (Collection $collection): void {
             if ($collection->isDirty('body_markdown')) {
                 $markdown = $collection->body_markdown ?? '';
-                $collection->fill(app(DeriveBodyFacts::class)->execute($markdown)->toColumns());
+                $collection->fill(resolve(DeriveBodyFacts::class)->execute($markdown)->toColumns());
             }
         });
     }

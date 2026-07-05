@@ -28,6 +28,7 @@ test('audience is a superset of area plus all and external', function (): void {
     foreach (Area::cases() as $area) {
         expect($audience)->toContain($area->value);
     }
+
     expect($audience)->toContain('all')->toContain('external');
 });
 

@@ -16,8 +16,8 @@ final class MintQualifiedId
      */
     public function execute(?Project $origin, Area $department, string $nativeId): string
     {
-        $prefix = $origin !== null ? $origin->acronym : Str::upper($department->value);
+        $prefix = $origin instanceof Project ? $origin->acronym : Str::upper($department->value);
 
-        return "{$prefix}:{$nativeId}";
+        return sprintf('%s:%s', $prefix, $nativeId);
     }
 }

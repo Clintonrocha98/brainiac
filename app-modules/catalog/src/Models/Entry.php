@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * @property string $id
@@ -34,7 +35,7 @@ use Illuminate\Support\Carbon;
  * @property Format $format
  * @property Origin $origin
  * @property Area $department
- * @property \Illuminate\Support\Collection<int, Audience> $audience
+ * @property Collection<int, Audience> $audience
  * @property array<int, string>|null $keywords
  * @property Status $status
  * @property string|null $owner_id

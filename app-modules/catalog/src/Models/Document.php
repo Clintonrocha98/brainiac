@@ -50,7 +50,7 @@ final class Document extends BaseModel
     {
         self::saving(static function (Document $document): void {
             if ($document->isDirty('body_markdown')) {
-                $document->fill(app(DeriveBodyFacts::class)->execute($document->body_markdown)->toColumns());
+                $document->fill(resolve(DeriveBodyFacts::class)->execute($document->body_markdown)->toColumns());
             }
         });
     }

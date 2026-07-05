@@ -23,7 +23,7 @@ function snapshotEntry(string $qualifiedId, string $native): SnapshotEntry
         format: Format::Reference,
         department: Area::Ti,
         bodyMarkdown: '# body',
-        gitPointer: "docs/{$native}.md",
+        gitPointer: sprintf('docs/%s.md', $native),
     );
 }
 
@@ -43,7 +43,7 @@ test('reconcile upserts snapshot entries and deletes absent mirrors, sparing nat
         snapshotEntry('RPQ:kept', 'kept'),   // novo
     ]);
 
-    app(ReconcileSnapshot::class)->execute($snapshot);
+    resolve(ReconcileSnapshot::class)->execute($snapshot);
 
     expect(Entry::query()->where('qualified_id', 'RPQ:kept')->exists())->toBeTrue()
         ->and(Entry::query()->whereKey($stale->id)->exists())->toBeFalse()   // espelho ausente removido
@@ -54,8 +54,8 @@ test('reconcile is idempotent', function (): void {
     $project = Project::factory()->create(['acronym' => 'RPQ']);
     $snapshot = new Snapshot('RPQ', [snapshotEntry('RPQ:a', 'a'), snapshotEntry('RPQ:b', 'b')]);
 
-    app(ReconcileSnapshot::class)->execute($snapshot);
-    app(ReconcileSnapshot::class)->execute($snapshot);
+    resolve(ReconcileSnapshot::class)->execute($snapshot);
+    resolve(ReconcileSnapshot::class)->execute($snapshot);
 
     expect(Entry::query()->where('origin', Origin::Mirror)->count())->toBe(2);
 });

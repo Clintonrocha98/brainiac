@@ -22,7 +22,7 @@ final class ReconcileSnapshot
     {
         $project = Project::query()->where('acronym', $snapshot->acronym)->firstOrFail();
 
-        DB::transaction(function () use ($project, $snapshot): void {
+        DB::transaction(static function () use ($project, $snapshot): void {
             $seen = [];
 
             foreach ($snapshot->entries as $item) {

@@ -13,6 +13,6 @@ enum Origin: string implements HasLabel
 
     public function getLabel(): string
     {
-        return __("catalog::enums.origin.{$this->value}");
+        return __('catalog::enums.origin.'.$this->value);
     }
 }

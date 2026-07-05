@@ -51,7 +51,7 @@ final class PrdVersion extends BaseModel
     {
         self::saving(static function (PrdVersion $version): void {
             if ($version->isDirty('body_markdown')) {
-                $version->fill(app(DeriveBodyFacts::class)->execute($version->body_markdown)->toColumns());
+                $version->fill(resolve(DeriveBodyFacts::class)->execute($version->body_markdown)->toColumns());
             }
         });
     }

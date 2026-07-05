@@ -18,6 +18,6 @@ enum Audience: string implements HasLabel
 
     public function getLabel(): string
     {
-        return __("catalog::enums.audience.{$this->value}");
+        return __('catalog::enums.audience.'.$this->value);
     }
 }

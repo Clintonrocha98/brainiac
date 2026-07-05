@@ -16,6 +16,6 @@ enum Area: string implements HasLabel
 
     public function getLabel(): string
     {
-        return __("catalog::enums.area.{$this->value}");
+        return __('catalog::enums.area.'.$this->value);
     }
 }

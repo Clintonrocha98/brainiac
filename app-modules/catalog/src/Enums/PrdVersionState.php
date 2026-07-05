@@ -13,6 +13,6 @@ enum PrdVersionState: string implements HasLabel
 
     public function getLabel(): string
     {
-        return __("catalog::enums.prd_version_state.{$this->value}");
+        return __('catalog::enums.prd_version_state.'.$this->value);
     }
 }
