@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d58bbae59c90d7bf5f8dc5898ce4d2b3",
+    "content-hash": "a9b1ba47440944d39a51650c7666006a",
     "packages": [
         {
             "name": "alizharb/filament-activity-log",
@@ -3067,6 +3067,42 @@
                 }
             ],
             "time": "2026-06-23T13:02:23+00:00"
+        },
+        {
+            "name": "he4rt/catalog",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "app-modules/catalog",
+                "reference": "3f0509c46cb85fe501efb01bf5d15e4f9588b94f"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "He4rt\\Catalog\\CatalogServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "He4rt\\Catalog\\": "src/",
+                    "He4rt\\Catalog\\Database\\Factories\\": "database/factories/",
+                    "He4rt\\Catalog\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "He4rt\\Catalog\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "he4rt/identity",

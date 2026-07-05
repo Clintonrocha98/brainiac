@@ -1,0 +1,25 @@
+{
+    "name": "he4rt/catalog",
+    "description": "",
+    "type": "library",
+    "version": "1.0.0",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "He4rt\\Catalog\\": "src/",
+            "He4rt\\Catalog\\Database\\Factories\\": "database/factories/",
+            "He4rt\\Catalog\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "He4rt\\Catalog\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": ["He4rt\\Catalog\\CatalogServiceProvider"]
+        }
+    }
+}
