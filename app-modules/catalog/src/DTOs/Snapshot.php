@@ -12,5 +12,7 @@ final readonly class Snapshot
     public function __construct(
         public string $acronym,
         public array $entries,
+        public ?string $repoUrl = null,
+        public ?string $defaultBranch = null,
     ) {}
 }

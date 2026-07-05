@@ -43,6 +43,8 @@ final class ReconcileSnapshot
                         'status' => $existing !== null ? $existing->status : Status::Published,
                         // Espelho não tem dono no Brainiac: o responsável vive no repo de origem.
                         'owner_id' => $existing?->owner_id,
+                        // Provência do espelho: handles do git de quem criou/editou (fonte = repo).
+                        'authors' => $item->authors,
                     ],
                 );
 
@@ -61,7 +63,11 @@ final class ReconcileSnapshot
                 ->get()
                 ->each->delete();
 
-            $project->update(['last_synced_at' => now()]);
+            $project->update([
+                'repo_url' => $snapshot->repoUrl ?? $project->repo_url,
+                'default_branch' => $snapshot->defaultBranch ?? $project->default_branch,
+                'last_synced_at' => now(),
+            ]);
         });
     }
 }

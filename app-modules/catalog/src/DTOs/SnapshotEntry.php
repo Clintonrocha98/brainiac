@@ -10,6 +10,9 @@ use He4rt\Catalog\Enums\Purpose;
 
 final readonly class SnapshotEntry
 {
+    /**
+     * @param  array<int, string>  $authors  handles do git (git config user.name) que criaram/editaram
+     */
     public function __construct(
         public string $qualifiedId,
         public string $nativeId,
@@ -20,5 +23,6 @@ final readonly class SnapshotEntry
         public Area $department,
         public string $bodyMarkdown,
         public ?string $gitPointer,
+        public array $authors,
     ) {}
 }

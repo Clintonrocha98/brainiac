@@ -35,22 +35,31 @@ final class ReceiveSnapshotController
             Response::HTTP_FORBIDDEN,
         );
 
-        /** @var array<int, array<string, string>> $rawEntries */
+        /** @var array<int, array<string, mixed>> $rawEntries */
         $rawEntries = $request->input('entries', []);
 
         $entries = array_map(static fn (array $e): SnapshotEntry => new SnapshotEntry(
-            qualifiedId: $e['qualified_id'],
-            nativeId: $e['native_id'],
-            title: $e['title'],
-            summary: $e['summary'],
-            purpose: Purpose::from($e['purpose']),
-            format: Format::from($e['format']),
-            department: Area::from($e['department']),
-            bodyMarkdown: $e['body_markdown'],
-            gitPointer: $e['git_pointer'] ?? null,
+            qualifiedId: (string) $e['qualified_id'],
+            nativeId: (string) $e['native_id'],
+            title: (string) $e['title'],
+            summary: (string) $e['summary'],
+            purpose: Purpose::from((string) $e['purpose']),
+            format: Format::from((string) $e['format']),
+            department: Area::from((string) $e['department']),
+            bodyMarkdown: (string) $e['body_markdown'],
+            gitPointer: isset($e['git_pointer']) ? (string) $e['git_pointer'] : null,
+            authors: array_values(array_map(strval(...), (array) ($e['authors'] ?? []))),
         ), $rawEntries);
 
-        $reconcile->execute(new Snapshot($acronym, $entries));
+        $repoUrl = $request->input('repo_url');
+        $defaultBranch = $request->input('default_branch');
+
+        $reconcile->execute(new Snapshot(
+            acronym: $acronym,
+            entries: $entries,
+            repoUrl: is_string($repoUrl) ? $repoUrl : null,
+            defaultBranch: is_string($defaultBranch) ? $defaultBranch : null,
+        ));
 
         return response()->json(['status' => 'ok']);
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 return [
     'purpose' => ['reference' => 'Reference', 'how-to' => 'How-to', 'explanation' => 'Explanation'],
     'format' => [
-        'readme' => 'README', 'context' => 'CONTEXT', 'reference' => 'Reference',
+        'readme' => 'README', 'context' => 'CONTEXT', 'architecture' => 'Architecture', 'reference' => 'Reference',
         'how-to' => 'How-to', 'explanation' => 'Explanation', 'adr' => 'ADR',
         'spec' => 'Spec', 'plan' => 'Plan', 'prd' => 'PRD',
     ],

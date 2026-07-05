@@ -12,11 +12,14 @@ function signedPayload(Project $project): array
 {
     $body = [
         'acronym' => $project->acronym,
+        'repo_url' => 'https://github.com/3pontos-tech/rpq',
+        'default_branch' => 'develop',
         'entries' => [[
             'qualified_id' => $project->acronym.':kept', 'native_id' => 'kept',
             'title' => 'T', 'summary' => 'S', 'purpose' => 'reference',
             'format' => 'reference', 'department' => 'ti',
             'body_markdown' => '# body', 'git_pointer' => 'docs/kept.md',
+            'authors' => ['Clintonrocha98'],
         ]],
     ];
     $json = json_encode($body);
@@ -33,7 +36,11 @@ test('accepts a correctly signed snapshot and reconciles', function (): void {
         ->postJson('/federation/snapshot', $body)
         ->assertOk();
 
-    expect(Entry::query()->where('qualified_id', 'RPQ:kept')->exists())->toBeTrue();
+    $entry = Entry::query()->where('qualified_id', 'RPQ:kept')->firstOrFail();
+    $project->refresh();
+
+    expect($entry->authors)->toContain('Clintonrocha98')
+        ->and($project->repo_url)->toBe('https://github.com/3pontos-tech/rpq');
 });
 
 test('rejects a wrong signature', function (): void {

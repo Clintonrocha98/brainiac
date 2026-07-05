@@ -24,6 +24,7 @@ function snapshotEntry(string $qualifiedId, string $native): SnapshotEntry
         department: Area::Ti,
         bodyMarkdown: '# body',
         gitPointer: sprintf('docs/%s.md', $native),
+        authors: ['Clintonrocha98'],
     );
 }
 
@@ -58,4 +59,22 @@ test('reconcile is idempotent', function (): void {
     resolve(ReconcileSnapshot::class)->execute($snapshot);
 
     expect(Entry::query()->where('origin', Origin::Mirror)->count())->toBe(2);
+});
+
+test('reconcile stores authors on the entry and repo url on the project', function (): void {
+    $project = Project::factory()->create(['acronym' => 'RPQ']);
+    $snapshot = new Snapshot(
+        acronym: 'RPQ',
+        entries: [snapshotEntry('RPQ:kept', 'kept')],
+        repoUrl: 'https://github.com/3pontos-tech/rpq',
+        defaultBranch: 'develop',
+    );
+
+    resolve(ReconcileSnapshot::class)->execute($snapshot);
+    $project->refresh();
+    $entry = Entry::query()->where('qualified_id', 'RPQ:kept')->firstOrFail();
+
+    expect($entry->authors)->toContain('Clintonrocha98')
+        ->and($project->repo_url)->toBe('https://github.com/3pontos-tech/rpq')
+        ->and($project->default_branch)->toBe('develop');
 });

@@ -19,6 +19,8 @@ use Illuminate\Support\Carbon;
  * @property string $technical_name
  * @property string $slug
  * @property string $acronym
+ * @property string|null $repo_url
+ * @property string|null $default_branch
  * @property string|null $webhook_token
  * @property string|null $hmac_secret
  * @property Carbon|null $last_synced_at

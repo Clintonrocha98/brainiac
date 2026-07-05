@@ -39,6 +39,7 @@ use Illuminate\Support\Collection;
  * @property array<int, string>|null $keywords
  * @property Status $status
  * @property string|null $owner_id
+ * @property array<int, string>|null $authors
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Project|null $originProject
@@ -116,6 +117,7 @@ final class Entry extends BaseModel
             'department' => Area::class,
             'audience' => AsEnumCollection::of(Audience::class),
             'keywords' => 'array',
+            'authors' => 'array',
             'status' => Status::class,
         ];
     }

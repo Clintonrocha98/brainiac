@@ -10,6 +10,7 @@ enum Format: string implements HasLabel
 {
     case Readme = 'readme';
     case Context = 'context';
+    case Architecture = 'architecture';
     case Reference = 'reference';
     case HowTo = 'how-to';
     case Explanation = 'explanation';

@@ -26,6 +26,7 @@ return new class extends Migration
             $table->jsonb('keywords')->nullable();
             $table->string('status');
             $table->foreignUuid('owner_id')->nullable()->constrained('identity_users')->restrictOnDelete();
+            $table->jsonb('authors')->nullable(); // handles do git (espelho); nativo usa owner_id
             $table->timestampsTz();
 
             $table->index(['project_id', 'origin']); // reconciliação da federação
