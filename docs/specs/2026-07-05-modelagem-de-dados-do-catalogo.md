@@ -80,7 +80,7 @@ pode ser igual a um valor de `Area`) · `webhook_token` (hash) · `hmac_secret` 
 - `slug` (string, cosmético)
 - `title` · `summary`
 - `purpose` (enum: `reference` | `how-to` | `explanation`)
-- `format` (enum: `readme|context|reference|how-to|explanation|adr|spec|plan|prd`)
+- `format` (enum: `readme|context|architecture|reference|how-to|explanation|adr|spec|plan|prd`)
 - `origin` (enum: `native` | `mirror`)
 - `department` (enum `Area`) — dono (1)
 - `audience` (json array de `Area` + `All` + `External`)

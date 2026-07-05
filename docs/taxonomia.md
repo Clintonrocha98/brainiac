@@ -23,7 +23,7 @@ schema. Itens marcados **(EM ABERTO)** ainda não foram decididos.
 | `titulo` | texto | sim | Título humano da Entrada |
 | `resumo` | texto (1-3 frases) | sim | Preview humano + sinal para IA |
 | `proposito` | enum (1 de 3) | sim | `referencia` `how-to` `explicacao` |
-| `formato` | enum (1) | sim | `README` `CONTEXT` `reference` `how-to` `explanation` `ADR` `spec` `plan` `PRD` — a forma concreta do documento; eixo distinto do `proposito`. Determina o comportamento do conteúdo (`PRD` → pilha de versões congeladas; demais → texto único) |
+| `formato` | enum (1) | sim | `README` `CONTEXT` `architecture` `reference` `how-to` `explanation` `ADR` `spec` `plan` `PRD` — a forma concreta do documento; eixo distinto do `proposito`. Determina o comportamento do conteúdo (`PRD` → pilha de versões congeladas; demais → texto único) |
 | `origem` | enum (1) | sim | `nativo` (escrito no Brainiac) · `espelho` (empurrado por um repo de TI via `docs:publish` — carrega ponteiro git + carimbo de sincronização) |
 | `departamento` | enum Área (1) | sim | Área dona/autora |
 | `publico_alvo` | enum Área (N) | sim | Áreas + `todos` + `externo` |
@@ -73,7 +73,7 @@ schema. Itens marcados **(EM ABERTO)** ainda não foram decididos.
 
 ## Outros campos de vocabulário controlado (não são facetas de navegação)
 
-- **`formato`** (1): `README` · `CONTEXT` · `reference` · `how-to` · `explanation` ·
+- **`formato`** (1): `README` · `CONTEXT` · `architecture` · `reference` · `how-to` · `explanation` ·
   `ADR` · `spec` · `plan` · `PRD`. A forma concreta do documento — eixo distinto do
   `proposito`. Determina o comportamento do conteúdo (`PRD` → pilha de versões;
   demais → texto único).
