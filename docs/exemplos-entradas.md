@@ -50,9 +50,10 @@ artefatos: ["https://waifuvault.moe/f/handoff-fluxo.html"]
 relacionadas: [RPQ:pagamentos/reference/modulo-pagamentos]
 ```
 
-> ⚠ ATRITO 2 — Sem projeto, o `id` não tem sigla para qualificar; aqui ele se
-> ancora na **área** dona (`DESIGN:`). O modelo de id para docs sem projeto segue
-> em aberto.
+> ✓ RESOLVIDO — Sem projeto, o `id` ancora na **Área** dona: o prefixo cai para o
+> `departamento` quando `projeto: []` (aqui `DESIGN:`). Regra: nenhuma sigla de
+> Projeto pode colidir com um nome de Área. Ver o campo `id` no
+> [CONTEXT.md](../CONTEXT.md) e [Projeto é entidade de 1ª classe](adr/0006-projeto-primeira-classe-sigla-canonica.md).
 
 ---
 
@@ -110,16 +111,19 @@ id: onboarding-dev
 slug: onboarding-dev
 titulo: "Onboarding Dev"
 resumo: "Trilha para um dev novo entender negócio e stack."
+corpo: |                                        # narrativa própria (nativa)
+  Bem-vindo ao time! Comece entendendo o **módulo de Pagamentos** e só
+  depois o rito de **handoff**. Cada passo abaixo é um doc do catálogo.
 publico_alvo: [TI]
 status: publicado
 owner: ana@empresa.com
-entradas:                                       # ORDENADA
-  - RPQ:explanation/visao-de-negocio            # pendente (Entrada ainda não existe)
-  - RPQ:explanation/arquitetura-de-modulos      # pendente (Entrada ainda não existe)
+entradas:                                       # ORDENADA — só Entradas existentes
   - RPQ:pagamentos/reference/modulo-pagamentos
   - DESIGN:how-to/handoff-design-dev
 ```
 
-> A trilha pode apontar para Entradas que **ainda não existem** (visão de negócio,
-> arquitetura): a Coleção é uma "lista de desejos" legítima, e o Brainiac mostra o
-> item como **pendente** até a Entrada existir.
+> A Coleção referencia **apenas Entradas existentes** — a curadoria é feita no
+> Brainiac sobre o catálogo que já existe, sem itens pendentes / "lista de desejos".
+> Agora carrega também um `corpo` (narrativa/moldura da trilha), além da lista
+> ordenada; os links do corpo resolvem para outras Entradas. O que a **define**
+> continua sendo a lista ordenada — sem ela, seria uma Entrada, não uma Coleção.

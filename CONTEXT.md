@@ -49,9 +49,14 @@ Um Metadado usado para filtrar e recuperar Entradas dentro de um Propósito
 _Avoid_: filtro, dimensão, categoria
 
 **Coleção**:
-Uma view curada que agrupa várias Entradas já existentes para um público ou
-objetivo (ex.: a trilha de onboarding). Não é um Propósito e não contém conteúdo
-próprio — apenas aponta para Entradas. Handbook é uma Coleção específica.
+Uma view curada e **ordenada** que agrupa várias Entradas já existentes para um
+público ou objetivo (ex.: a trilha de onboarding). Não é um Propósito. Carrega uma
+**narrativa própria** (corpo markdown, nativo) além da lista ordenada — traz contexto
+*e* aponta; os links do corpo resolvem para outras Entradas como em qualquer doc
+nativo. O que a **define** é a lista ordenada de Entradas (a trilha, navegável e
+reutilizável), não o corpo: sem essa lista é uma Entrada, não uma Coleção. Não tem
+`proposito`/`formato`/facetas (é objeto de curadoria, não um átomo do catálogo) e
+não aninha outra Coleção. Handbook é uma Coleção específica.
 _Avoid_: trilha, pasta, handbook, acervo
 
 **Área**:
@@ -91,8 +96,10 @@ _Avoid_: enum, lista, taxonomia fechada
 O identificador canônico e estável da Entrada. Não há id global cunhado pelo
 catálogo: cada origem é dona do seu id nativo e o catálogo apenas **qualifica com
 a sigla** do Projeto (ex.: `RPQ:adr/0001` (global), `RPQ:pagamentos/adr/0001` (de
-módulo), `RPQ:PRD-12`). Nunca muda, mesmo que
-título ou facetas mudem; é o que relacionamentos e links referenciam.
+módulo), `RPQ:PRD-12`). Quando a Entrada não tem Projeto (`projeto: []`), o prefixo
+cai para a **Área** dona (`departamento`) — ex.: `DESIGN:how-to/handoff-design-dev`;
+por isso nenhuma sigla de Projeto pode colidir com um nome de Área. Nunca muda, mesmo
+que título ou facetas mudem; é o que relacionamentos e links referenciam.
 Ver [Projeto é entidade de 1ª classe](docs/adr/0006-projeto-primeira-classe-sigla-canonica.md).
 _Avoid_: código, número, DOC-NNNN, slug (slug é outra coisa)
 
@@ -183,6 +190,8 @@ Documento de requisitos de produto que vive no Brainiac; dono é Produto;
 versionado (última versão = fonte da verdade). Grão de uma feature ou grupo coeso
 de features — nunca o projeto inteiro. Contém as regras de negócio como seção
 interna. Major = muda comportamento (gera Spec); minor = ajuste de texto.
+Classifica-se como `formato: PRD` e `proposito: referencia` (o TI o consulta para
+construir); a Visão de produto é o par `explicacao`.
 Ver [Documentação de produto: PRD no Brainiac, Spec no repo](docs/adr/0003-doc-produto-prd-spec-repo.md), [PRD é a unidade central de produto](docs/adr/0007-prd-unidade-central-de-produto.md).
 _Avoid_: Regra, requisito
 
@@ -240,9 +249,16 @@ _Avoid_: append-only, imutável, histórico
 
 **Metadado core**:
 Os Metadados que toda Entrada carrega, em qualquer departamento ou formato (id,
-titulo, resumo, proposito, departamento, publico_alvo, status, owner, datas,
-palavras_chave, related). A base compartilhada.
+titulo, resumo, proposito, formato, origem, departamento, publico_alvo, status,
+owner, datas, palavras_chave, related). A base compartilhada.
 _Avoid_: campos base, padrão
+
+**origem** (campo):
+De onde vem o conteúdo de uma Entrada: `nativo` (escrito no Brainiac — PRD, Visão
+de produto, doc de área não-técnica) ou `espelho` (empurrado por um repo de TI via
+`docs:publish`; carrega ponteiro git + carimbo de sincronização). Vocabulário
+controlado de dois valores.
+_Avoid_: fonte, proveniência, tipo
 
 **Extensão de departamento**:
 Bloco de Metadados que só faz sentido para um departamento (ex.: `module` no TI,
