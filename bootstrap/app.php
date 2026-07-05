@@ -18,6 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
             TrustProxies::class,
             Monicahq\Cloudflare\Http\Middleware\TrustProxies::class
         );
+
+        $middleware->redirectGuestsTo(static fn (): string => route('filament.admin.auth.login'));
     })
     ->withExceptions(static function (Exceptions $exceptions): void {})
     ->create();

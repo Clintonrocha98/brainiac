@@ -1,0 +1,32 @@
+parameters:
+    paths:
+        - src/
+
+    # Limitação conhecida do Larastan com a macro ->title() do Livewire
+    # (SupportPageComponents): o retorno vira mixed. Raiz não corrigível aqui.
+    ignoreErrors:
+        -
+            message: '#^Method He4rt\\Portal\\Livewire\\ProjectsIndex::render\(\) should return Illuminate\\Contracts\\View\\View but returns mixed\.$#'
+            identifier: return.type
+            count: 1
+            path: src/Livewire/ProjectsIndex.php
+        -
+            message: '#^Method He4rt\\Portal\\Livewire\\AreasIndex::render\(\) should return Illuminate\\Contracts\\View\\View but returns mixed\.$#'
+            identifier: return.type
+            count: 1
+            path: src/Livewire/AreasIndex.php
+        -
+            message: '#^Method He4rt\\Portal\\Livewire\\CollectionsIndex::render\(\) should return Illuminate\\Contracts\\View\\View but returns mixed\.$#'
+            identifier: return.type
+            count: 1
+            path: src/Livewire/CollectionsIndex.php
+        -
+            message: '#^Method He4rt\\Portal\\Livewire\\ShowContext::render\(\) should return Illuminate\\Contracts\\View\\View but returns mixed\.$#'
+            identifier: return.type
+            count: 1
+            path: src/Livewire/ShowContext.php
+        -
+            message: '#^Method He4rt\\Portal\\Livewire\\ShowEntry::render\(\) should return Illuminate\\Contracts\\View\\View but returns mixed\.$#'
+            identifier: return.type
+            count: 1
+            path: src/Livewire/ShowEntry.php

@@ -1,0 +1,296 @@
+@import 'tailwindcss';
+
+@source '../views/**/*.blade.php';
+
+@theme {
+    --color-*: initial;
+    --color-night: #0f0e14;
+    --color-surface: #16151c;
+    --color-panel: #1a1922;
+    --color-codebg: #131218;
+    --color-ink: #e9e7f0;
+    --color-ink-strong: #edeaf6;
+    --color-body: #d6d3e2;
+    --color-soft: #c9c5db;
+    --color-muted: #9a96ac;
+    --color-faint: #6d6980;
+    --color-divider: #3a3846;
+    --color-accent: #a48ffa;
+    --color-accent-deep: #8b72f5;
+    --color-accent-soft: #c9bcff;
+    --color-mirror: #56c2d6;
+    --color-mirror-soft: #8ed4e2;
+    --color-ok: #5dc98a;
+    --color-warn: #e8b45a;
+    --color-warn-soft: #e8c98e;
+    --color-warn-strong: #f0d9a8;
+    --color-bad: #e5716b;
+    --color-info: #6fa8ff;
+    --color-white: #ffffff;
+    --color-black: #000000;
+    --color-transparent: transparent;
+
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-serif: 'Source Serif 4', Georgia, serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    --animate-fade-up: fade-up 0.25s ease both;
+    --animate-pop: pop 0.14s ease both;
+
+    @keyframes fade-up {
+        from {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @keyframes pop {
+        from {
+            opacity: 0;
+            transform: translateY(-4px) scale(0.99);
+        }
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background: #0f0e14;
+}
+
+::selection {
+    background: rgba(164, 143, 250, 0.32);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2a2834;
+    border-radius: 6px;
+    border: 2px solid #0f0e14;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+input::placeholder {
+    color: #6d6980;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* ===== Prose (leitor de documento) — espelha o renderMarkdown do design ===== */
+.portal-prose {
+    font-family: var(--font-serif);
+    font-size: 16.5px;
+    line-height: 1.72;
+    color: #d6d3e2;
+}
+
+.portal-prose p {
+    margin: 0 0 16px;
+}
+
+.portal-prose h1,
+.portal-prose h2 {
+    font-family: var(--font-sans);
+    font-size: 19px;
+    font-weight: 700;
+    color: #e9e7f0;
+    margin: 30px 0 12px;
+    letter-spacing: -0.015em;
+    scroll-margin-top: 76px;
+}
+
+.portal-prose h1 {
+    font-size: 21px;
+}
+
+.portal-prose h3 {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 700;
+    color: #e9e7f0;
+    margin: 26px 0 10px;
+    letter-spacing: -0.01em;
+    scroll-margin-top: 76px;
+}
+
+.portal-prose h1:first-child,
+.portal-prose h2:first-child,
+.portal-prose h3:first-child {
+    margin-top: 0;
+}
+
+.portal-prose ul,
+.portal-prose ol {
+    margin: 0 0 18px;
+    padding-left: 24px;
+}
+
+.portal-prose li {
+    margin: 0 0 6px;
+}
+
+.portal-prose strong {
+    color: #edeaf6;
+    font-weight: 600;
+}
+
+.portal-prose a {
+    color: #a48ffa;
+}
+
+.portal-prose code {
+    font-family: var(--font-mono);
+    font-size: 0.82em;
+    background: rgba(164, 143, 250, 0.12);
+    color: #c9bcff;
+    padding: 1px 5px;
+    border-radius: 4px;
+}
+
+.portal-prose pre {
+    margin: 4px 0 22px;
+    background: #131218;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: #c9c5db;
+}
+
+.portal-prose pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+    font-size: inherit;
+}
+
+.portal-prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 4px 0 22px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.portal-prose th {
+    text-align: left;
+    font-weight: 600;
+    color: #e9e7f0;
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.portal-prose td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: #c9c5db;
+}
+
+.portal-prose blockquote {
+    margin: 0 0 16px;
+    padding-left: 16px;
+    border-left: 2px solid rgba(164, 143, 250, 0.35);
+    color: #9a96ac;
+}
+
+.portal-prose hr {
+    border: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.07);
+    margin: 24px 0;
+}
+
+/* Mermaid: bloco sinalizado, não renderizado (decisão da fatia) */
+.portal-prose .portal-mermaid {
+    margin: 4px 0 22px;
+    border: 1px dashed rgba(164, 143, 250, 0.35);
+    border-radius: 10px;
+    padding: 18px 18px 14px;
+    background: rgba(139, 114, 245, 0.05);
+}
+
+.portal-prose .portal-mermaid > .portal-mermaid-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #a48ffa;
+    margin-bottom: 10px;
+}
+
+.portal-prose .portal-mermaid > pre {
+    margin: 0;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #9a96ac;
+    white-space: pre-wrap;
+}
+
+/* Imagem: placeholder (docs de repo não carregam imagens) */
+.portal-prose .portal-image-placeholder {
+    margin: 4px 0 22px;
+    border: 1px dashed rgba(255, 255, 255, 0.18);
+    border-radius: 10px;
+    padding: 34px 18px;
+    text-align: center;
+    color: #6d6980;
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* ===== Prose compacta (introdução da trilha na visão geral) ===== */
+.portal-prose-sm {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    line-height: 1.7;
+    color: #d6d3e2;
+}
+
+.portal-prose-sm p {
+    margin: 0 0 14px;
+}
+
+.portal-prose-sm p:last-child {
+    margin-bottom: 0;
+}
+
+.portal-prose-sm strong {
+    color: #edeaf6;
+    font-weight: 600;
+}
+
+.portal-prose-sm code {
+    font-family: var(--font-mono);
+    font-size: 0.82em;
+    background: rgba(164, 143, 250, 0.12);
+    color: #c9bcff;
+    padding: 1px 5px;
+    border-radius: 4px;
+}

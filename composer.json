@@ -17,6 +17,7 @@
         "he4rt/catalog": ">=1",
         "he4rt/identity": "^1.0.0",
         "he4rt/panel-admin": "^1.0.0",
+        "he4rt/panel-portal": "^1.0",
         "internachi/modular": "^3.0.2",
         "joaopaulolndev/filament-edit-profile": "^3.0.2",
         "laravel/framework": "^13.18.0",
