@@ -25,7 +25,7 @@ return new class extends Migration
             $table->jsonb('audience');
             $table->jsonb('keywords')->nullable();
             $table->string('status');
-            $table->foreignUuid('owner_id')->constrained('identity_users')->restrictOnDelete();
+            $table->foreignUuid('owner_id')->nullable()->constrained('identity_users')->restrictOnDelete();
             $table->timestampsTz();
 
             $table->index(['project_id', 'origin']); // reconciliação da federação

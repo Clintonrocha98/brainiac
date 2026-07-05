@@ -37,11 +37,11 @@ use Illuminate\Support\Carbon;
  * @property \Illuminate\Support\Collection<int, Audience> $audience
  * @property array<int, string>|null $keywords
  * @property Status $status
- * @property string $owner_id
+ * @property string|null $owner_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Project|null $originProject
- * @property-read User $owner
+ * @property-read User|null $owner
  * @property-read Document|null $document
  * @property-read \Illuminate\Database\Eloquent\Collection<int, PrdVersion> $prdVersions
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Project> $projects

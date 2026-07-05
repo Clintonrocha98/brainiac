@@ -9,10 +9,7 @@ use He4rt\Catalog\Enums\Origin;
 use He4rt\Catalog\Enums\Status;
 use He4rt\Catalog\Models\Entry;
 use He4rt\Catalog\Models\Project;
-use He4rt\Identity\Users\User;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 final class ReconcileSnapshot
 {
@@ -24,9 +21,8 @@ final class ReconcileSnapshot
     public function execute(Snapshot $snapshot): void
     {
         $project = Project::query()->where('acronym', $snapshot->acronym)->firstOrFail();
-        $systemOwnerId = $this->systemOwnerId();
 
-        DB::transaction(function () use ($project, $snapshot, $systemOwnerId): void {
+        DB::transaction(function () use ($project, $snapshot): void {
             $seen = [];
 
             foreach ($snapshot->entries as $item) {
@@ -45,7 +41,8 @@ final class ReconcileSnapshot
                         'department' => $item->department,
                         'audience' => $existing !== null ? $existing->audience->all() : [$item->department->value],
                         'status' => $existing !== null ? $existing->status : Status::Published,
-                        'owner_id' => $existing !== null ? $existing->owner_id : $systemOwnerId,
+                        // Espelho não tem dono no Brainiac: o responsável vive no repo de origem.
+                        'owner_id' => $existing?->owner_id,
                     ],
                 );
 
@@ -66,16 +63,5 @@ final class ReconcileSnapshot
 
             $project->update(['last_synced_at' => now()]);
         });
-    }
-
-    /**
-     * Espelhos sem dono declarado pertencem a um usuário-sistema dedicado.
-     */
-    private function systemOwnerId(): string
-    {
-        return User::query()->firstOrCreate(
-            ['email' => 'federation@brainiac.system'],
-            ['name' => 'Federação', 'password' => Hash::make(Str::random(40))],
-        )->id;
     }
 }
