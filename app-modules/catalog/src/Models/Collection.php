@@ -7,11 +7,14 @@ namespace He4rt\Catalog\Models;
 use App\Models\BaseModel;
 use He4rt\Catalog\Actions\DeriveBodyFacts;
 use He4rt\Catalog\Database\Factories\CollectionFactory;
+use He4rt\Catalog\Enums\Area;
 use He4rt\Catalog\Enums\Audience;
 use He4rt\Catalog\Enums\Status;
 use He4rt\Identity\Users\User;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -60,6 +63,15 @@ final class Collection extends BaseModel
             ->orderByPivot('position');
     }
 
+    public function isVisibleToArea(Area $area): bool
+    {
+        if ($this->audience->contains(Audience::from($area->value))) {
+            return true;
+        }
+
+        return $this->audience->contains(Audience::All);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return parent::getActivitylogOptions()->logExcept(['body_markdown']);
@@ -72,6 +84,21 @@ final class Collection extends BaseModel
                 $markdown = $collection->body_markdown ?? '';
                 $collection->fill(resolve(DeriveBodyFacts::class)->execute($markdown)->toColumns());
             }
+        });
+    }
+
+    /**
+     * Trilhas destinadas a uma Área: público contém a área ou "todos".
+     *
+     * @param  Builder<Collection>  $query
+     */
+    #[Scope]
+    protected function visibleToArea(Builder $query, Area $area): void
+    {
+        $query->where(static function (Builder $query) use ($area): void {
+            $query
+                ->whereJsonContains('audience', $area->value)
+                ->orWhereJsonContains('audience', Audience::All->value);
         });
     }
 

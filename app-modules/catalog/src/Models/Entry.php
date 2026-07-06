@@ -13,15 +13,17 @@ use He4rt\Catalog\Enums\Origin;
 use He4rt\Catalog\Enums\Purpose;
 use He4rt\Catalog\Enums\Status;
 use He4rt\Identity\Users\User;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 
 /**
  * @property string $id
@@ -35,7 +37,7 @@ use Illuminate\Support\Collection;
  * @property Format $format
  * @property Origin $origin
  * @property Area $department
- * @property Collection<int, Audience> $audience
+ * @property SupportCollection<int, Audience> $audience
  * @property array<int, string>|null $keywords
  * @property Status $status
  * @property string|null $owner_id
@@ -47,6 +49,7 @@ use Illuminate\Support\Collection;
  * @property-read Document|null $document
  * @property-read \Illuminate\Database\Eloquent\Collection<int, PrdVersion> $prdVersions
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Project> $projects
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Collection> $collections
  * @property-read \Illuminate\Database\Eloquent\Collection<int, EntryArtifact> $artifacts
  *
  * @extends BaseModel<EntryFactory>
@@ -89,6 +92,17 @@ final class Entry extends BaseModel
         return $this->belongsToMany(Project::class, 'catalog_entry_project');
     }
 
+    /**
+     * Trilhas (Coleções) em que esta Entrada aparece.
+     *
+     * @return BelongsToMany<Collection, $this>
+     */
+    public function collections(): BelongsToMany
+    {
+        return $this->belongsToMany(Collection::class, 'catalog_collection_entry')
+            ->withPivot('position');
+    }
+
     /** @return HasMany<EntryArtifact, $this> */
     public function artifacts(): HasMany
     {
@@ -102,6 +116,25 @@ final class Entry extends BaseModel
             if ($entry->project_id !== null) {
                 $entry->projects()->syncWithoutDetaching([$entry->project_id]);
             }
+        });
+    }
+
+    /**
+     * Busca de descoberta: título, resumo, id qualificado e palavras-chave.
+     *
+     * @param  Builder<Entry>  $query
+     */
+    #[Scope]
+    protected function searching(Builder $query, string $term): void
+    {
+        $like = '%'.$term.'%';
+
+        $query->where(static function (Builder $query) use ($like): void {
+            $query
+                ->where('title', 'ilike', $like)
+                ->orWhere('summary', 'ilike', $like)
+                ->orWhere('qualified_id', 'ilike', $like)
+                ->orWhereRaw('keywords::text ilike ?', [$like]);
         });
     }
 

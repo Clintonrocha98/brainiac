@@ -36,6 +36,17 @@ use Illuminate\Support\Carbon;
 final class Project extends BaseModel
 {
     /**
+     * Credenciais da federação nunca saem em serialização (snapshots do
+     * Livewire, JSON, activity log). Acesso somente via propriedade direta.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'webhook_token',
+        'hmac_secret',
+    ];
+
+    /**
      * Entradas cuja ORIGEM (project_id) é este projeto.
      *
      * @return HasMany<Entry, $this>
