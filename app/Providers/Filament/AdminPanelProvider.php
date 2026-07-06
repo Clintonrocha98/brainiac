@@ -102,6 +102,10 @@ final class AdminPanelProvider extends PanelProvider
                     ->label(fn (): string => __('My Profile'))
                     ->url(fn (): string => EditProfilePage::getUrl())
                     ->icon('fas-user-pen'),
+                'portal' => Action::make('portal')
+                    ->label(fn (): string => __('Docs portal'))
+                    ->url(fn (): string => route('portal.home'))
+                    ->icon('fas-book-open'),
             ])
             ->widgets([
                 AccountWidget::class,
