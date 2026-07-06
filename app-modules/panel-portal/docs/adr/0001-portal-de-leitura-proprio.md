@@ -2,12 +2,17 @@
 type: adr
 title: "Leitura do catálogo em módulo próprio (panel-portal), não no Filament"
 module: panel-portal
-status: accepted
+status: superseded
 date: 2026-07-05
 author: clintonrocha
 related:
   adr: 0014-dois-modulos-catalog-e-apresentacao
+  superseded_by: panel-portal/0002-portal-como-segundo-painel-filament
 ---
+
+> **Superada em 2026-07-06** pela ADR [Portal de leitura como segundo painel Filament](0002-portal-como-segundo-painel-filament.md):
+> a decisão de módulo próprio (`panel-portal`) permanece, mas a implementação
+> deixou de ser Livewire full-page bespoke e passou a ser um painel Filament.
 
 # ADR 0001 — Leitura do catálogo em módulo próprio (panel-portal), não no Filament
 

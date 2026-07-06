@@ -6,7 +6,7 @@ status: accepted
 date: 2026-07-05
 author: clintonrocha
 related:
-  adr: panel-portal/0001-portal-de-leitura-proprio
+  adr: panel-portal/0002-portal-como-segundo-painel-filament
   spec: catalog/2026-07-05-modelagem-de-dados-do-catalogo
 ---
 
@@ -15,80 +15,78 @@ related:
 ## Contexto & objetivo
 
 O domínio `catalog` está pronto (Entry, Document, PrdVersion, Project, Collection,
-EntryLink, facetas e federação). Esta spec descreve a **primeira camada de
-apresentação**: um portal de **leitura e descoberta**, implementado a partir do
-protótipo aprovado no Claude Design (*Catálogo Brainiac v2*). Autoria (criar/editar,
-definir `owner`) fica explicitamente fora — é fatia futura, no `panel-admin`.
-
-O portal é **read-only por decisão de foco**: o conteúdo inicial chega pela federação
-(espelhos), então o valor imediato é encontrar e ler bem.
+EntryLink, facetas e federação). Esta spec descreve a camada de **leitura e
+descoberta** do catálogo: um segundo painel Filament (`/portal`), ao lado do
+painel de administração/autoria (`/admin`). A implementação passou por um
+protótipo inicial em Livewire full-page bespoke (ver ADR [Portal de leitura
+como segundo painel Filament](../adr/0002-portal-como-segundo-painel-filament.md)
+para o histórico) antes de convergir para o formato atual.
 
 ## Não-objetivos
 
-- Autoria nativa (criar/editar Entry, editor de corpo, cunhagem de `qualified_id` na UI).
-- Render de diagrama **Mermaid** (aparece como bloco sinalizado "Diagrama · Mermaid").
+- Render de diagrama **Mermaid** desenhado (mermaid.js) — aparece como bloco
+  sinalizado "Diagrama · Mermaid" (backlog).
 - **Menção-como-link** e cache de HTML renderizado (backlog).
 - Gate de acesso por audience/department — todo autenticado vê tudo; facetas são
   descoberta, não muro.
-- Administração da federação (rotação de segredos etc.) — fatia do `panel-admin`.
+- Busca sensível ao contexto atual (a busca global sempre resolve para a URL
+  canônica da Entrada, não para o contexto de onde a busca foi feita).
 
 ## Arquitetura
 
-Módulo `panel-portal` (`He4rt\Portal`), presentation, Livewire 4 + Blade + Tailwind v4.
-Importa do `catalog`; o domínio não conhece o portal.
+Segundo painel Filament do projeto, módulo `panel-portal` (`He4rt\Portal`).
+Importa do `catalog`; o domínio não conhece o portal. Path `/portal`, login
+próprio, todo usuário autenticado tem acesso.
 
 ```
-/portal  (middleware web + auth; guest → login do Filament)
+/portal  (painel Filament "portal"; guest → /portal/login)
 │
-├─ ÍNDICES (3 eixos, topbar com abas + busca global + status da federação)
+├─ ÍNDICES (3 eixos; navegação lateral do Filament + busca global do Filament)
 │    /portal/projects     ProjectsIndex     cards de Project (chip federação/nativo)
 │    /portal/areas        AreasIndex        cards de Area (desc + nº trilhas)
 │    /portal/collections  CollectionsIndex  cards de Collection (trilhas)
 │
-└─ CONTEXTO (grid 268px | prose | 236px)
-     /portal/{eixo}/{id}            ShowContext  visão geral do contexto
-     /portal/{eixo}/{id}/e/{entry}  ShowEntry    leitor do documento
+└─ CONTEXTO (sub-navigation do Filament + conteúdo)
+     /portal/{eixo}/{id}            Show{Project,Area,Collection}       visão geral
+     /portal/{eixo}/{id}/e/{entry}  Show{Project,Area,Collection}Entry  leitor do documento
 ```
 
 ### Unidades
 
 | Unidade | Responsabilidade |
 | --- | --- |
-| `Support/PortalContext` | Value object do contexto (project\|area\|collection): identidade, URLs, entradas, grupos de navegação (por purpose ou posição da trilha), ordem achatada p/ anterior/próximo |
+| `Filament/Pages/ContextIndexPage` (+ `ProjectsIndex`/`AreasIndex`/`CollectionsIndex`) | Base + os três índices: grid de `ContextCard` |
+| `Filament/Pages/PortalContextPage` | Base: resolve o `PortalContext` a partir do parâmetro de rota, monta a sub-navigation (entradas agrupadas por propósito ou posição da trilha) |
+| `Filament/Pages/ShowContextPage` (+ `ShowProject`/`ShowArea`/`ShowCollection`) | Visão geral: barra de repo (projeto), prose de introdução (trilha), trilhas da área |
+| `Filament/Pages/ShowEntryPage` (+ `ShowProjectEntry`/`ShowAreaEntry`/`ShowCollectionEntry`) | Leitor: badges, banners (espelho/versão antiga), corpo prose, ligações direcionais, artefatos, anterior/próximo, rail (TOC + versões PRD + sobre + ver na fonte) |
+| `Filament/Search/EntryGlobalSearchProvider` | Plugado em `->globalSearch()` do painel; usa o scope `Entry::searching()` |
+| `Support/PortalContext` | Value object do contexto (project\|area\|collection): identidade, URLs (via `::getUrl()` das páginas Filament), entradas, grupos de navegação, ordem achatada p/ anterior/próximo |
+| `Support/PrdVersionStack` + `PrdVersionOption` | Pilha de versões do PRD, seleção pela query `?v=`, opções do seletor |
+| `Support/EntryAuthorship` | Proveniência para exibição: nativo → `owner`; espelho → `authors[]` |
+| `Support/EntryLinks` + `EntryLinkItem` | Ligações tipadas nas duas direções, com rótulo conforme o sentido |
+| `Support/ContextCard` + `CardChip` | Cards dos índices (badge, título, descrição, meta, chips) |
+| `Support/EntryUrl` | URL canônica de uma Entrada fora do contexto atual (primeiro projeto-assunto, senão a área dona) |
+| `Support/DisplayDate` | Formatação de datas no timezone de exibição |
 | `Support/Markdown` | CommonMark seguro (`html_input: strip`) + pós-processamento: mermaid → bloco sinalizado, imagem → placeholder, ids nos headings; `toc()` extrai h2 fora de fences |
-| `Support/SourceLink` | `{repo_url}/blob/{default_branch}/{git_pointer}` guardado (só espelho completo) |
-| `Livewire/*Index` | Os três índices (cards uniformes) |
-| `Livewire/ShowContext` | Visão geral: barra de repo (projeto), prose de introdução (trilha), trilhas da área |
-| `Livewire/ShowEntry` | Leitor: badges, banners (espelho/versão antiga), corpo prose, ligações direcionais, artefatos, anterior/próximo, rail (TOC + versões PRD + sobre + ver na fonte) |
-| `Livewire/GlobalSearch` | Busca por título/summary/qualified_id/keywords (6 resultados) |
-| `resources/css/portal.css` | Tema (tokens do design: fundo #0F0E14, acento #A48FFA, ciano espelho #56C2D6; Instrument Sans/Source Serif 4/JetBrains Mono) + prose |
-| `database/seeders/PortalDemoSeeder` | Dados de demonstração idênticos ao protótipo (3 projetos, 12 docs, 2 trilhas, versões de PRD, ligações) |
+| `Support/SourceLink` | `{repo_url}/blob/{default_branch}/{git_pointer}` (só espelho completo) |
+| `resources/css/filament/portal/theme.css` | Tema no esquema padrão do Filament; CSS do protótipo original preservado comentado, para reativação seletiva |
+| `database/seeders/PortalDemoSeeder` | Dados de demonstração (3 projetos, 12 docs, 2 trilhas, versões de PRD, ligações); idempotente, só o usuário `admin` é fixo |
 
 ### Regras de apresentação
 
 - **Proveniência:** nativo → `owner`; espelho → `authors[]` (handles com `@`).
-- **Espelho é read-only**: banner ciano fixo no leitor; dot ciano na navegação.
+- **Espelho é read-only**: banner fixo no leitor; badge "mirror" na navegação.
 - **"Ver na fonte"** só aparece para espelho com `git_pointer` e projeto com `repo_url`.
 - **PRD:** pilha de versões (`major.minor` desc); dropdown no cabeçalho + timeline no
   rail; versão fixada via query `?v=v2.0` (label completo — valor numérico puro seria
-  reescrito pelo cast do Livewire); banner âmbar ao ler versão congelada antiga.
+  reescrito pelo cast do Livewire); banner ao ler versão congelada antiga.
 - **Ligações tipadas com rótulo direcional**: `supersedes` → "Substitui"/"Substituída
   por", `depends_on` → "Depende de"/"Dependência de", `part_of` → "Parte de"/"Contém".
 - **Sem corpo** → estado vazio ("Sem documento ainda"), nunca quebra.
 
-## Divergências deliberadas em relação ao protótipo
-
-1. **Descrição do projeto**: o protótipo exibia uma descrição rica; `Project` não tem
-   esse campo — usamos `technical_name`. Campo `description` é backlog de domínio.
-2. **Busca**: o resultado navega para o contexto primário do alvo (primeiro projeto da
-   faceta, senão a área); o protótipo preservava o contexto atual quando possível.
-3. **Tabelas GFM** são renderizadas de verdade (o protótipo pulava linhas `|`).
-4. **Status da federação** no topo só aparece quando algum projeto já sincronizou.
-5. Datas dinâmicas (`diffForHumans`, `translatedFormat('d M Y')` no fuso de exibição).
-
 ## Comportamento (BDD, resumo)
 
-- Índices listam cards com contagens e chips; guest é redirecionado ao login.
+- Índices listam cards com contagens e chips; guest é redirecionado ao login do painel.
 - Visão geral de projeto mostra barra de repo (+ "espelhado via federação" quando
   sincronizado) e docs agrupados por propósito; de área, docs do departamento + trilhas
   destinadas a ela; de trilha, posições 01, 02… e introdução em prose.
@@ -99,11 +97,19 @@ Importa do `catalog`; o domínio não conhece o portal.
   atalho para a mais nova.
 - Entry fora do contexto da URL → 404. Área desconhecida → 404.
 
-Cobertura: 33 testes (6 unit Markdown, 6 unit SourceLink, 21 feature).
+Cobertura: 34 testes (6 unit Markdown, 6 unit SourceLink, 22 feature).
 
 ## Trabalho futuro
 
-- Autoria nativa no `panel-admin` (Filament) e admin de Projects/federação.
-- Mermaid desenhado (mermaid.js) e menção-como-link + cache no `<x-panel-portal::markdown>`.
+- Mermaid desenhado (mermaid.js) e menção-como-link + cache no corpo renderizado.
 - `Project.description` no domínio (melhora índices/visão geral).
 - Busca sensível ao contexto atual.
+- Federação ponta a ponta (widening do `SnapshotEntry`/`ReconcileSnapshot` para
+  `audience`/`keywords`/`projects`/`status`/`slug`, hoje defaultados na ingestão) e a
+  ferramenta outbound `docs:publish` nos repositórios de TI — alimenta o portal com
+  conteúdo real além do seeder de demonstração.
+
+Autoria nativa (criar/editar Entry, admin de Project/federação, gestão de
+Collection, publicar/congelar PrdVersion) **não é mais trabalho futuro** — está
+implementada no `panel-admin` (`EntryResource`, `ProjectResource`,
+`CollectionResource`, RelationManager de `PrdVersion`).
