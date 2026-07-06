@@ -2391,7 +2391,7 @@ git commit -m "feat(catalog): reconciliação de snapshot da federação"
 
 **Interfaces:**
 - Consumes: `ReconcileSnapshot` (Task 11), `Project` (hmac_secret).
-- Produces: `POST /federation/snapshot` que valida HMAC e dispara a reconciliação.
+- Produces: `POST /webhook/snapshot` que valida HMAC e dispara a reconciliação.
 
 - [ ] **Step 1: Escrever o teste**
 
@@ -2426,7 +2426,7 @@ test('accepts a correctly signed snapshot and reconciles', function (): void {
     [$body, $signature] = signedPayload($project);
 
     $this->withHeader('X-Signature', $signature)
-        ->postJson('/federation/snapshot', $body)
+        ->postJson('/webhook/snapshot', $body)
         ->assertOk();
 
     expect(Entry::query()->where('qualified_id', 'RPQ:kept')->exists())->toBeTrue();
@@ -2437,7 +2437,7 @@ test('rejects a wrong signature', function (): void {
     [$body] = signedPayload($project);
 
     $this->withHeader('X-Signature', 'wrong')
-        ->postJson('/federation/snapshot', $body)
+        ->postJson('/webhook/snapshot', $body)
         ->assertForbidden();
 });
 ```
@@ -2540,7 +2540,7 @@ declare(strict_types=1);
 use He4rt\Catalog\Federation\Http\ReceiveSnapshotController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/federation/snapshot', ReceiveSnapshotController::class);
+Route::post('/webhook/snapshot', ReceiveSnapshotController::class);
 ```
 
 - [ ] **Step 6: Rodar (passa)**

@@ -33,7 +33,7 @@ test('accepts a correctly signed snapshot and reconciles', function (): void {
     [$body, $signature] = signedPayload($project);
 
     $this->withHeader('X-Signature', $signature)
-        ->postJson('/federation/snapshot', $body)
+        ->postJson('/webhook/snapshot', $body)
         ->assertOk();
 
     $entry = Entry::query()->where('qualified_id', 'RPQ:kept')->firstOrFail();
@@ -48,6 +48,6 @@ test('rejects a wrong signature', function (): void {
     [$body] = signedPayload($project);
 
     $this->withHeader('X-Signature', 'wrong')
-        ->postJson('/federation/snapshot', $body)
+        ->postJson('/webhook/snapshot', $body)
         ->assertForbidden();
 });

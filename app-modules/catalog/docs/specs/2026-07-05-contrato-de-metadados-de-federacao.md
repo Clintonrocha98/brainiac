@@ -41,7 +41,7 @@ Fecha o item em aberto "parse de front-matter na autoria/ingest" da spec
 DOC no repo (markdown + front-matter)
    │  docs:publish   (outbound; roda no repo de TI — trabalho futuro)
    ▼
-POST /federation/snapshot   (assinado, HMAC)
+POST /webhook/snapshot   (assinado, HMAC)
    │  webhook → ReceiveSnapshotController   (Brainiac)
    ▼
 JSON → SnapshotEntry (DTO)   ← a "largura do cano"
