@@ -12,17 +12,17 @@ use He4rt\Identity\Users\User;
 
 beforeEach(function (): void {
     $this->withoutVite();
-    $this->actingAs(User::factory()->create());
+    $this->actingAs(User::factory()->create(['locale' => 'en']));
 });
 
-test('guest is redirected to login', function (): void {
+test('guest is redirected to the portal login', function (): void {
     auth()->logout();
 
-    $this->get(route('portal.projects.index'))->assertRedirect();
+    $this->get('/portal/projects')->assertRedirect();
 });
 
 test('portal home redirects to the projects index', function (): void {
-    $this->get(route('portal.home'))->assertRedirect('/portal/projects');
+    $this->get('/portal')->assertRedirectContains('/portal/projects');
 });
 
 test('projects index lists projects with doc count and federation chip', function (): void {
@@ -31,7 +31,7 @@ test('projects index lists projects with doc count and federation chip', functio
 
     Entry::factory()->create(['project_id' => $federated->id, 'origin' => Origin::Mirror, 'owner_id' => null]);
 
-    $this->get(route('portal.projects.index'))
+    $this->get('/portal/projects')
         ->assertOk()
         ->assertSee('Rank Query')
         ->assertSee('RPQ')
@@ -44,7 +44,7 @@ test('projects index lists projects with doc count and federation chip', functio
 test('areas index shows every area with its doc count', function (): void {
     Entry::factory()->count(2)->create(['department' => Area::Ti]);
 
-    $this->get(route('portal.areas.index'))
+    $this->get('/portal/areas')
         ->assertOk()
         ->assertSee('IT')
         ->assertSee('Business')
@@ -59,7 +59,7 @@ test('collections index lists trails with ordered doc count and audience chips',
     [$first, $second] = Entry::factory()->count(2)->create();
     $collection->entries()->attach([$first->id => ['position' => 1], $second->id => ['position' => 2]]);
 
-    $this->get(route('portal.collections.index'))
+    $this->get('/portal/collections')
         ->assertOk()
         ->assertSee('Dev Onboarding')
         ->assertSee('2 docs in order')

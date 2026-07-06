@@ -7,9 +7,9 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/filament/admin/theme.css',
+                'resources/css/filament/portal/theme.css',
                 'resources/css/app.css',
                 'resources/js/app.js',
-                'app-modules/panel-portal/resources/css/portal.css',
             ],
             refresh: true,
         }),

@@ -8,16 +8,12 @@ return [
         'areas' => 'Áreas',
         'collections' => 'Trilhas',
     ],
-    'topbar' => [
-        'badge' => 'docs',
-        'federation_synced' => 'federação · :time',
-    ],
     'search' => [
-        'placeholder' => 'Buscar em toda a documentação…',
-        'empty' => 'Nada encontrado para ":query"',
+        'category' => 'Documentos',
+        'detail_id' => 'Id',
+        'detail_context' => 'Contexto',
     ],
     'index' => [
-        'kicker' => 'Contextos',
         'project' => [
             'title' => 'Projetos',
             'subtitle' => 'Repositórios e produtos de origem. Cada projeto agrupa a documentação de que é dono ou assunto — os federados são espelhados automaticamente a cada push.',
@@ -38,11 +34,6 @@ return [
         ],
     ],
     'context' => [
-        'back' => [
-            'project' => 'Todos os projetos',
-            'area' => 'Todas as áreas',
-            'collection' => 'Todas as trilhas',
-        ],
         'type' => [
             'project' => 'Projeto',
             'area' => 'Departamento',
@@ -50,7 +41,7 @@ return [
         ],
         'overview' => 'Visão geral',
         'trail_group' => 'Trilha',
-        'mirror_hint' => 'Espelho — somente leitura',
+        'mirror_badge' => 'espelho',
     ],
     'overview' => [
         'docs_label' => 'Documentação · :count docs',

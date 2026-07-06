@@ -13,10 +13,10 @@ use He4rt\Identity\Users\User;
 
 beforeEach(function (): void {
     $this->withoutVite();
-    $this->actingAs(User::factory()->create());
+    $this->actingAs(User::factory()->create(['locale' => 'en']));
 });
 
-test('project overview shows the repo bar and docs grouped by purpose', function (): void {
+test('project overview shows the repo bar and its docs', function (): void {
     $project = Project::factory()->create([
         'repo_url' => 'https://github.com/3pontos/rank-query',
         'default_branch' => 'main',
@@ -29,7 +29,7 @@ test('project overview shows the repo bar and docs grouped by purpose', function
         'purpose' => Purpose::Explanation,
     ]);
 
-    $this->get(route('portal.projects.show', ['project' => $project]))
+    $this->get('/portal/projects/'.$project->slug)
         ->assertOk()
         ->assertSee('github.com/3pontos/rank-query')
         ->assertSee('branch main')
@@ -39,11 +39,11 @@ test('project overview shows the repo bar and docs grouped by purpose', function
 });
 
 test('area overview lists only entries owned by the department plus its trails', function (): void {
-    $inArea = Entry::factory()->create(['department' => Area::Ti, 'title' => 'Mapa Da Plataforma']);
-    $other = Entry::factory()->create(['department' => Area::Marketing, 'title' => 'Plano De Lancamento']);
+    Entry::factory()->create(['department' => Area::Ti, 'title' => 'Mapa Da Plataforma']);
+    Entry::factory()->create(['department' => Area::Marketing, 'title' => 'Plano De Lancamento']);
     Collection::factory()->create(['title' => 'Onboarding De Devs', 'audience' => [Audience::All]]);
 
-    $this->get(route('portal.areas.show', ['area' => 'ti']))
+    $this->get('/portal/areas/ti')
         ->assertOk()
         ->assertSee('Mapa Da Plataforma')
         ->assertDontSee('Plano De Lancamento')
@@ -55,7 +55,7 @@ test('collection overview shows ordered positions and rendered intro prose', fun
     [$first, $second] = Entry::factory()->count(2)->create();
     $collection->entries()->attach([$first->id => ['position' => 1], $second->id => ['position' => 2]]);
 
-    $this->get(route('portal.collections.show', ['collection' => $collection]))
+    $this->get('/portal/collections/'.$collection->slug)
         ->assertOk()
         ->assertSee('01')
         ->assertSee('02')

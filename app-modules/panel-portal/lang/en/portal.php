@@ -8,16 +8,12 @@ return [
         'areas' => 'Areas',
         'collections' => 'Trails',
     ],
-    'topbar' => [
-        'badge' => 'docs',
-        'federation_synced' => 'federation · :time',
-    ],
     'search' => [
-        'placeholder' => 'Search across all documentation…',
-        'empty' => 'Nothing found for ":query"',
+        'category' => 'Documents',
+        'detail_id' => 'Id',
+        'detail_context' => 'Context',
     ],
     'index' => [
-        'kicker' => 'Contexts',
         'project' => [
             'title' => 'Projects',
             'subtitle' => 'Origin repositories and products. Each project groups the documentation it owns or is about — federated ones are mirrored automatically on every push.',
@@ -38,11 +34,6 @@ return [
         ],
     ],
     'context' => [
-        'back' => [
-            'project' => 'All projects',
-            'area' => 'All areas',
-            'collection' => 'All trails',
-        ],
         'type' => [
             'project' => 'Project',
             'area' => 'Department',
@@ -50,7 +41,7 @@ return [
         ],
         'overview' => 'Overview',
         'trail_group' => 'Trail',
-        'mirror_hint' => 'Mirror — read-only',
+        'mirror_badge' => 'mirror',
     ],
     'overview' => [
         'docs_label' => 'Documentation · :count docs',

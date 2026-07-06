@@ -15,7 +15,7 @@ use He4rt\Identity\Users\User;
 
 beforeEach(function (): void {
     $this->withoutVite();
-    $this->actingAs(User::factory()->create());
+    $this->actingAs(User::factory()->create(['locale' => 'en']));
 });
 
 /**
@@ -44,10 +44,20 @@ function mirrorEntryInProject(): array
     return [$project, $entry];
 }
 
+function projectEntryUrl(Project $project, Entry $entry): string
+{
+    return sprintf('/portal/projects/%s/e/%s', $project->slug, $entry->id);
+}
+
+function areaEntryUrl(string $area, Entry $entry): string
+{
+    return sprintf('/portal/areas/%s/e/%s', $area, $entry->id);
+}
+
 test('renders a mirror doc with banner, authors and source link', function (): void {
     [$project, $entry] = mirrorEntryInProject();
 
-    $this->get(route('portal.projects.entry', ['project' => $project, 'entry' => $entry]))
+    $this->get(projectEntryUrl($project, $entry))
         ->assertOk()
         ->assertSee('<h2 id="contexto">Contexto</h2>', false)
         ->assertSee('Texto do corpo')
@@ -68,7 +78,7 @@ test('native doc shows the owner and hides banner and source link', function ():
     ]);
     Document::factory()->create(['entry_id' => $entry->id, 'body_markdown' => 'Corpo nativo.']);
 
-    $this->get(route('portal.areas.entry', ['area' => 'product', 'entry' => $entry]))
+    $this->get(areaEntryUrl('product', $entry))
         ->assertOk()
         ->assertSee('Camila Duarte')
         ->assertSee('Corpo nativo.')
@@ -81,7 +91,7 @@ test('mirror without repo url hides the source link', function (): void {
     $entry = Entry::factory()->create(['project_id' => $project->id, 'origin' => Origin::Mirror, 'owner_id' => null]);
     Document::factory()->create(['entry_id' => $entry->id, 'git_pointer' => 'docs/x.md']);
 
-    $this->get(route('portal.projects.entry', ['project' => $project, 'entry' => $entry]))
+    $this->get(projectEntryUrl($project, $entry))
         ->assertOk()
         ->assertDontSee('View source');
 });
@@ -89,7 +99,7 @@ test('mirror without repo url hides the source link', function (): void {
 test('entry without document shows the empty body state', function (): void {
     $entry = Entry::factory()->create(['department' => Area::Marketing]);
 
-    $this->get(route('portal.areas.entry', ['area' => 'marketing', 'entry' => $entry]))
+    $this->get(areaEntryUrl('marketing', $entry))
         ->assertOk()
         ->assertSee('No document yet');
 });
@@ -97,7 +107,7 @@ test('entry without document shows the empty body state', function (): void {
 test('entry outside the context returns 404', function (): void {
     $entry = Entry::factory()->create(['department' => Area::Design]);
 
-    $this->get(route('portal.areas.entry', ['area' => 'ti', 'entry' => $entry]))->assertNotFound();
+    $this->get(areaEntryUrl('ti', $entry))->assertNotFound();
 });
 
 test('typed links show directional labels on both ends', function (): void {
@@ -105,12 +115,12 @@ test('typed links show directional labels on both ends', function (): void {
     $to = Entry::factory()->create(['department' => Area::Design, 'title' => 'Adr Da Wiki']);
     EntryLink::factory()->create(['from_entry_id' => $from->id, 'to_entry_id' => $to->id, 'type' => EntryLinkType::Supersedes]);
 
-    $this->get(route('portal.areas.entry', ['area' => 'design', 'entry' => $from]))
+    $this->get(areaEntryUrl('design', $from))
         ->assertOk()
         ->assertSee('Supersedes')
         ->assertSee('Adr Da Wiki');
 
-    $this->get(route('portal.areas.entry', ['area' => 'design', 'entry' => $to]))
+    $this->get(areaEntryUrl('design', $to))
         ->assertOk()
         ->assertSee('Superseded by')
         ->assertSee('Prd Do Catalogo');
@@ -125,7 +135,7 @@ test('previous and next follow the trail order', function (): void {
         $last->id => ['position' => 3],
     ]);
 
-    $this->get(route('portal.collections.entry', ['collection' => $collection, 'entry' => $middle]))
+    $this->get(sprintf('/portal/collections/%s/e/%s', $collection->slug, $middle->id))
         ->assertOk()
         ->assertSee('← Previous')
         ->assertSee($first->title)
@@ -148,7 +158,7 @@ test('prd shows the latest version by default and can pin an old one', function 
         'body_markdown' => '## Conteudo Novo',
     ]);
 
-    $url = route('portal.areas.entry', ['area' => 'product', 'entry' => $entry]);
+    $url = areaEntryUrl('product', $entry);
 
     $this->get($url)
         ->assertOk()

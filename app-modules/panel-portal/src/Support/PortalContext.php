@@ -9,6 +9,15 @@ use He4rt\Catalog\Enums\Purpose;
 use He4rt\Catalog\Models\Collection as CatalogCollection;
 use He4rt\Catalog\Models\Entry;
 use He4rt\Catalog\Models\Project;
+use He4rt\Portal\Filament\Pages\AreasIndex;
+use He4rt\Portal\Filament\Pages\CollectionsIndex;
+use He4rt\Portal\Filament\Pages\ProjectsIndex;
+use He4rt\Portal\Filament\Pages\ShowArea;
+use He4rt\Portal\Filament\Pages\ShowAreaEntry;
+use He4rt\Portal\Filament\Pages\ShowCollection;
+use He4rt\Portal\Filament\Pages\ShowCollectionEntry;
+use He4rt\Portal\Filament\Pages\ShowProject;
+use He4rt\Portal\Filament\Pages\ShowProjectEntry;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 /**
@@ -63,35 +72,30 @@ final readonly class PortalContext
         return __('panel-portal::portal.context.type.'.$this->type->value);
     }
 
-    public function backLabel(): string
-    {
-        return __('panel-portal::portal.context.back.'.$this->type->value);
-    }
-
     public function indexUrl(): string
     {
         return match ($this->type) {
-            ContextType::Project => route('portal.projects.index'),
-            ContextType::Area => route('portal.areas.index'),
-            ContextType::Collection => route('portal.collections.index'),
+            ContextType::Project => ProjectsIndex::getUrl(),
+            ContextType::Area => AreasIndex::getUrl(),
+            ContextType::Collection => CollectionsIndex::getUrl(),
         };
     }
 
     public function overviewUrl(): string
     {
         return match ($this->type) {
-            ContextType::Project => route('portal.projects.show', ['project' => $this->project]),
-            ContextType::Area => route('portal.areas.show', ['area' => $this->area]),
-            ContextType::Collection => route('portal.collections.show', ['collection' => $this->collection]),
+            ContextType::Project => ShowProject::getUrl(['project' => $this->project]),
+            ContextType::Area => ShowArea::getUrl(['area' => $this->area]),
+            ContextType::Collection => ShowCollection::getUrl(['collection' => $this->collection]),
         };
     }
 
     public function entryUrl(Entry $entry): string
     {
         return match ($this->type) {
-            ContextType::Project => route('portal.projects.entry', ['project' => $this->project, 'entry' => $entry]),
-            ContextType::Area => route('portal.areas.entry', ['area' => $this->area, 'entry' => $entry]),
-            ContextType::Collection => route('portal.collections.entry', ['collection' => $this->collection, 'entry' => $entry]),
+            ContextType::Project => ShowProjectEntry::getUrl(['project' => $this->project, 'entry' => $entry]),
+            ContextType::Area => ShowAreaEntry::getUrl(['area' => $this->area, 'entry' => $entry]),
+            ContextType::Collection => ShowCollectionEntry::getUrl(['collection' => $this->collection, 'entry' => $entry]),
         };
     }
 

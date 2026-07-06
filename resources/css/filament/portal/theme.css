@@ -1,0 +1,42 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@plugin '@tailwindcss/typography';
+
+@source '../../../../app-modules/panel-portal/resources/views/**/*';
+
+/* Âncoras de heading do leitor: compensa a topbar fixa ao navegar pelo sumário. */
+.prose :where(h1, h2, h3) {
+    scroll-margin-top: 5rem;
+}
+
+/* Mermaid: bloco sinalizado, não renderizado (decisão da fatia de leitura). */
+.portal-mermaid {
+    margin-block: 1rem;
+    border: 1px dashed var(--color-gray-400);
+    border-radius: 0.75rem;
+    padding: 1rem;
+}
+
+.portal-mermaid > .portal-mermaid-label {
+    margin-bottom: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-primary-600);
+}
+
+.portal-mermaid > pre {
+    margin: 0;
+}
+
+/* Imagem: placeholder (docs espelhados de repositório não carregam imagens). */
+.portal-image-placeholder {
+    margin-block: 1rem;
+    border: 1px dashed var(--color-gray-400);
+    border-radius: 0.75rem;
+    padding: 2rem 1rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--color-gray-500);
+}
