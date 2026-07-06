@@ -8,6 +8,7 @@ use Filament\Support\Contracts\HasLabel;
 
 enum NavigationGroup: string implements HasLabel
 {
+    case Catalog = 'catalog';
     case UserManagement = 'user_management';
     case System = 'system';
 
@@ -17,6 +18,7 @@ enum NavigationGroup: string implements HasLabel
     public static function navigation(): array
     {
         return [
+            self::Catalog,
             self::UserManagement,
             self::System,
         ];
