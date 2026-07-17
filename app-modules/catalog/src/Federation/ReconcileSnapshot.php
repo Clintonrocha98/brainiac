@@ -6,10 +6,10 @@ namespace He4rt\Catalog\Federation;
 
 use He4rt\Catalog\DTOs\Snapshot;
 use He4rt\Catalog\Enums\Origin;
-use He4rt\Catalog\Enums\Status;
 use He4rt\Catalog\Models\Entry;
 use He4rt\Catalog\Models\Project;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 final class ReconcileSnapshot
 {
@@ -33,17 +33,21 @@ final class ReconcileSnapshot
                     [
                         'native_id' => $item->nativeId,
                         'project_id' => $project->id,
+                        'slug' => Str::slug($item->title),
                         'title' => $item->title,
                         'summary' => $item->summary,
                         'purpose' => $item->purpose,
                         'format' => $item->format,
                         'origin' => Origin::Mirror,
                         'department' => $item->department,
-                        'audience' => $existing !== null ? $existing->audience->all() : [$item->department->value],
-                        'status' => $existing !== null ? $existing->status : Status::Published,
+                        // Facetas do espelho vêm do payload (git é a fonte da verdade);
+                        // defaults do contrato já aplicados na borda (SnapshotEntry::fromPayload).
+                        'audience' => $item->audience,
+                        'keywords' => $item->keywords,
+                        'status' => $item->status,
                         // Espelho não tem dono no Brainiac: o responsável vive no repo de origem.
                         'owner_id' => $existing?->owner_id,
-                        // Provência do espelho: handles do git de quem criou/editou (fonte = repo).
+                        // Proveniência do espelho: handles do git de quem criou/editou (fonte = repo).
                         'authors' => $item->authors,
                     ],
                 );
@@ -52,6 +56,18 @@ final class ReconcileSnapshot
                     'body_markdown' => $item->bodyMarkdown,
                     'git_pointer' => $item->gitPointer,
                 ]);
+
+                // Faceta assunto: siglas do payload resolvidas para Projects (siglas
+                // ainda não espelhadas somem no whereIn — auto-cura no re-publish) +
+                // a origem, sempre (invariante origem-na-faceta).
+                $subjectProjectIds = Project::query()
+                    ->whereIn('acronym', $item->projectAcronyms)
+                    ->pluck('id')
+                    ->push($project->id)
+                    ->unique()
+                    ->all();
+
+                $entry->projects()->sync($subjectProjectIds);
 
                 $seen[] = $item->qualifiedId;
             }
