@@ -107,20 +107,27 @@ ReconcileSnapshot  → upsert de Entry (origem = mirror)
 | em revisão / in_progress | `review` |
 | superseded / deprecated / rejected | `obsolete` (+ link `supersedes` quando aplicável) |
 
-## Camadas de ingestão (hoje vs alvo)
+## Camadas de ingestão
 
-O `SnapshotEntry` **hoje** carrega: `qualified_id`, `native_id`, `title`, `summary`, `purpose`,
-`format`, `department`, **`authors`** (+ corpo markdown e ponteiro git). No nível do snapshot
-também trafegam **`repo_url`** e **`default_branch`** (o publisher auto-reporta do `git remote`),
-gravados no `Project`. Ainda **defaultados** na ingestão: `audience` (→ `[department]`),
-`status` (→ `published`), `keywords`, `projects`.
+O `SnapshotEntry` carrega hoje **todas** as facetas do contrato por doc: `qualified_id`,
+`native_id`, `title`, `summary`, `purpose`, `format`, `department`, `audience`, `keywords`,
+`status`, `authors` e a lista de `projects` (siglas-assunto), além do corpo markdown e do
+ponteiro git. O `SnapshotEntry::fromPayload()` aplica os defaults do contrato na borda:
+`audience` → `[department]`, `status` → `published`, `keywords`/`projects` → `[]`. O `slug`
+é derivado do título na ingestão (não trafega). No nível do snapshot trafegam `repo_url` e
+`default_branch` (o publisher auto-reporta do `git remote`), gravados no `Project`.
+
+A `ReconcileSnapshot` grava essas facetas no espelho — o **repo é a fonte da verdade**: no
+re-publish, `audience`/`keywords`/`status` e a faceta `projects` passam a valer o novo payload
+(a faceta acompanha por `sync`, sempre incluindo a origem). Siglas de projetos ainda não
+espelhados são ignoradas e se curam no re-publish.
 
 Estratégia em duas camadas:
 
-- **Autoria (repos, agora):** os docs nascem com o front-matter **completo**. É barato e o doc
-  é a fonte da verdade — não queremos retocar todos quando o cano alargar.
-- **Ingestão (Brainiac):** já alargado para `authors` + `repo_url`/`default_branch`; falta ainda
-  `audience`/`keywords`/`projects`/`status`/`slug`.
+- **Autoria (repos):** os docs nascem com o front-matter **completo**. É barato e o doc é a
+  fonte da verdade — não queremos retocar todos.
+- **Ingestão (Brainiac):** alargada para todas as facetas por doc. Falta ainda derivar as
+  **ligações tipadas** do front-matter no ingest (ver Trabalho pendente).
 
 ## Decisões
 
@@ -139,8 +146,13 @@ Estratégia em duas camadas:
 
 ## Trabalho pendente no Brainiac
 
-- Estender `SnapshotEntry`/controller/`ReconcileSnapshot` para os campos **ainda** defaultados
-  (`audience`/`keywords`/`projects`/`status`/`slug`). `authors` e `repo_url`/`default_branch` já implementados.
+- Derivar as **ligações tipadas** do front-matter no ingest
+  (`related`/`supersedes`/`depends_on`/`part_of` → `EntryLink`), ignorando alvos ainda não
+  espelhados (auto-cura no re-publish). Único campo do contrato que o cano ainda não transporta.
 - Ferramenta outbound `docs:publish` (nos repos de TI): lê o front-matter, deriva `repo_url`/
   `default_branch` do `git remote`, e monta o snapshot assinado (HMAC).
 - Migrar docs legados que ainda usam `type` para `format` quando forem tocados.
+
+> **Implementado (rodada de ingestão):** `SnapshotEntry`/controller/`ReconcileSnapshot`
+> alargados para `audience`/`keywords`/`status`/`projects` (+ `slug` derivado do título).
+> `authors` e `repo_url`/`default_branch` já vinham de antes.
