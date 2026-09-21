@@ -1,60 +1,56 @@
 # Documentação da Empresa
 
 Sistema de documentação cross-departamento da empresa: um catálogo único onde
-cada documento/artefato vira uma entrada com metadados, navegável por humanos e
-recuperável por IA. Este arquivo é o glossário — só linguagem, sem detalhes de
-implementação.
+cada documento vira uma ficha com metadados e um texto versionado, navegável por
+humanos e recuperável por IA. Este arquivo é o glossário — só linguagem, sem
+detalhes de implementação.
 
 ## Language
 
 **Documento**:
-O conteúdo-fonte em **markdown** de uma Entrada — escrito por IA via guideline
-(brainstorm/grill-me) ou colado no Brainiac — renderizado pelo próprio Brainiac
-(markdown é o formato canônico). Não "origina um Artefato": o Artefato é um asset
-HTML à parte.
-_Avoid_: doc, texto, markdown
+Um item do Catálogo: a **ficha** de metadados (id, título, resumo, propósito,
+formato, departamento, público-alvo, status, owner) somada ao seu texto, que existe
+em uma ou mais Versões. A ficha é uma só e sempre se edita no lugar; o texto é o que
+versiona. Um PRD é um Documento com `formato: PRD`, não uma coisa à parte.
+Ver [Documento é a ficha, Versão é o conteúdo](docs/adr/0016-documento-e-versao-ficha-e-conteudo.md).
+_Avoid_: entrada, registro, card, item, verbete, doc, texto
 
-**Artefato**:
-Uma página visual **auto-contida** (HTML/CSS/JS, normalmente Tailwind) feita para
-explicar algo visualmente (diagrama rico, fluxo interativo, levantamento para
-discussão). **Não** deriva de um Documento nem passa pelo renderizador de markdown:
-é front-end arbitrário, referenciado por **link** e exibido num **iframe de origem
-isolada** (sandbox). Em doc com corpo, entra como link no próprio corpo (o Brainiac
-deriva e embute); uma Entrada pode ser **só-artefato**.
-Ver [Artefato: asset HTML por link em iframe isolado](docs/adr/0012-artefato-asset-html-por-link-iframe-isolado.md).
-_Avoid_: página, anexo, build, render do markdown
+**Versão**:
+Um estado do **texto** (corpo markdown) de um Documento. Todo Documento tem pelo
+menos uma; um Documento nativo pode acumular várias; um espelho tem exatamente uma,
+substituída a cada sincronização. Só o texto versiona — metadado (fora `status`)
+edita-se no lugar. No PRD, a Versão **congela ao publicar** e ganha número
+(`RPQ:PRD-12@v2.0`); a última publicada é a verdade corrente, as anteriores são
+histórico.
+Ver [Documento é a ficha, Versão é o conteúdo](docs/adr/0016-documento-e-versao-ficha-e-conteudo.md), [Ciclo de vida do PRD](docs/adr/0011-ciclo-de-vida-do-prd-congela-ao-publicar.md).
+_Avoid_: revisão (revisão é um `status`), edição, corpo, body, markdown
 
 **Catálogo**:
-O índice federado dentro do Brainiac: a lista de todas as Entradas (as do
-próprio Brainiac + as espelhadas dos repos) com seus metadados. Para as Entradas
+O índice federado dentro do Brainiac: a lista de todos os Documentos (os do
+próprio Brainiac + os espelhados dos repos) com seus metadados. Para os Documentos
 de TI guarda metadado + o markdown-fonte (espelho) + ponteiro de volta à origem
-no git; para as nativas (Produto, Marketing…), o conteúdo (também markdown) mora
+no git; para os nativos (Produto, Marketing…), o texto (também markdown) mora
 ali mesmo. Em ambos, **markdown é o formato canônico e quem renderiza é o
 Brainiac** — o HTML é cache derivado, não a fonte.
 _Avoid_: listagem, biblioteca, repositório, acervo
 
-**Entrada**:
-Um item do Catálogo — a referência a um Documento/Artefato somada aos seus
-metadados de classificação.
-_Avoid_: registro, card, item, verbete
-
 **Metadado**:
-Os campos estruturados que classificam uma Entrada para navegação humana e
+Os campos estruturados que classificam um Documento para navegação humana e
 recuperação por IA.
 _Avoid_: tag (tag é uma espécie específica de metadado), atributo
 
 **Faceta**:
-Um Metadado usado para filtrar e recuperar Entradas dentro de um Propósito
+Um Metadado usado para filtrar e recuperar Documentos dentro de um Propósito
 (ex.: departamento, publico_alvo). É o que substitui a "pasta por departamento".
 _Avoid_: filtro, dimensão, categoria
 
 **Coleção**:
-Uma view curada e **ordenada** que agrupa várias Entradas já existentes para um
+Uma view curada e **ordenada** que agrupa vários Documentos já existentes para um
 público ou objetivo (ex.: a trilha de onboarding). Não é um Propósito. Carrega uma
 **narrativa própria** (corpo markdown, nativo) além da lista ordenada — traz contexto
-_e_ aponta; os links do corpo resolvem para outras Entradas como em qualquer doc
-nativo. O que a **define** é a lista ordenada de Entradas (a trilha, navegável e
-reutilizável), não o corpo: sem essa lista é uma Entrada, não uma Coleção. Não tem
+_e_ aponta; os links do corpo resolvem para outros Documentos como em qualquer doc
+nativo. O que a **define** é a lista ordenada de Documentos (a trilha, navegável e
+reutilizável), não o corpo: sem essa lista é um Documento, não uma Coleção. Não tem
 `proposito`/`formato`/facetas (é objeto de curadoria, não um átomo do catálogo) e
 não aninha outra Coleção. Handbook é uma Coleção específica.
 _Avoid_: trilha, pasta, handbook, acervo
@@ -63,8 +59,8 @@ _Avoid_: trilha, pasta, handbook, acervo
 Entidade de 1ª classe registrada no Brainiac que **agrupa membros** (usuários) de uma
 área da empresa e é a **dona** da documentação sobre si mesma e da que seus membros
 produzem sobre Projetos. É a tabela por trás das facetas `departamento` e
-`publico_alvo` e, quando a Entrada não tem Projeto, o prefixo do seu `id`. Não é
-fronteira de acesso: toda Entrada segue visível para a empresa inteira. Criar ou
+`publico_alvo` e, quando o Documento não tem Projeto, o prefixo do seu `id`. Não é
+fronteira de acesso: todo Documento segue visível para a empresa inteira. Criar ou
 arquivar um Departamento é ato governado (permissão `departments.manage`); um
 Departamento se arquiva, nunca se apaga. Exemplos hoje: TI, Negócio, Produto,
 Marketing, Design (todos separados — Negócio não é guarda-chuva; Design não vive
@@ -74,8 +70,8 @@ _Avoid_: área, setor, time, squad, tenant
 
 **Membro** (de Departamento):
 Um usuário vinculado a um Departamento. Vínculo puro, sem papel: uma pessoa pode ser
-membro de vários Departamentos, e ser membro não trava nada — o dono de uma Entrada
-não precisa ser membro do Departamento dela (convenção, não regra).
+membro de vários Departamentos, e ser membro não trava nada — o dono de um Documento
+não precisa ser membro do Departamento dele (convenção, não regra).
 _Avoid_: funcionário, integrante, dono
 
 **Projeto**:
@@ -86,13 +82,13 @@ Ver [Projeto é entidade de 1ª classe](docs/adr/0006-projeto-primeira-classe-si
 _Avoid_: sistema, repo, produto
 
 **Sigla**:
-O handle canônico de uma Projeto (ex.: `RPQ`). Alinha negócio ↔ TI ↔ rastreador ↔
+O handle canônico de um Projeto (ex.: `RPQ`). Alinha negócio ↔ TI ↔ rastreador ↔
 catálogo; é a "origem" dos ids qualificados (`RPQ:adr/0001`) e o prefixo do
 rastreador (`RPQ-STORY-123`).
 _Avoid_: código, acrônimo, prefixo
 
 **projeto** (faceta):
-A faceta que diz a qual Projeto a Entrada pertence — referencia uma Projeto pela
+A faceta que diz a qual Projeto o Documento pertence — referencia um Projeto pela
 `sigla`. Multi-valor e opcional.
 _Avoid_: sistema, módulo, repo, produto
 
@@ -106,10 +102,10 @@ por IA.
 _Avoid_: enum, lista, taxonomia fechada
 
 **id** (campo):
-O identificador canônico e estável da Entrada. Não há id global cunhado pelo
+O identificador canônico e estável do Documento. Não há id global cunhado pelo
 catálogo: cada origem é dona do seu id nativo e o catálogo apenas **qualifica com
 a sigla** do Projeto (ex.: `RPQ:adr/0001` (global), `RPQ:pagamentos/adr/0001` (de
-módulo), `RPQ:PRD-12`). Quando a Entrada não tem Projeto (`projeto: []`), o prefixo
+módulo), `RPQ:PRD-12`). Quando o Documento não tem Projeto (`projeto: []`), o prefixo
 cai para o **Departamento** dono (`departamento`) — ex.: `DESIGN:how-to/handoff-design-dev`;
 por isso nenhuma sigla de Projeto pode colidir com o prefixo de um Departamento. Nunca muda, mesmo
 que título ou facetas mudem; é o que relacionamentos e links referenciam.
@@ -117,37 +113,37 @@ Ver [Projeto é entidade de 1ª classe](docs/adr/0006-projeto-primeira-classe-si
 _Avoid_: código, número, DOC-NNNN, slug (slug é outra coisa)
 
 **slug** (campo):
-A parte legível e cosmética da URL de uma Entrada (ex.: `setup-ambiente`). Pode
+A parte legível e cosmética da URL de um Documento (ex.: `setup-ambiente`). Pode
 mudar livremente sem quebrar o `id`.
 _Avoid_: id, permalink
 
 **resumo** (campo):
-Uma a três frases que descrevem a Entrada; serve ao mesmo tempo de preview para
+Uma a três frases que descrevem o Documento; serve ao mesmo tempo de preview para
 humano e de sinal textual para a recuperação por IA.
 _Avoid_: descrição, ementa, abstract
 
 **palavras_chave** (campo):
-O único campo de texto livre da Entrada — uma lista de termos que serve tanto
+O único campo de texto livre do Documento — uma lista de termos que serve tanto
 para agrupar quanto para recuperar. Substitui a ideia de `tags` (não há campo
 `tags` separado).
 _Avoid_: tags, keywords, rótulos
 
 **status** (campo):
-O estado de ciclo de vida da Entrada: `rascunho`, `revisão`, `publicado` ou
+O estado de ciclo de vida do Documento: `rascunho`, `revisão`, `publicado` ou
 `obsoleto`. É um **sinal social**, não uma trava — a plataforma não impõe
 aprovação (ver [Governança do PRD social por status](docs/adr/0008-governanca-do-prd-social-por-status.md)). Em `revisão` o
 documento já é legível; em `publicado` passa a valer como a versão corrente/oficial
-daquela Entrada (o PRD, do produto; a spec, da implementação).
+daquele Documento (o PRD, do produto; a spec, da implementação).
 _Avoid_: estado, situação
 
 **departamento** (faceta):
-O Departamento que produz e mantém a Entrada — o dono. Um só por Entrada.
+O Departamento que produz e mantém o Documento — o dono. Um só por Documento.
 _Avoid_: time, dono, autor
 
 **publico_alvo** (faceta):
-Os Departamentos **para quem a Entrada é relevante** — o público primário, usado para
-navegação e recuperação. **Não** é controle de acesso: o Brainiac é interno e toda
-Entrada é visível para a empresa inteira; este campo só sinaliza relevância (e absorve
+Os Departamentos **para quem o Documento é relevante** — o público primário, usado para
+navegação e recuperação. **Não** é controle de acesso: o Brainiac é interno e todo
+Documento é visível para a empresa inteira; este campo só sinaliza relevância (e absorve
 "as áreas que o documento trata"). Multi-valor. Dois sinais à parte, que não são
 Departamentos: `toda_a_empresa` (relevante para a empresa toda; exclui a lista) e
 `externo` (também voltado a público externo).
@@ -204,21 +200,11 @@ snapshot da doc de TI para um **espelho de leitura** no Brainiac (metadado index
 Documento de requisitos de produto que vive no Brainiac; dono é Produto;
 versionado (última versão = fonte da verdade). Grão de uma feature ou grupo coeso
 de features — nunca o projeto inteiro. Contém as regras de negócio como seção
-interna. Major = muda comportamento (gera Spec); minor = ajuste de texto.
-Classifica-se como `formato: PRD` e `proposito: referencia` (o TI o consulta para
-construir); a Visão de produto é o par `explicacao`.
-Ver [Documentação de produto: PRD no Brainiac, Spec no repo](docs/adr/0003-doc-produto-prd-spec-repo.md), [PRD é a unidade central de produto](docs/adr/0007-prd-unidade-central-de-produto.md).
+interna. Major = muda comportamento (gera Spec); minor = ajuste de texto, declarado
+pelo Produto no publish. Classifica-se como `formato: PRD` e `proposito: referencia`
+(o TI o consulta para construir); a Visão de produto é o par `explicacao`.
+Ver [Documentação de produto: PRD no Brainiac, Spec no repo](docs/adr/0003-doc-produto-prd-spec-repo.md), [PRD é a unidade central de produto](docs/adr/0007-prd-unidade-central-de-produto.md), [Ciclo de vida do PRD](docs/adr/0011-ciclo-de-vida-do-prd-congela-ao-publicar.md).
 _Avoid_: Regra, requisito
-
-**Versão** (do PRD):
-Um estado **congelado** do texto do PRD, fixado no momento em que é **publicado**;
-a última versão publicada é a verdade corrente, as anteriores são histórico. Salvar
-deixa um rascunho legível (ainda sem valer); publicar congela. Só o **texto**
-versiona — metadado (fora `status`) edita no lugar. A Spec do TI referencia a versão
-exata (`RPQ:PRD-12@v2.0`). Major (muda comportamento, gera Spec) × minor (só texto)
-é declarado pelo Produto no publish.
-Ver [Ciclo de vida do PRD: congela ao publicar](docs/adr/0011-ciclo-de-vida-do-prd-congela-ao-publicar.md).
-_Avoid_: revisão (revisão é um `status`), edição
 
 **regra de negócio**:
 Uma afirmação normativa que o sistema deve obedecer (ex.: "voucher é de uso
@@ -263,13 +249,13 @@ a cada vez (ADR, spec, plan). Leem-se em conjunto.
 _Avoid_: append-only, imutável, histórico
 
 **Metadado core**:
-Os Metadados que toda Entrada carrega, em qualquer departamento ou formato (id,
+Os Metadados que todo Documento carrega, em qualquer departamento ou formato (id,
 titulo, resumo, proposito, formato, origem, departamento, publico_alvo, status,
 owner, datas, palavras_chave, related). A base compartilhada.
 _Avoid_: campos base, padrão
 
 **origem** (campo):
-De onde vem o conteúdo de uma Entrada: `nativo` (escrito no Brainiac — PRD, Visão
+De onde vem o texto de um Documento: `nativo` (escrito no Brainiac — PRD, Visão
 de produto, doc de área não-técnica) ou `espelho` (empurrado por um repo de TI via
 `docs:publish`; carrega ponteiro git + carimbo de sincronização). Vocabulário
 controlado de dois valores.
@@ -277,12 +263,12 @@ _Avoid_: fonte, proveniência, tipo
 
 **Extensão de departamento**:
 Bloco de Metadados que só faz sentido para um departamento (ex.: `module` no TI,
-`canal` no Marketing, `segmento` no Produto), sem poluir as Entradas das outras
+`canal` no Marketing, `segmento` no Produto), sem poluir os Documentos das outras
 áreas. Há também metadados **por formato** (ex.: `deciders` no ADR, `versao` no PRD).
 _Avoid_: campo custom, metadado extra
 
 **module** (extensão de TI):
-A parte do sistema de que uma Entrada de TI fala — o seu **escopo**. Recebe o nome
+A parte do sistema de que um Documento de TI fala — o seu **escopo**. Recebe o nome
 do módulo (ex.: `pagamentos`) ou o valor reservado `global` quando a doc é do
 projeto inteiro. Obrigatório no TI; distingue o README/ADR/spec **de um módulo** do
 **global** e permite filtrar por módulo.

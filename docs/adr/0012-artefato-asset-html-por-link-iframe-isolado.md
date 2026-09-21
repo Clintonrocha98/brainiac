@@ -1,3 +1,7 @@
+---
+status: superseded by ADR-0017
+---
+
 # Artefato: asset HTML referenciado por link, exibido em iframe isolado
 
 Um **Artefato** é uma página visual **auto-contida** (HTML/CSS/JS) — front-end
