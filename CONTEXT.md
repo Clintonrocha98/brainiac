@@ -45,27 +45,38 @@ _Avoid_: tag (tag é uma espécie específica de metadado), atributo
 
 **Faceta**:
 Um Metadado usado para filtrar e recuperar Entradas dentro de um Propósito
-(ex.: departamento, audiência). É o que substitui a "pasta por departamento".
+(ex.: departamento, publico_alvo). É o que substitui a "pasta por departamento".
 _Avoid_: filtro, dimensão, categoria
 
 **Coleção**:
 Uma view curada e **ordenada** que agrupa várias Entradas já existentes para um
 público ou objetivo (ex.: a trilha de onboarding). Não é um Propósito. Carrega uma
 **narrativa própria** (corpo markdown, nativo) além da lista ordenada — traz contexto
-*e* aponta; os links do corpo resolvem para outras Entradas como em qualquer doc
+_e_ aponta; os links do corpo resolvem para outras Entradas como em qualquer doc
 nativo. O que a **define** é a lista ordenada de Entradas (a trilha, navegável e
 reutilizável), não o corpo: sem essa lista é uma Entrada, não uma Coleção. Não tem
 `proposito`/`formato`/facetas (é objeto de curadoria, não um átomo do catálogo) e
 não aninha outra Coleção. Handbook é uma Coleção específica.
 _Avoid_: trilha, pasta, handbook, acervo
 
-**Área**:
-O conjunto controlado de departamentos/times da empresa; é o vocabulário
-compartilhado pelas facetas `departamento` e `publico_alvo`. Valores atuais:
-`TI`, `Negócio`, `Produto`, `Marketing`, `Design` (todas separadas — Negócio não
-é guarda-chuva; Design não vive dentro de Produto). `publico_alvo` admite ainda
-`todos` e `externo`. Lista fechada, extensível só via governança.
-_Avoid_: setor, time, squad
+**Departamento**:
+Entidade de 1ª classe registrada no Brainiac que **agrupa membros** (usuários) de uma
+área da empresa e é a **dona** da documentação sobre si mesma e da que seus membros
+produzem sobre Projetos. É a tabela por trás das facetas `departamento` e
+`publico_alvo` e, quando a Entrada não tem Projeto, o prefixo do seu `id`. Não é
+fronteira de acesso: toda Entrada segue visível para a empresa inteira. Criar ou
+arquivar um Departamento é ato governado (permissão `departments.manage`); um
+Departamento se arquiva, nunca se apaga. Exemplos hoje: TI, Negócio, Produto,
+Marketing, Design (todos separados — Negócio não é guarda-chuva; Design não vive
+dentro de Produto).
+Ver [Departamento é entidade de 1ª classe](docs/adr/0015-departamento-entidade-de-primeira-classe.md).
+_Avoid_: área, setor, time, squad, tenant
+
+**Membro** (de Departamento):
+Um usuário vinculado a um Departamento. Vínculo puro, sem papel: uma pessoa pode ser
+membro de vários Departamentos, e ser membro não trava nada — o dono de uma Entrada
+não precisa ser membro do Departamento dela (convenção, não regra).
+_Avoid_: funcionário, integrante, dono
 
 **Projeto**:
 Entidade de 1ª classe registrada no Brainiac, com `nome_negocio`, `nome_tecnico`,
@@ -87,7 +98,9 @@ _Avoid_: sistema, módulo, repo, produto
 
 **Vocabulário controlado**:
 A regra de que as facetas (`proposito`, `departamento`, `publico_alvo`, `projeto`)
-só aceitam valores de uma lista fechada — nunca texto livre.
+só aceitam valores de uma lista fechada — nunca texto livre. A lista é um enum no
+código (`proposito`) ou uma tabela governada (`departamento`, `publico_alvo`,
+`projeto`).
 Apenas `palavras_chave` é livre. Existe para não quebrar filtro e recuperação
 por IA.
 _Avoid_: enum, lista, taxonomia fechada
@@ -97,8 +110,8 @@ O identificador canônico e estável da Entrada. Não há id global cunhado pelo
 catálogo: cada origem é dona do seu id nativo e o catálogo apenas **qualifica com
 a sigla** do Projeto (ex.: `RPQ:adr/0001` (global), `RPQ:pagamentos/adr/0001` (de
 módulo), `RPQ:PRD-12`). Quando a Entrada não tem Projeto (`projeto: []`), o prefixo
-cai para a **Área** dona (`departamento`) — ex.: `DESIGN:how-to/handoff-design-dev`;
-por isso nenhuma sigla de Projeto pode colidir com um nome de Área. Nunca muda, mesmo
+cai para o **Departamento** dono (`departamento`) — ex.: `DESIGN:how-to/handoff-design-dev`;
+por isso nenhuma sigla de Projeto pode colidir com o prefixo de um Departamento. Nunca muda, mesmo
 que título ou facetas mudem; é o que relacionamentos e links referenciam.
 Ver [Projeto é entidade de 1ª classe](docs/adr/0006-projeto-primeira-classe-sigla-canonica.md).
 _Avoid_: código, número, DOC-NNNN, slug (slug é outra coisa)
@@ -128,16 +141,17 @@ daquela Entrada (o PRD, do produto; a spec, da implementação).
 _Avoid_: estado, situação
 
 **departamento** (faceta):
-A Área que produz e mantém a Entrada — o dono. Uma só por Entrada.
+O Departamento que produz e mantém a Entrada — o dono. Um só por Entrada.
 _Avoid_: time, dono, autor
 
 **publico_alvo** (faceta):
-As Áreas/perfis **para quem a Entrada é relevante** — o público primário, usado para
+Os Departamentos **para quem a Entrada é relevante** — o público primário, usado para
 navegação e recuperação. **Não** é controle de acesso: o Brainiac é interno e toda
 Entrada é visível para a empresa inteira; este campo só sinaliza relevância (e absorve
-"as áreas que o documento trata"). Multi-valor; admite `todos` (relevante para a
-empresa toda) e `externo` (também voltado a público externo).
-_Avoid_: audiência, destinatário, leitor, permissão, acesso
+"as áreas que o documento trata"). Multi-valor. Dois sinais à parte, que não são
+Departamentos: `toda_a_empresa` (relevante para a empresa toda; exclui a lista) e
+`externo` (também voltado a público externo).
+_Avoid_: audiência, destinatário, leitor, permissão, acesso, todos
 
 ## Propósitos
 
@@ -154,13 +168,13 @@ Passos para realizar uma tarefa ou seguir um rito/fluxo recorrente (inclusive um
 handoff entre times, quando o que importa é executá-lo). Você lê para executar — e
 também para **aprender fazendo**: por decisão de escopo, how-to absorve o modo
 "tutorial" e o antigo propósito "processo" executável (não há propósito `tutorial`
-nem `processo` à parte). Agrupar um fluxo de área vira Coleção; a *justificativa* de
+nem `processo` à parte). Agrupar um fluxo de área vira Coleção; a _justificativa_ de
 um handoff é explicação.
 _Avoid_: tutorial, processo, guia, passo-a-passo, rito
 
 **Explicação**:
 Entendimento e contexto: regra de negócio, visão de arquitetura, o "porquê" —
-inclui o registro de uma decisão e seu trade-off (um ADR) e a *justificativa* de um
+inclui o registro de uma decisão e seu trade-off (um ADR) e a _justificativa_ de um
 handoff. A "decisão" é capturada pelo formato ADR, não por um propósito à parte.
 Você lê para entender.
 _Avoid_: documentação técnica, overview, decisão (decisão é o formato ADR)
@@ -179,11 +193,12 @@ _Avoid_: portal central, portal, central, wiki, hub
 **Federação**:
 O módulo de doc de cada repo **empurra** (PUSH, via o comando `docs:publish`) um
 snapshot da doc de TI para um **espelho de leitura** no Brainiac (metadado indexado
-+ markdown-fonte; quem renderiza é o Brainiac). O git continua a fonte da verdade do código; o Brainiac é a
-superfície de leitura em produção — os repos são privados e o `/docs` roda só em DEV,
-então não há de onde puxar ao vivo.
-Ver [Topologia de documentação híbrida](docs/adr/0002-topologia-hibrida.md), [Federação por PUSH pelo módulo](docs/adr/0009-federacao-por-push-modulo.md).
-_Avoid_: agregação, importação, índice remoto
+
+- markdown-fonte; quem renderiza é o Brainiac). O git continua a fonte da verdade do código; o Brainiac é a
+  superfície de leitura em produção — os repos são privados e o `/docs` roda só em DEV,
+  então não há de onde puxar ao vivo.
+  Ver [Topologia de documentação híbrida](docs/adr/0002-topologia-hibrida.md), [Federação por PUSH pelo módulo](docs/adr/0009-federacao-por-push-modulo.md).
+  _Avoid_: agregação, importação, índice remoto
 
 **PRD**:
 Documento de requisitos de produto que vive no Brainiac; dono é Produto;
