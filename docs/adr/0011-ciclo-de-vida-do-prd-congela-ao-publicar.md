@@ -1,3 +1,7 @@
+---
+status: superseded by ADR-0018
+---
+
 # Ciclo de vida do PRD: o texto versiona e congela ao publicar
 
 O PRD versiona **só o texto** (o contrato com o TI), e cada versão **congela ao
