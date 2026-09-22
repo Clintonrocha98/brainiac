@@ -17,13 +17,29 @@ _Avoid_: entrada, registro, card, item, verbete, doc, texto
 
 **Versão**:
 Um estado do **texto** (corpo markdown) de um Documento. Todo Documento tem pelo
-menos uma; um Documento nativo pode acumular várias; um espelho tem exatamente uma,
-substituída a cada sincronização. Só o texto versiona — metadado (fora `status`)
-edita-se no lugar. No PRD, a Versão **congela ao publicar** e ganha número
-(`RPQ:PRD-12@v2.0`); a última publicada é a verdade corrente, as anteriores são
-histórico.
-Ver [Documento é a ficha, Versão é o conteúdo](docs/adr/0016-documento-e-versao-ficha-e-conteudo.md), [Ciclo de vida do PRD](docs/adr/0011-ciclo-de-vida-do-prd-congela-ao-publicar.md).
+menos uma; um Documento nativo acumula uma por publicação; um espelho tem exatamente
+uma, substituída a cada sincronização. Só o texto versiona — metadado (fora `status`)
+edita-se no lugar. A Versão **congela ao publicar** e ganha número sequencial
+(`RPQ:PRD-12@v7`); existe no máximo uma Versão não congelada — o rascunho —, e salvar
+sobrescreve ela em vez de empilhar. A última congelada é a verdade corrente, as
+anteriores são histórico.
+Ver [Versionar é do conteúdo nativo](docs/adr/0018-versionamento-do-conteudo-nativo.md), [Documento é a ficha, Versão é o conteúdo](docs/adr/0016-documento-e-versao-ficha-e-conteudo.md).
 _Avoid_: revisão (revisão é um `status`), edição, corpo, body, markdown
+
+**Congelar**:
+Tornar o texto de uma Versão imutável no Brainiac. No conteúdo nativo é o que o
+**publicar** faz — e é o ato que cunha o número da Versão. No espelho é o estado
+permanente: quem escreve é o repo de origem, e a sincronização substitui a Versão
+inteira em vez de editá-la. Uma Versão não congelada é o rascunho.
+Ver [Versionar é do conteúdo nativo](docs/adr/0018-versionamento-do-conteudo-nativo.md).
+_Avoid_: travar, bloquear, arquivar, finalizar
+
+**Versão maior**:
+Uma publicação que o autor **declara** como mudança grande — o sinal de que quem
+constrói em cima daquele texto precisa agir (no PRD, nasce uma Spec). O sistema nunca
+detecta: é julgamento de intenção. A ausência da marca é a versão menor, silenciosa.
+Ver [Versionar é do conteúdo nativo](docs/adr/0018-versionamento-do-conteudo-nativo.md).
+_Avoid_: major/minor (o par pontuado saiu), breaking, marco, release
 
 **Catálogo**:
 O índice federado dentro do Brainiac: a lista de todos os Documentos (os do
@@ -133,7 +149,8 @@ O estado de ciclo de vida do Documento: `rascunho`, `revisão`, `publicado` ou
 `obsoleto`. É um **sinal social**, não uma trava — a plataforma não impõe
 aprovação (ver [Governança do PRD social por status](docs/adr/0008-governanca-do-prd-social-por-status.md)). Em `revisão` o
 documento já é legível; em `publicado` passa a valer como a versão corrente/oficial
-daquele Documento (o PRD, do produto; a spec, da implementação).
+daquele Documento (o PRD, do produto; a spec, da implementação). É estado **da ficha**,
+não do texto: o estado do texto é o congelamento da Versão.
 _Avoid_: estado, situação
 
 **departamento** (faceta):
@@ -200,10 +217,11 @@ snapshot da doc de TI para um **espelho de leitura** no Brainiac (metadado index
 Documento de requisitos de produto que vive no Brainiac; dono é Produto;
 versionado (última versão = fonte da verdade). Grão de uma feature ou grupo coeso
 de features — nunca o projeto inteiro. Contém as regras de negócio como seção
-interna. Major = muda comportamento (gera Spec); minor = ajuste de texto, declarado
-pelo Produto no publish. Classifica-se como `formato: PRD` e `proposito: referencia`
+interna. Uma publicação **maior** muda comportamento e gera Spec; sem a marca, a
+publicação é menor e silenciosa — quem declara é o Produto, no publish. Classifica-se
+como `formato: PRD` e `proposito: referencia`
 (o TI o consulta para construir); a Visão de produto é o par `explicacao`.
-Ver [Documentação de produto: PRD no Brainiac, Spec no repo](docs/adr/0003-doc-produto-prd-spec-repo.md), [PRD é a unidade central de produto](docs/adr/0007-prd-unidade-central-de-produto.md), [Ciclo de vida do PRD](docs/adr/0011-ciclo-de-vida-do-prd-congela-ao-publicar.md).
+Ver [Documentação de produto: PRD no Brainiac, Spec no repo](docs/adr/0003-doc-produto-prd-spec-repo.md), [PRD é a unidade central de produto](docs/adr/0007-prd-unidade-central-de-produto.md), [Versionar é do conteúdo nativo](docs/adr/0018-versionamento-do-conteudo-nativo.md).
 _Avoid_: Regra, requisito
 
 **regra de negócio**:
@@ -238,14 +256,15 @@ Propósito (que diz o conhecimento que o documento entrega).
 _Avoid_: tipo, categoria
 
 **Evergreen** (classe de Formato):
-Formato cujo documento é **editado** para refletir o estado atual; existe um por
-assunto (README, CONTEXT, reference, how-to, explanation; o PRD é evergreen
-versionado).
+Formato cujo documento é **republicado** para refletir o estado atual; existe um por
+assunto (README, CONTEXT, reference, how-to, explanation, PRD). É hábito editorial, não
+regime de dados: todo Documento nativo acumula Versões do mesmo jeito.
 _Avoid_: vivo, atual
 
 **Datado** (classe de Formato):
-Formato cujo documento é **congelado** num momento e nunca editado; cria-se um novo
-a cada vez (ADR, spec, plan). Leem-se em conjunto.
+Formato cujo documento registra um momento e não é reescrito depois; cria-se um
+**Documento** novo a cada vez (ADR, spec, plan). Leem-se em conjunto. Também é hábito
+editorial — a pilha de Versões existe igual, só não costuma crescer.
 _Avoid_: append-only, imutável, histórico
 
 **Metadado core**:
